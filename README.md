@@ -1,2 +1,2 @@
 # Hydra
-Building a very simple multiplayer game for fun and profit (the knowledge kind)
+Proof of concept for using protobuf to communicate between a server and a couple of clients.
