@@ -50,9 +50,6 @@
     <ClInclude Include="NetworkHelper.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
-    <ClInclude Include="ProtoAdapter.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
     <ClInclude Include="NetworkMessageParser.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>

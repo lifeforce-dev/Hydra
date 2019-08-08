@@ -38,19 +38,14 @@ void NetworkMessageParser::ExtractMessages(const std::string& stream,
 {
 	while (m_totalBytesParsed < stream.size())
 	{
-		// Order matters here. Do not change the order. State can transition while being handled.
-		if (m_state == State::Header)
+		if (m_state == State::Header || m_state == State::Content)
 		{
-			ParseHeader(stream);
-		}
-		if (m_state == State::Content)
-		{
-			ParseContent(stream);
+			Parse(stream);
 		}
 		if (m_state == State::Finalizing)
 		{
 			messages.push_back(std::move(*m_messageCache.get()));
-			m_state = State::Header;
+			TransitionState();
 		}
 	}
 
@@ -58,57 +53,37 @@ void NetworkMessageParser::ExtractMessages(const std::string& stream,
 	m_totalBytesParsed = 0;
 }
 
-void NetworkMessageParser::ParseHeader(const std::string& stream)
+
+void NetworkMessageParser::Parse(const std::string& stream)
 {
-	// Stream size might be smaller than header size. In which case, we're waiting for more bits.
 	uint32_t bytesRemaining = stream.size() - m_totalBytesParsed;
 	if (bytesRemaining == 0)
 		return;
 
-	uint32_t sizeToCopy = std::min(bytesRemaining, s_headerSize);
-
+	uint32_t targetSize = m_state == State::Header ? s_headerSize : m_messageCache->header.messageLength;
+	uint32_t sizeToCopy = std::min(bytesRemaining, targetSize);
 	// If we have more data than is left in this message, cut it off and handle it in another state.
-	if (sizeToCopy + m_bytesParsedThisState > s_headerSize)
+	if (sizeToCopy + m_bytesParsedThisState > targetSize)
 	{
-		sizeToCopy = s_headerSize - m_bytesParsedThisState;
+		sizeToCopy = targetSize - m_bytesParsedThisState;
 	}
+
 	WriteToBuffer(stream.substr(m_totalBytesParsed, sizeToCopy), sizeToCopy);
-
-	if (m_bytesParsedThisState == s_headerSize)
+	if (m_bytesParsedThisState == targetSize)
 	{
-		std::memcpy(&m_messageCache->header, &(*Buffer())[0], s_headerSize);
+
+		if (m_state == State::Header)
+		{
+			std::memcpy(&m_messageCache->header, &(*Buffer())[0], targetSize);
+		}
+		else if (m_state == State::Content)
+		{
+			m_messageCache->messageData = std::move(*Buffer());
+		}
+
 		SwapBuffer();
-
+		TransitionState();
 		m_bytesParsedThisState = 0;
-		// Done parsing the header, let's get the content.
-		m_state = State::Content;
-	}
-
-}
-
-void NetworkMessageParser::ParseContent(const std::string& stream)
-{
-	// Total bytes left for this state to handle.
-	uint32_t bytesRemaining = stream.size() - m_totalBytesParsed;
-	if (bytesRemaining == 0)
-		return;
-
-	uint32_t sizeToCopy = std::min(bytesRemaining, m_messageCache->header.messageLength);
-
-	// If we have more data than is left in this message, cut it off and handle it in another state.
-	if (sizeToCopy + m_bytesParsedThisState > m_messageCache->header.messageLength)
-	{
-		sizeToCopy = m_messageCache->header.messageLength - m_bytesParsedThisState;
-	}
-	WriteToBuffer(stream.substr(m_totalBytesParsed, sizeToCopy), sizeToCopy);
-
-	if (m_bytesParsedThisState == m_messageCache->header.messageLength)
-	{
-		m_messageCache->messageData = std::move(*Buffer());
-		SwapBuffer();
-		m_bytesParsedThisState = 0;
-		// Done parsing content, let's package it up.
-		m_state = State::Finalizing;
 	}
 }
 
@@ -124,6 +99,16 @@ void NetworkMessageParser::SwapBuffer()
 	{
 		m_activeBuffer = &m_firstBuffer;
 	}
+}
+
+void NetworkMessageParser::TransitionState()
+{
+	if (m_state == State::Header)
+		m_state = State::Content;
+	else if (m_state == State::Content)
+		m_state = State::Finalizing;
+	else if (m_state == State::Finalizing)
+		m_state = State::Header;
 }
 
 void NetworkMessageParser::WriteToBuffer(const std::string& data, int size)

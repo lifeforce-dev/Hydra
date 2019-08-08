@@ -25,13 +25,9 @@ public:
 	void ExtractMessages(const std::string& stream, std::vector<NetworkMessage>& messages);
 
 private:
-	void ParseHeader(const std::string& stream);
-
-	// We'd better have a valid header before trying to parse content. Recipient is responsible for validating
-	// content.
-	void ParseContent(const std::string& stream);
-
+	void Parse(const std::string& stream);
 	void SwapBuffer();
+	void TransitionState();
 	void WriteToBuffer(const std::string& data, int size);
 	std::string* Buffer() { return m_activeBuffer; }
 
