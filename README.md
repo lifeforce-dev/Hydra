@@ -1,2 +1,2 @@
 # Hydra
-Proof of concept for using protobuf to communicate between a server and a couple of clients.
+Building a simple game for fun an profit... (the knowledge kind)
