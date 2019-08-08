@@ -8,10 +8,8 @@
 #include "client/Application.h"
 #include "client/NetworkController.h"
 #include "common/Log.h"
-#include "common/MessageParser.h"
-#include "common/MessageParserTest.h"
+#include "common/NetworkMessageParser.h"
 #include "common/NetworkTypes.h"
-#include "common/ProtobufTestDummy.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -33,8 +31,6 @@ MainScreen::MainScreen(Application* application, sf::RenderWindow* window)
 	: m_window(window)
 	, m_font(new sf::Font)
 	, m_application(application)
-	, m_protobufTestDummy(new Common::Test::ProtobufTestDummy{ -16, 14, 8, "Dragon" })
-	, m_parseTester(new Common::Test::MessageParserTest)
 {
 	if (!m_font->loadFromFile(s_fontPath))
 	{
@@ -100,9 +96,6 @@ void MainScreen::HandleKeyPress(const sf::Event::KeyEvent& e)
 	case sf::Keyboard::S:
 		SendTestMessageToServer();
 		break;
-	case sf::Keyboard::T:
-		m_parseTester->RunTests();
-
 	default:
 		break;
 	}
@@ -121,10 +114,6 @@ void MainScreen::ConnectToServer()
 
 void MainScreen::SendTestMessageToServer()
 {
-	auto creatureString = m_protobufTestDummy->ToString();
-
-	m_application->GetNetworkController()->SendMessageToServer(Common::MessageId::Creature,
-		creatureString);
 }
 
 //===============================================================================

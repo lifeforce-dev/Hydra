@@ -62,6 +62,7 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\tools\properties\sfml.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -94,6 +95,13 @@
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..;$(ProjectDir)..\dependencies;$(ProjectDir)..\..;$(ProjectDir)..\dependencies\protobuf\src;$(ProjectDir)..\dependencies\sfml\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)$(Configuration)\tests.exe -o $(SolutionDir)tests\test_output.log</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -129,25 +137,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProtocolBuffer Include="proto\poc.proto" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="MessageParser.cpp" />
-    <ClCompile Include="MessageParserTest.cpp" />
     <ClCompile Include="NetworkHelper.cpp" />
-    <ClCompile Include="ProtobufTestDummy.cpp" />
-    <ClCompile Include="proto\poc.pb.cc" />
+    <ClCompile Include="NetworkMessageParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h" />
-    <ClInclude Include="MessageParser.h" />
-    <ClInclude Include="MessageParserTest.h" />
     <ClInclude Include="NetworkHelper.h" />
+    <ClInclude Include="NetworkMessageParser.h" />
     <ClInclude Include="NetworkTypes.h" />
     <ClInclude Include="ProtoAdapter.h" />
-    <ClInclude Include="ProtobufTestDummy.h" />
-    <ClInclude Include="proto\poc.pb.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

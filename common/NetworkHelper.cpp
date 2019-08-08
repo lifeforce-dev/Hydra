@@ -5,8 +5,7 @@
 
 #include "NetworkHelper.h"
 #include "NetworkTypes.h"
-#include "MessageParser.h"
-#include "ProtobufTestDummy.h"
+#include "NetworkMessageParser.h"
 #include "Log.h"
 
 #include <SFML/Network/TcpSocket.hpp>
@@ -46,7 +45,7 @@ bool Connection::IsConnected()
 //-------------------------------------------------------------------------------
 
 NetworkHelper::NetworkHelper()
-	: m_parser(new MessageParser)
+	: m_parser(new NetworkMessageParser)
 {
 }
 
@@ -107,7 +106,7 @@ void NetworkHelper::ReceiveMessages(Connection* connection)
 	connection->socket->receive(data, s_maxSizeReceived, received);
 
 	std::vector<NetworkMessage> messages;
-	m_parser->ParseMessage(std::string(data, received), messages);
+	m_parser->ExtractMessages(std::string(data, received), messages);
 
 	if (!messages.empty())
 	{
@@ -129,20 +128,7 @@ void NetworkHelper::QueueMessage(MessageId type, const std::string& message)
 
 void NetworkHelper::HandleMessages(const std::vector<NetworkMessage>& messages)
 {
-	for (auto it = std::cbegin(messages); it != std::cend(messages); ++it)
-	{
-		if (it->header.messageType == MessageId::Creature)
-		{
-			Common::Test::ProtobufTestDummy dummy(std::make_pair(it->messageData.data(),
-				it->header.messageLength));
-
-			LOG_DEBUG("ProtobufDummy Creation Succeeded."
-				" name=" + dummy.GetName() +
-				" health=" + std::to_string(dummy.GetHealth()) +
-				" mana=" + std::to_string(dummy.GetMana()) +
-				" speed=" + std::to_string(dummy.GetSpeed()))
-		}
-	}
+	// Test each message type and handle accordingly.
 }
 
 //===============================================================================

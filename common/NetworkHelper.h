@@ -22,7 +22,7 @@ namespace Common {
 //===============================================================================
 
 enum struct MessageType : uint32_t;
-class MessageParser;
+class NetworkMessageParser;
 struct NetworkMessage;
 
 class Connection
@@ -54,7 +54,7 @@ public:
 
 	void HandleMessages(const std::vector<NetworkMessage>& messages);
 private:
-	std::unique_ptr<MessageParser> m_parser;
+	std::unique_ptr<NetworkMessageParser> m_parser;
 	std::deque<std::pair<MessageHeader, std::string>> m_messageQueue;
 };
 

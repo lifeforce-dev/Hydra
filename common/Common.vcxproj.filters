@@ -28,58 +28,32 @@
     <Filter Include="Header Files\Test">
       <UniqueIdentifier>{a1d39f7e-3151-48c6-91d7-fda1e98c6e15}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Test">
-      <UniqueIdentifier>{7af4a3f9-a9d5-45b0-a36f-701315309184}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ProtocolBuffer Include="proto\poc.proto">
-      <Filter>Proto Files</Filter>
-    </ProtocolBuffer>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="proto\poc.pb.cc">
-      <Filter>Proto Files\Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageParser.cpp">
-      <Filter>Source Files\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageParserTest.cpp">
-      <Filter>Source Files\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="ProtobufTestDummy.cpp">
-      <Filter>Source Files\Test</Filter>
     </ClCompile>
     <ClCompile Include="NetworkHelper.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkMessageParser.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="proto\poc.pb.h">
-      <Filter>Proto Files\Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NetworkTypes.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
-    <ClInclude Include="MessageParser.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="MessageParserTest.h">
-      <Filter>Header Files\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="ProtobufTestDummy.h">
-      <Filter>Header Files\Test</Filter>
-    </ClInclude>
     <ClInclude Include="NetworkHelper.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
     <ClInclude Include="ProtoAdapter.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkMessageParser.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>

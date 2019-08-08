@@ -18,10 +18,6 @@ namespace sf {
 namespace Common {
 	class Connection;
 	class NetworkHelper;
-	namespace Test {
-		class MessageParserTest;
-		class ProtobufTestDummy;
-	}
 }
 
 namespace Client {
@@ -54,8 +50,6 @@ private:
 	std::unique_ptr<sf::Font> m_font;
 	Application* m_application;
 
-	std::unique_ptr<Common::Test::ProtobufTestDummy> m_protobufTestDummy;
-	std::unique_ptr<Common::Test::MessageParserTest> m_parseTester;
 	bool m_shouldConnect = false;
 };
 
