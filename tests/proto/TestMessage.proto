@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package Hydra;
+
+message TestMessage {
+
+    // Test string.
+    string some_test_message = 1;
+
+    // Test value.
+    int32 value_1 = 2;
+
+    // Test value.
+    int32 value_2 = 3;
+
+    // Test value.
+    int32 value_3 = 4;
+}

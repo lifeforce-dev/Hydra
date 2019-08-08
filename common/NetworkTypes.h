@@ -18,6 +18,7 @@ enum struct MessageId : uint32_t
 	, Creature
 	, Attack
 	, Move
+	, TestMessage
 };
 
 struct MessageHeader
