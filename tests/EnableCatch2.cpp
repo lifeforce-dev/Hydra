@@ -6,6 +6,5 @@
 // This file must exist with the #define below.
 //
 
-
 #define CATCH_CONFIG_MAIN
 #include "Catch2/catch.hpp"
