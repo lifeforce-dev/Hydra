@@ -1,32 +1,34 @@
 //---------------------------------------------------------------
 //
-// Application.h
+// GameController.h
 //
 
 #pragma once
 
 #include <memory>
-#include <SFML/Graphics/RenderWindow.hpp>
+
+namespace sf {
+	class RenderWindow;
+}
 
 namespace Client {
 
 //===============================================================================
 
 class NetworkController;
-class Screen;
+class GameScene;
 
-class Application
+class GameController
 {
 public:
-	Application();
-	~Application();
+	GameController(sf::RenderWindow* window);
+	~GameController();
 
 	NetworkController* GetNetworkController() { return m_networkController.get(); }
 	void Run();
 
 private:
-	std::unique_ptr<sf::RenderWindow> m_mainWindow;
-	std::unique_ptr<Screen> m_screen;
+	std::unique_ptr<GameScene> m_gameScene;
 	std::unique_ptr<NetworkController> m_networkController;
 };
 

@@ -3,11 +3,11 @@
 // main.cpp
 //
 
-#include "Application.h"
+#include "Game.h"
 
 int main()
 {
-	Client::Application app;
-	app.Run();
+	Client::Game game;
+	game.Run();
 	return 0;
 }

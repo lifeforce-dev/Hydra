@@ -1,11 +1,11 @@
 //---------------------------------------------------------------
 //
-// Application.cpp
+// GameController.cpp
 //
 
-#include "Application.h"
+#include "GameController.h"
 
-#include "client/MainScreen.h"
+#include "client/scenes/GameScene.h"
 #include "client/NetworkController.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -15,27 +15,23 @@ namespace Client {
 
 //===============================================================================
 
-Application::Application()
-	: m_mainWindow(new sf::RenderWindow(sf::VideoMode(640, 480), "Client"))
-	, m_screen(new MainScreen(this, m_mainWindow.get()))
+GameController::GameController(sf::RenderWindow* window)
+	: m_gameScene(std::make_unique<GameScene>(this, window))
 	, m_networkController(new NetworkController)
 {
-	m_mainWindow->setFramerateLimit(60);
 }
 
-Application::~Application()
+GameController::~GameController()
 {
 }
 
-void Application::Run()
+void GameController::Run()
 {
-	while (m_mainWindow->isOpen())
-	{
-		m_screen->ProcessEvents();
-		m_screen->Draw();
+		m_gameScene->ProcessEvents();
+		m_gameScene->Update();
+		m_gameScene->Draw();
 
 		m_networkController->Process();
-	}
 }
 
 //===============================================================================

@@ -3,9 +3,9 @@
 // MainScreen.cpp
 //
 
-#include "MainScreen.h"
+#include "GameScene.h"
 
-#include "client/Application.h"
+#include "client/GameController.h"
 #include "client/NetworkController.h"
 #include "common/Log.h"
 #include "common/NetworkMessageParser.h"
@@ -27,10 +27,10 @@ namespace
 	const std::string s_fontPath = "resources/fonts/arial.ttf";
 }
 
-MainScreen::MainScreen(Application* application, sf::RenderWindow* window)
+GameScene::GameScene(GameController* gameController, sf::RenderWindow* window)
 	: m_window(window)
 	, m_font(new sf::Font)
-	, m_application(application)
+	, m_application(gameController)
 {
 	if (!m_font->loadFromFile(s_fontPath))
 	{
@@ -38,12 +38,12 @@ MainScreen::MainScreen(Application* application, sf::RenderWindow* window)
 	}
 }
 
-MainScreen::~MainScreen()
+GameScene::~GameScene()
 {
 
 }
 
-void MainScreen::ProcessEvents()
+void GameScene::ProcessEvents()
 {
 	sf::Event e;
 	while (m_window->pollEvent(e))
@@ -65,7 +65,12 @@ void MainScreen::ProcessEvents()
 	}
 }
 
-void MainScreen::Draw()
+void GameScene::Update()
+{
+	// TODO: NYI
+}
+
+void GameScene::Draw()
 {
 	// We must have a valid window to draw to.
 	assert(m_window);
@@ -86,7 +91,7 @@ void MainScreen::Draw()
 	m_window->display();
 }
 
-void MainScreen::HandleKeyPress(const sf::Event::KeyEvent& e)
+void GameScene::HandleKeyPress(const sf::Event::KeyEvent& e)
 {
 	switch (e.code)
 	{
@@ -101,7 +106,7 @@ void MainScreen::HandleKeyPress(const sf::Event::KeyEvent& e)
 	}
 }
 
-void MainScreen::ConnectToServer()
+void GameScene::ConnectToServer()
 {
 	NetworkController* controller = m_application->GetNetworkController();
 	controller->ConnectToServer();
@@ -112,7 +117,7 @@ void MainScreen::ConnectToServer()
 	}
 }
 
-void MainScreen::SendTestMessageToServer()
+void GameScene::SendTestMessageToServer()
 {
 }
 

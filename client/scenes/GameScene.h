@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "Screen.h"
+#include "Scene.h"
 
 #include <SFML/Window/Event.hpp>
 #include <memory>
@@ -25,20 +25,27 @@ namespace Client {
 //===============================================================================
 
 class NetworkController;
-class Application;
+class GameController;
 
-class MainScreen : public Screen
+class GameScene : public Scene
 {
 public:
-	MainScreen(Application* application, sf::RenderWindow* window);
-	~MainScreen();
+	GameScene(GameController* gameController, sf::RenderWindow* window);
+	~GameScene();
 
 	// Screen impl.
-	// Main event loop.
+
+	// Will pump all event queues here.
 	virtual void ProcessEvents() override;
+
+	// Updates resulting from the event processing will be handled here.
+	virtual void Update() override;
+
 
 	// Called in the event loop.
 	virtual void Draw() override;
+
+	//---------------------------------------------------------------------------
 
 private:
 	void HandleKeyPress(const sf::Event::KeyEvent& e);
@@ -48,7 +55,7 @@ private:
 private:
 	sf::RenderWindow* m_window;
 	std::unique_ptr<sf::Font> m_font;
-	Application* m_application;
+	GameController* m_application;
 
 	bool m_shouldConnect = false;
 };
