@@ -37,19 +37,38 @@ void Game::ConnectToServer()
 }
 
 
+void Game::ProcessCallbackQueue()
+{
+	m_callbackQueue.SwapWithEmpty(m_processCbQueue);
+
+	for (auto cb : m_processCbQueue)
+	{
+		if (cb)
+		{
+			cb();
+		}
+	}
+
+	if (!m_processCbQueue.empty())
+	{
+		std::deque<std::function<void()>>().swap(m_processCbQueue);
+	}
+}
+
 void Game::Run()
 {
 	ConnectToServer();
 
 	while (m_mainWindow->isOpen())
 	{
+		ProcessCallbackQueue();
 		m_gameController->Run();
 	}
 }
 
-void Game::PostToMainThread(std::function<void()> cb)
+void Game::PostToMainThread(const std::function<void()>& cb)
 {
-	// NYI
+	m_callbackQueue.Push(cb);
 }
 
 //===============================================================================

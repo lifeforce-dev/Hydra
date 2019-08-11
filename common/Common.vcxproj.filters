@@ -53,5 +53,8 @@
     <ClInclude Include="NetworkMessageParser.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadSafeQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
