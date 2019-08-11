@@ -5,8 +5,11 @@
 
 #pragma once
 
-#include <string>
 #include <memory>
+#include <string>
+#include <thread>
+
+#include <SFML/System/Clock.hpp>
 
 namespace Common {
 	class Connection;
@@ -18,10 +21,12 @@ namespace Client {
 
 //===============================================================================
 
+class ClientTcpSocket;
+class Game;
 class NetworkController
 {
 public:
-	NetworkController();
+	NetworkController(Game* game);
 	~NetworkController();
 
 	// Connect to the server at the specified address.
@@ -37,9 +42,18 @@ public:
 	bool IsConnected() const;
 
 private:
+	void OnConnectedToServer();
+	void UpdateConnectionStatus();
+
 	std::unique_ptr<Common::NetworkHelper> m_networkHelper;
+	std::unique_ptr<ClientTcpSocket> m_socket;
 	std::unique_ptr<Common::Connection> m_connection;
-	bool m_shouldConnect = false;
+	std::unique_ptr<sf::Clock> m_retryTimer;
+
+	Game* m_game;
+
+	// True if we're connected to the game server.
+	bool m_isConnected = false;
 };
 
 //===============================================================================

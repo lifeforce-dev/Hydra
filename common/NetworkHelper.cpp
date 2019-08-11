@@ -5,12 +5,16 @@
 
 #include "NetworkHelper.h"
 
+#include "common/Log.h"
 #include "common/NetworkTypes.h"
 #include "common/NetworkMessageParser.h"
 #include "common/Log.h"
 
 #include <SFML/Network/TcpSocket.hpp>
 #include <SFML/Network/IpAddress.hpp>
+#include <SFML/Network/SocketSelector.hpp>
+#include <SFML/Network/TcpListener.hpp>
+#include <SFML/System/Clock.hpp>
 
 #include <utility>
 #include <windows.h>
@@ -23,24 +27,19 @@ namespace {
 	const int s_maxSizeReceived = 512;
 }
 
-Connection::Connection()
+Connection::Connection(sf::TcpSocket* _socket)
+	: socket(_socket)
+
 {
-	socket->setBlocking(false);
 }
 
 Connection::Connection(Connection&& c)
 	: socket(std::move(c.socket))
 {
-
 }
 
 Connection::~Connection()
 {
-}
-
-bool Connection::IsConnected()
-{
-	return socket->getRemoteAddress() != sf::IpAddress::None;
 }
 
 //-------------------------------------------------------------------------------

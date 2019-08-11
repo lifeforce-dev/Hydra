@@ -28,12 +28,10 @@ struct NetworkMessage;
 class Connection
 {
 public:
-	Connection();
+	Connection(sf::TcpSocket* socket);
 	~Connection();
 	Connection(Connection&& c);
-	bool IsConnected();
-
-	std::unique_ptr<sf::TcpSocket> socket = std::make_unique<sf::TcpSocket>();
+	sf::TcpSocket* socket;
 };
 
 class NetworkHelper

@@ -21,6 +21,7 @@ class Server
 {
 public:
 	Server()
+		: m_socket(std::make_unique<sf::TcpSocket>())
 	{
 		LOG_DEBUG_CONSOLE("Attempting to listen to port ");
 
@@ -52,8 +53,8 @@ public:
 private:
 	void CheckConnectionRequests()
 	{
-		Common::Connection c;
-		sf::Socket::Status status = m_listener.accept(*c.socket.get());
+		Common::Connection c(m_socket.get());
+		sf::Socket::Status status = m_listener.accept(*m_socket);
 		LOG_DEBUG_CONSOLE("status" + std::to_string(static_cast<int>(status)));
 		if (status == sf::Socket::Done)
 		{
@@ -65,6 +66,7 @@ private:
 	Common::NetworkHelper m_networkHelper;
 	sf::TcpListener m_listener;
 	std::vector<Common::Connection> m_connections;
+	std::unique_ptr<sf::TcpSocket> m_socket;
 };
 
 //-----------------------------------------------------------------------------------

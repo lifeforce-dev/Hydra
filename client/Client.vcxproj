@@ -121,6 +121,7 @@
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
+    <ClCompile Include="network\ClientTcpSocket.cpp" />
     <ClCompile Include="scenes\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +136,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="NetworkController.h" />
+    <ClInclude Include="network\ClientTcpSocket.h" />
     <ClInclude Include="scenes\GameScene.h" />
     <ClInclude Include="scenes\Scene.h" />
   </ItemGroup>

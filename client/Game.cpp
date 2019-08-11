@@ -15,7 +15,7 @@ namespace Client {
 
 Game::Game()
 	: m_mainWindow(std::make_unique<sf::RenderWindow>(sf::VideoMode(640, 480), "Hydra"))
-	, m_networkController(std::make_unique<NetworkController>())
+	, m_networkController(std::make_unique<NetworkController>(this))
 	, m_gameController(std::make_unique<GameController>(this))
 {
 	m_mainWindow->setFramerateLimit(60);

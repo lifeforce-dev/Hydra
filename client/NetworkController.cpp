@@ -3,82 +3,45 @@
 // NetworkController.cpp
 //
 
-#pragma once
-
 #include "client/NetworkController.h"
 
+#include "client/Game.h"
+#include "client/network/ClientTcpSocket.h"
 #include "common/Log.h"
 #include "common/NetworkHelper.h"
 #include "common/NetworkTypes.h"
 
 #include <windows.h>
-#include <SFML/Network/TcpSocket.hpp>
 #include <SFML/Network/IpAddress.hpp>
+#include <SFML/Network/TcpSocket.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/System/Clock.hpp>
 
 namespace Client {
 
 namespace {
-	const int s_port = 50001;
-	const std::string s_serverAddress = "127.0.0.1";
+
+	const sf::Time s_connectionTimeout = sf::milliseconds(1000);
 }
 
 //===============================================================================
 
-NetworkController::NetworkController()
+NetworkController::NetworkController(Game* game)
 	: m_networkHelper(std::make_unique<Common::NetworkHelper>())
-	, m_connection(std::make_unique<Common::Connection>())
+	, m_socket(std::make_unique<ClientTcpSocket>())
+	, m_connection(std::make_unique<Common::Connection>(m_socket.get()))
+	, m_retryTimer(std::make_unique<sf::Clock>())
+	, m_game(game)
 {
-
 }
 
 NetworkController::~NetworkController()
 {
-
 }
 
 void NetworkController::ConnectToServer(const std::string& address, int port)
 {
-	// TODO: Handle retries.
-	std::string ip = address.empty() ? s_serverAddress : address;
-	int portNum = port == 0 ? s_port : port;
-	const Common::Connection& connection = *m_connection.get();
-	bool done = connection.socket->connect(ip, portNum) != sf::Socket::Done;
-	int ec = WSAGetLastError();
-	if (ec)
-	{
-		if (ec == WSAEWOULDBLOCK)
-		{
-			LOG_DEBUG("Connecting to server...");
-		}
-		else if (ec == WSAENETUNREACH)
-		{
-			LOG_DEBUG("Error: Network unreachable error=" + std::to_string(ec));
-		}
-		else if (ec == WSAETIMEDOUT)
-		{
-			LOG_DEBUG("Error: Network connection attempt timed out. error=" + std::to_string(ec));
-		}
-		else if (ec == WSAECONNREFUSED)
-		{
-			LOG_DEBUG("Error: Network connection attempt refused. error=" + std::to_string(ec));
-		}
-		else
-		{
-			LOG_DEBUG("Error: There was an error attempting to connect to server. error="
-				+ std::to_string(ec));
-		}
-	}
-	else
-	{
-		if (connection.socket->getRemoteAddress() != sf::IpAddress::None)
-		{
-			LOG_DEBUG("Connection attempt succeeded."
-				" remote-ip=" + connection.socket->getRemoteAddress().toString() +
-				" remote-port=" + std::to_string(connection.socket->getRemotePort()) +
-				" local-port=" + std::to_string(connection.socket->getLocalPort()));
-			return;
-		}
-	}
+	m_socket->Connect();
 }
 
 void NetworkController::SendMessageToServer(Common::MessageId type, const std::string& message)
@@ -88,14 +51,45 @@ void NetworkController::SendMessageToServer(Common::MessageId type, const std::s
 
 bool NetworkController::IsConnected() const
 {
-	return m_connection->IsConnected();
+	if (m_socket->IsConnected())
+	{
+		return true;
+	}
+	else
+	{
+		auto time = m_retryTimer->getElapsedTime();
+		if (time >= sf::seconds(5))
+		{
+			m_socket->Connect();
+			m_retryTimer->restart();
+		}
+	}
+	return false;
+}
+
+void NetworkController::OnConnectedToServer()
+{
+	const Common::Connection& connection = *m_connection.get();
+	LOG_DEBUG("Connection attempt succeeded."
+		" remote-ip=" + connection.socket->getRemoteAddress().toString() +
+		" remote-port=" + std::to_string(connection.socket->getRemotePort()) +
+		" local-port=" + std::to_string(connection.socket->getLocalPort()));
+}
+
+void NetworkController::UpdateConnectionStatus()
+{
+	bool isconnected = IsConnected();
+	if (isconnected != m_isConnected)
+	{
+		m_isConnected = isconnected;
+		OnConnectedToServer();
+	}
 }
 
 void NetworkController::Process()
 {
-	// TODO: This is an unreliable way to check connectivity. Perhaps there is no way
-	// to do this, so handle what happens when we're not connected yet.
-	if (IsConnected())
+	UpdateConnectionStatus();
+	if (m_isConnected)
 	{
 		m_networkHelper->SendMessages(m_connection.get());
 		m_networkHelper->ReceiveMessages(m_connection.get());
