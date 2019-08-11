@@ -4,9 +4,10 @@
 //
 
 #include "NetworkHelper.h"
-#include "NetworkTypes.h"
-#include "NetworkMessageParser.h"
-#include "Log.h"
+
+#include "common/NetworkTypes.h"
+#include "common/NetworkMessageParser.h"
+#include "common/Log.h"
 
 #include <SFML/Network/TcpSocket.hpp>
 #include <SFML/Network/IpAddress.hpp>

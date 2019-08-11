@@ -3,9 +3,9 @@
 // Parser.cpp
 //
 
-#include "NetworkMessageParser.h"
-#include "Log.h"
-#include "NetworkTypes.h"
+#include "common/NetworkMessageParser.h"
+#include "common/Log.h"
+#include "common/NetworkTypes.h"
 
 #include <algorithm>
 

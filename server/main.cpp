@@ -3,8 +3,8 @@
 // main.cpp
 //
 
-#include "Common/Log.h"
-#include "Common/NetworkHelper.h"
+#include "common/Log.h"
+#include "common/NetworkHelper.h"
 
 #include <memory>
 #include <SFML/Network.hpp>

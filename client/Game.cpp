@@ -6,8 +6,8 @@
 #include "Game.h"
 
 #include "common/Log.h"
-#include "GameController.h"
-#include "NetworkController.h"
+#include "client/GameController.h"
+#include "client/NetworkController.h"
 
 namespace Client {
 

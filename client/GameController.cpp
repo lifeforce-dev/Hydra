@@ -5,9 +5,9 @@
 
 #include "GameController.h"
 
-#include "Game.h"
-#include "NetworkController.h"
-#include "scenes/GameScene.h"
+#include "client/Game.h"
+#include "client/NetworkController.h"
+#include "client/scenes/GameScene.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>

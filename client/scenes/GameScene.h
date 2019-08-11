@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "Scene.h"
+#include "client/scenes/Scene.h"
 
 #include <SFML/Window/Event.hpp>
 #include <memory>
