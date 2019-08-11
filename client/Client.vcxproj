@@ -137,7 +137,6 @@
     <ClInclude Include="NetworkController.h" />
     <ClInclude Include="scenes\GameScene.h" />
     <ClInclude Include="scenes\Scene.h" />
-    <ClInclude Include="Screen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
