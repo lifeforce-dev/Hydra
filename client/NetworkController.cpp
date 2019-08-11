@@ -25,8 +25,8 @@ namespace {
 //===============================================================================
 
 NetworkController::NetworkController()
-	: m_networkHelper(new Common::NetworkHelper)
-	, m_connection(new Common::Connection)
+	: m_networkHelper(std::make_unique<Common::NetworkHelper>())
+	, m_connection(std::make_unique<Common::Connection>())
 {
 
 }
@@ -38,19 +38,10 @@ NetworkController::~NetworkController()
 
 void NetworkController::ConnectToServer(const std::string& address, int port)
 {
+	// TODO: Handle retries.
 	std::string ip = address.empty() ? s_serverAddress : address;
 	int portNum = port == 0 ? s_port : port;
-
 	const Common::Connection& connection = *m_connection.get();
-	if (connection.socket->getRemoteAddress() != sf::IpAddress::None)
-	{
-		LOG_DEBUG("Connection attempt succeeded."
-			" remote-ip=" + connection.socket->getRemoteAddress().toString() +
-			" remote-port=" + std::to_string(connection.socket->getRemotePort()) +
-			" local-port=" + std::to_string(connection.socket->getLocalPort()));
-		return;
-	}
-
 	bool done = connection.socket->connect(ip, portNum) != sf::Socket::Done;
 	int ec = WSAGetLastError();
 	if (ec)
@@ -75,6 +66,17 @@ void NetworkController::ConnectToServer(const std::string& address, int port)
 		{
 			LOG_DEBUG("Error: There was an error attempting to connect to server. error="
 				+ std::to_string(ec));
+		}
+	}
+	else
+	{
+		if (connection.socket->getRemoteAddress() != sf::IpAddress::None)
+		{
+			LOG_DEBUG("Connection attempt succeeded."
+				" remote-ip=" + connection.socket->getRemoteAddress().toString() +
+				" remote-port=" + std::to_string(connection.socket->getRemotePort()) +
+				" local-port=" + std::to_string(connection.socket->getLocalPort()));
+			return;
 		}
 	}
 }

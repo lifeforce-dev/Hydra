@@ -39,7 +39,6 @@ public:
 private:
 	std::unique_ptr<Common::NetworkHelper> m_networkHelper;
 	std::unique_ptr<Common::Connection> m_connection;
-
 	bool m_shouldConnect = false;
 };
 

@@ -49,15 +49,12 @@ public:
 
 private:
 	void HandleKeyPress(const sf::Event::KeyEvent& e);
-	void ConnectToServer();
 	void SendTestMessageToServer();
 
 private:
 	sf::RenderWindow* m_window;
 	std::unique_ptr<sf::Font> m_font;
 	GameController* m_application;
-
-	bool m_shouldConnect = false;
 };
 
 //===============================================================================

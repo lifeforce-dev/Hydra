@@ -15,21 +15,25 @@ namespace Client {
 
 //===============================================================================
 
-class NetworkController;
+class Game;
 class GameScene;
+class NetworkController;
 
 class GameController
 {
 public:
-	GameController(sf::RenderWindow* window);
+	GameController(Game* game);
 	~GameController();
 
-	NetworkController* GetNetworkController() { return m_networkController.get(); }
 	void Run();
 
 private:
+	void Initialize();
+	Game* m_game;
+	NetworkController* m_networkController;
 	std::unique_ptr<GameScene> m_gameScene;
-	std::unique_ptr<NetworkController> m_networkController;
+
+	bool m_isInitialized = false;
 };
 
 //===============================================================================

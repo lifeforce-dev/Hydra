@@ -58,11 +58,6 @@ void GameScene::ProcessEvents()
 			HandleKeyPress(e.key);
 		}
 	}
-
-	if (m_shouldConnect)
-	{
-		ConnectToServer();
-	}
 }
 
 void GameScene::Update()
@@ -76,18 +71,6 @@ void GameScene::Draw()
 	assert(m_window);
 	m_window->clear(sf::Color::Black);
 
-	sf::Text connectText;
-	connectText.setOutlineColor(sf::Color::Red);
-	connectText.setFont(*m_font.get());
-	connectText.setString("Press 'c' to connect to Server.");
-
-	sf::Text sendMessageText;
-	sendMessageText.setOutlineColor(sf::Color::Red);
-	sendMessageText.setFont(*m_font.get());
-	sendMessageText.setString("Press 's' to send a message to Server.");
-
-	m_window->draw(m_application->GetNetworkController()->IsConnected() ? sendMessageText : connectText);
-
 	m_window->display();
 }
 
@@ -95,25 +78,11 @@ void GameScene::HandleKeyPress(const sf::Event::KeyEvent& e)
 {
 	switch (e.code)
 	{
-	case sf::Keyboard::C:
-		m_shouldConnect = true;
-		break;
 	case sf::Keyboard::S:
 		SendTestMessageToServer();
 		break;
 	default:
 		break;
-	}
-}
-
-void GameScene::ConnectToServer()
-{
-	NetworkController* controller = m_application->GetNetworkController();
-	controller->ConnectToServer();
-
-	if (controller->IsConnected())
-	{
-		m_shouldConnect = false;
 	}
 }
 
