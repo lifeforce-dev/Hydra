@@ -68,5 +68,8 @@
     <ClInclude Include="GameTypes.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Observatory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

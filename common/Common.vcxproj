@@ -150,6 +150,7 @@
     <ClInclude Include="NetworkHelper.h" />
     <ClInclude Include="NetworkMessageParser.h" />
     <ClInclude Include="NetworkTypes.h" />
+    <ClInclude Include="Observatory.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

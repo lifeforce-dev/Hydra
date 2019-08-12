@@ -7,6 +7,11 @@
 
 #include <memory>
 #include <string>
+#include <vector>
+
+namespace sf {
+	class TcpSocket;
+}
 
 namespace Common {
 
@@ -14,11 +19,11 @@ namespace Common {
 
 enum struct MessageId : uint32_t
 {
-	  None
-	, Creature
-	, Attack
-	, Move
-	, TestMessage
+	None,
+	Creature,
+	Attack,
+	Move,
+	TestMessage,
 };
 
 struct MessageHeader
@@ -51,6 +56,12 @@ struct NetworkMessage
 	std::string messageData;
 };
 
+class NetworkObserver {
+
+public:
+	virtual void OnClientDisconnected(sf::TcpSocket* disconnectedSocket) = 0 {}
+	virtual void OnMessagesReceived(const std::vector<NetworkMessage>& messages) = 0 {}
+};
 
 
 //===============================================================================

@@ -17,14 +17,17 @@ namespace sf {
 
 namespace Common {
 	class NetworkHelper;
+	struct NetworkMessage;
 }
 
 namespace Server {
 
 //===============================================================================
 class GameServer;
+class ServerMessageObserver;
 class NetworkController {
 public:
+	friend class ServerMessageObserver;
 	NetworkController(GameServer* gameServer);
 	~NetworkController();
 
@@ -59,6 +62,12 @@ private:
 
 	// List of currently connected clients.
 	std::vector<std::unique_ptr<sf::TcpSocket>> m_clients;
+
+	// Handles events from the message helper.
+	std::unique_ptr<ServerMessageObserver> m_messageObserver;
+
+	// Hold the list of messages ready to be delegated.
+	std::vector<Common::NetworkMessage> m_pendingMessages;
 };
 
 //===============================================================================

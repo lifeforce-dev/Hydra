@@ -24,6 +24,29 @@ namespace {
 	const uint32_t s_port = 50001;
 } // anon namespace
 
+class ServerMessageObserver : public Common::NetworkObserver
+{
+public:
+	ServerMessageObserver(NetworkController* controller)
+		: m_controller(controller)
+	{
+
+	}
+
+	virtual void OnClientDisconnected(sf::TcpSocket* disconnectedSocket) override
+	{
+		// NYI
+	}
+
+	virtual void OnMessagesReceived(const std::vector<Common::NetworkMessage>& messages) override
+	{
+		// NYI
+	}
+
+private:
+	NetworkController* m_controller;
+};
+
 
 NetworkController::NetworkController(GameServer* gameServer)
 	: m_selector(std::make_unique<sf::SocketSelector>())
@@ -31,14 +54,18 @@ NetworkController::NetworkController(GameServer* gameServer)
 	, m_socketListener(std::make_unique<sf::TcpListener>())
 	, m_freeSocket(std::make_unique<sf::TcpSocket>())
 	, m_gameServer(gameServer)
+	, m_messageObserver(std::make_unique<ServerMessageObserver>(this))
 {
 	m_socketListener->listen(s_port);
 	m_selector->add(*m_socketListener);
 	m_socketListener->setBlocking(false);
+
+	m_networkHelper->AddObserver(m_messageObserver.get());
 }
 
 NetworkController::~NetworkController()
 {
+	m_networkHelper->RemoveObserver(m_messageObserver.get());
 	if (m_listenThread.joinable())
 	{
 		m_listenThread.join();

@@ -95,6 +95,7 @@ void NetworkHelper::ReceiveMessages(sf::TcpSocket* socket)
 	{
 		LOG_DEBUG("Receving messages over the wire succeeded.");
 		HandleMessages(messages);
+		messages.clear();
 	}
 }
 
@@ -112,6 +113,10 @@ void NetworkHelper::QueueMessage(MessageId type, const std::string& message)
 void NetworkHelper::HandleMessages(const std::vector<NetworkMessage>& messages)
 {
 	// Test each message type and handle accordingly.
+	NotifyObservers([&messages](NetworkObserver* observer)
+	{
+		observer->OnMessagesReceived(std::move(messages));
+	});
 }
 
 //===============================================================================

@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "NetworkTypes.h"
+#include "common/NetworkTypes.h"
+#include "common/Observatory.h"
 
 #include <memory>
 #include <deque>
@@ -25,7 +26,7 @@ enum struct MessageType : uint32_t;
 class NetworkMessageParser;
 struct NetworkMessage;
 
-class NetworkHelper
+class NetworkHelper : public Observatory<NetworkObserver>
 {
 public:
 	NetworkHelper();
@@ -42,6 +43,7 @@ public:
 	void QueueMessage(MessageId type, const std::string& message);
 
 	void HandleMessages(const std::vector<NetworkMessage>& messages);
+
 private:
 	std::unique_ptr<NetworkMessageParser> m_parser;
 	std::deque<std::pair<MessageHeader, std::string>> m_messageQueue;
