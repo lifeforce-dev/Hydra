@@ -5,9 +5,10 @@
 
 #pragma once
 
-#include <SFML/Graphics/RenderWindow.hpp>
 
 #include "common/ThreadSafeQueue.h"
+
+#include <SFML/Graphics/RenderWindow.hpp>
 
 #include <memory>
 #include <functional>
