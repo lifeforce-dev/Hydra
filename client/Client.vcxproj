@@ -117,11 +117,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClientTcpSocket.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
-    <ClCompile Include="network\ClientTcpSocket.cpp" />
     <ClCompile Include="scenes\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -133,10 +133,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClientTcpSocket.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="NetworkController.h" />
-    <ClInclude Include="network\ClientTcpSocket.h" />
     <ClInclude Include="scenes\GameScene.h" />
     <ClInclude Include="scenes\Scene.h" />
   </ItemGroup>

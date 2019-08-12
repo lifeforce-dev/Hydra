@@ -25,8 +25,11 @@
     <Filter Include="Source Files\Network">
       <UniqueIdentifier>{35156d33-d888-4ec7-9dff-a1abb1e3ade6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Test">
-      <UniqueIdentifier>{a1d39f7e-3151-48c6-91d7-fda1e98c6e15}</UniqueIdentifier>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{89b30159-b73a-4267-86e4-dfdd818959ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{36029a25-ebde-4e5a-99ff-30f7b09a4c5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

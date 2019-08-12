@@ -6,7 +6,7 @@
 #include "client/NetworkController.h"
 
 #include "client/Game.h"
-#include "client/network/ClientTcpSocket.h"
+#include "client/ClientTcpSocket.h"
 #include "common/Log.h"
 #include "common/NetworkHelper.h"
 #include "common/NetworkTypes.h"
