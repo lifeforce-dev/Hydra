@@ -29,7 +29,6 @@ namespace {
 NetworkController::NetworkController(Game* game)
 	: m_networkHelper(std::make_unique<Common::NetworkHelper>())
 	, m_socket(std::make_unique<ClientTcpSocket>())
-	, m_connection(std::make_unique<Common::Connection>(m_socket.get()))
 	, m_retryTimer(std::make_unique<sf::Clock>())
 	, m_game(game)
 {
@@ -69,11 +68,11 @@ bool NetworkController::IsConnected() const
 
 void NetworkController::OnConnectedToServer()
 {
-	const Common::Connection& connection = *m_connection.get();
+	const ClientTcpSocket& socket = *m_socket.get();
 	LOG_DEBUG("Connection attempt succeeded."
-		" remote-ip=" + connection.socket->getRemoteAddress().toString() +
-		" remote-port=" + std::to_string(connection.socket->getRemotePort()) +
-		" local-port=" + std::to_string(connection.socket->getLocalPort()));
+		" remote-ip=" + socket.getRemoteAddress().toString() +
+		" remote-port=" + std::to_string(socket.getRemotePort()) +
+		" local-port=" + std::to_string(socket.getLocalPort()));
 }
 
 void NetworkController::UpdateConnectionStatus()
@@ -91,8 +90,8 @@ void NetworkController::Process()
 	UpdateConnectionStatus();
 	if (m_isConnected)
 	{
-		m_networkHelper->SendMessages(m_connection.get());
-		m_networkHelper->ReceiveMessages(m_connection.get());
+		m_networkHelper->SendMessages(m_socket.get());
+		m_networkHelper->ReceiveMessages(m_socket.get());
 	}
 }
 

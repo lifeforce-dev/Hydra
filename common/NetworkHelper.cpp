@@ -27,23 +27,6 @@ namespace {
 	const int s_maxSizeReceived = 512;
 }
 
-Connection::Connection(sf::TcpSocket* _socket)
-	: socket(_socket)
-
-{
-}
-
-Connection::Connection(Connection&& c)
-	: socket(std::move(c.socket))
-{
-}
-
-Connection::~Connection()
-{
-}
-
-//-------------------------------------------------------------------------------
-
 NetworkHelper::NetworkHelper()
 	: m_parser(new NetworkMessageParser)
 {
@@ -53,11 +36,11 @@ NetworkHelper::~NetworkHelper()
 {
 }
 
-void NetworkHelper::SendMessages(Connection* connection)
+void NetworkHelper::SendMessages(sf::TcpSocket* socket)
 {
-	if (!connection)
+	if (!socket)
 	{
-		LOG_DEBUG("Error: tried to send messages on a dead connection.");
+		LOG_DEBUG("Error: tried to send messages on a dead socket.");
 		return;
 	}
 
@@ -72,7 +55,7 @@ void NetworkHelper::SendMessages(Connection* connection)
 		std::memcpy(fullMessage.data() + sizeof(message.first), message.second.c_str(), message.second.size());
 
 		uint32_t sizeSent = 0;
-		sf::TcpSocket::Status status = connection->socket->send(fullMessage.data(), fullMessage.size(), sizeSent);
+		sf::TcpSocket::Status status = socket->send(fullMessage.data(), fullMessage.size(), sizeSent);
 		if (status == sf::TcpSocket::Done)
 		{
 			m_messageQueue.pop_front();
@@ -88,22 +71,22 @@ void NetworkHelper::SendMessages(Connection* connection)
 
 			LOG_DEBUG("Error: Disconnected.error=" + std::to_string(ec));
 			m_messageQueue.clear();
-			connection->socket->disconnect();
+			socket->disconnect();
 		}
 	}
 }
 
-void NetworkHelper::ReceiveMessages(Connection* connection)
+void NetworkHelper::ReceiveMessages(sf::TcpSocket* socket)
 {
-	if (!connection)
+	if (!socket)
 	{
-		LOG_DEBUG("Error: tried to reveive messages on a dead connection.");
+		LOG_DEBUG("Error: tried to reveive messages on a dead socket.");
 		return;
 	}
 
 	uint32_t received = 0;
 	char data[s_maxSizeReceived];
-	connection->socket->receive(data, s_maxSizeReceived, received);
+	socket->receive(data, s_maxSizeReceived, received);
 
 	std::vector<NetworkMessage> messages;
 	m_parser->ExtractMessages(std::string(data, received), messages);

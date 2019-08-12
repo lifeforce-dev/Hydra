@@ -47,7 +47,6 @@ private:
 
 	std::unique_ptr<Common::NetworkHelper> m_networkHelper;
 	std::unique_ptr<ClientTcpSocket> m_socket;
-	std::unique_ptr<Common::Connection> m_connection;
 	std::unique_ptr<sf::Clock> m_retryTimer;
 
 	Game* m_game;

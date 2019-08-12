@@ -25,15 +25,6 @@ enum struct MessageType : uint32_t;
 class NetworkMessageParser;
 struct NetworkMessage;
 
-class Connection
-{
-public:
-	Connection(sf::TcpSocket* socket);
-	~Connection();
-	Connection(Connection&& c);
-	sf::TcpSocket* socket;
-};
-
 class NetworkHelper
 {
 public:
@@ -41,10 +32,10 @@ public:
 	~NetworkHelper();
 
 	// Called in the event loop. Will send all queued messages.
-	void SendMessages(Connection* connection);
+	void SendMessages(sf::TcpSocket* socket);
 
 	// Called in the event loop. Will receive up to a certain amount of bytes per call.
-	void ReceiveMessages(Connection* connection);
+	void ReceiveMessages(sf::TcpSocket* socket);
 
 	// Queues a message to be sent the next time SendMessages is called. The type is needed so it can be
 	// packaged with the message.
