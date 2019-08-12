@@ -28,31 +28,37 @@ public:
 	NetworkController(GameServer* gameServer);
 	~NetworkController();
 
-	void BeginAcceptingConnections();
+	// Spawns a thread that continually reads sockets and checks for new connections.
+	void BeginProcessNetworkConnections();
 	void Process();
 
 private:
-	// helpers
+
+	// Delegate messages we have in the message queue;
+	void ProcessMessages();
 
 private:
 
 	// Thread specifically for listening for new connections.
 	std::thread m_listenThread;
+
+	// Multiplexer used to read from multiple sockets.
 	std::unique_ptr<sf::SocketSelector> m_selector;
-	std::unique_ptr<Common::NetworkHelper> m_networkHelper;
+
+	// Will listen for new TCP connections.
 	std::unique_ptr<sf::TcpListener> m_socketListener;
 
-	std::vector<std::unique_ptr<sf::TcpSocket>> m_sockets;
+	// Socket always ready to be populated with a new client. Moved to list once populated.
 	std::unique_ptr<sf::TcpSocket> m_freeSocket;
 
+	// Pointer to game server.
 	GameServer* m_gameServer;
 
-	class ThreadSafeSocketHelper
-	{
-		void FillFreeSocket();
+	// Helper for sending and receiving messages over the wire.
+	std::unique_ptr<Common::NetworkHelper> m_networkHelper;
 
-	private:
-	};
+	// List of currently connected clients.
+	std::vector<std::unique_ptr<sf::TcpSocket>> m_clients;
 };
 
 //===============================================================================

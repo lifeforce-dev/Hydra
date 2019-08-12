@@ -24,10 +24,12 @@ GameServer::~GameServer()
 
 void GameServer::Run()
 {
-	m_networkController->BeginAcceptingConnections();
+	m_networkController->BeginProcessNetworkConnections();
+
 	while (m_isRunning)
 	{
 		ProcessCallbackQueue();
+		m_networkController->Process();
 	}
 }
 

@@ -45,7 +45,7 @@ NetworkController::~NetworkController()
 	}
 }
 
-void NetworkController::BeginAcceptingConnections()
+void NetworkController::BeginProcessNetworkConnections()
 {
 	m_listenThread = std::thread([this]()
 		{
@@ -54,25 +54,43 @@ void NetworkController::BeginAcceptingConnections()
 				if (!m_selector->wait())
 					return;
 
-				if (!m_selector->isReady(*m_socketListener))
-					return;
-
-				m_gameServer->PostToMainThread([this]()
+				if (m_selector->isReady(*m_socketListener))
+				{
+					m_gameServer->PostToMainThread([this]()
 					{
 						if (m_socketListener->accept(*m_freeSocket) == sf::Socket::Done)
 						{
 							m_selector->add(*m_freeSocket);
-							m_sockets.push_back(std::move(m_freeSocket));
+							m_clients.push_back(std::move(m_freeSocket));
 							m_freeSocket = std::make_unique<sf::TcpSocket>();
 						}
 					});
+				}
+				else
+				{
+					m_gameServer->PostToMainThread([this]()
+					{
+						for (const auto& client : m_clients)
+						{
+							if (m_selector->isReady(*client))
+							{
+								m_networkHelper->ReceiveMessages(client.get());
+							}
+						}
+					});
+				}
 			}
 		});
 }
 
 void NetworkController::Process()
 {
-	
+	ProcessMessages();
+}
+
+void NetworkController::ProcessMessages()
+{
+	// NYI
 }
 
 //===============================================================================

@@ -28,6 +28,7 @@ private:
 	void ProcessCallbackQueue();
 
 	std::unique_ptr<NetworkController> m_networkController;
+
 	Common::ThreadSafeQueue<std::function<void()>> m_callbackQueue;
 	std::deque<std::function<void()>> m_processCbQueue;
 
