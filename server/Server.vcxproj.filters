@@ -36,6 +36,9 @@
     <ClCompile Include="NetworkController.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
+    <ClCompile Include="GameClient.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetworkController.h">
@@ -43,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="GameServer.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClient.h">
+      <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

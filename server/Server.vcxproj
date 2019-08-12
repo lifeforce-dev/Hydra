@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
@@ -140,6 +141,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameClient.h" />
     <ClInclude Include="GameServer.h" />
     <ClInclude Include="NetworkController.h" />
   </ItemGroup>
