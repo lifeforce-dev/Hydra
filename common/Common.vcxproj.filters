@@ -71,5 +71,8 @@
     <ClInclude Include="Observatory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkEvents.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

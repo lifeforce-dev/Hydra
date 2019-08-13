@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <observable.hpp>
 
 #include <SFML/System/Clock.hpp>
 

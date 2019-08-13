@@ -92,7 +92,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..;$(ProjectDir)..\dependencies;$(ProjectDir)..\..;$(ProjectDir)..\dependencies\protobuf\src;$(ProjectDir)..\dependencies\sfml\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <PreBuildEvent>
@@ -147,6 +146,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameTypes.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="NetworkEvents.h" />
     <ClInclude Include="NetworkHelper.h" />
     <ClInclude Include="NetworkMessageParser.h" />
     <ClInclude Include="NetworkTypes.h" />
