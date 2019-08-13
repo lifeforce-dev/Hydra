@@ -23,6 +23,7 @@ namespace Common {
 //===============================================================================
 
 enum struct MessageType : uint32_t;
+class NetworkEvents;
 class NetworkMessageParser;
 struct NetworkMessage;
 
@@ -42,11 +43,14 @@ public:
 	// packaged with the message.
 	void QueueMessage(MessageId type, const std::string& message);
 
+	NetworkEvents* GetEvents();
+
 	void HandleMessages(const std::vector<NetworkMessage>& messages);
 
 private:
 	std::unique_ptr<NetworkMessageParser> m_parser;
 	std::deque<std::pair<MessageHeader, std::string>> m_messageQueue;
+	std::unique_ptr<NetworkEvents> m_events;
 };
 
 //===============================================================================

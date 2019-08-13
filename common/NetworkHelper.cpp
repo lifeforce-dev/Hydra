@@ -6,6 +6,7 @@
 #include "NetworkHelper.h"
 
 #include "common/Log.h"
+#include "common/NetworkEvents.h"
 #include "common/NetworkTypes.h"
 #include "common/NetworkMessageParser.h"
 #include "common/Log.h"
@@ -110,8 +111,14 @@ void NetworkHelper::QueueMessage(MessageId type, const std::string& message)
 	m_messageQueue.emplace_front(messageHeader, message);
 }
 
+NetworkEvents* NetworkHelper::GetEvents()
+{
+	*m_events;
+}
+
 void NetworkHelper::HandleMessages(const std::vector<NetworkMessage>& messages)
 {
+	m_events->GetClientDisconnectEvent().notify();
 	// Test each message type and handle accordingly.
 	NotifyObservers([&messages](NetworkObserver* observer)
 	{

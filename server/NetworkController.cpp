@@ -6,6 +6,7 @@
 #include "server/NetworkController.h"
 
 #include "common/Log.h"
+#include "common/NetworkEvents.h"
 #include "common/NetworkHelper.h"
 #include "common/NetworkTypes.h"
 #include "server/GameServer.h"
@@ -61,6 +62,10 @@ NetworkController::NetworkController(GameServer* gameServer)
 	m_socketListener->setBlocking(false);
 
 	m_networkHelper->AddObserver(m_messageObserver.get());
+	m_networkHelper->GetEvents()->GetClientDisconnectEvent().subscribe([this]()
+		{
+			LOG_DEBUG("A thing happened");
+		});
 }
 
 NetworkController::~NetworkController()
