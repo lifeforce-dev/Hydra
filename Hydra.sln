@@ -570,6 +570,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{A12FC920-3
 		dependencies\asio-1.12.2\include\asio\ssl\detail\impl\openssl_init.ipp = dependencies\asio-1.12.2\include\asio\ssl\detail\impl\openssl_init.ipp
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "observable", "observable", "{D1E57E9A-DE6F-4F53-A835-E31FA05BEFD8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{3B9249C3-5C2B-43B2-848D-D7DFBE2F1266}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "observable", "observable", "{3BB28302-FC4C-43FF-A4E5-42A7E0955358}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\observable\include\observable\observable.hpp = dependencies\observable\include\observable\observable.hpp
+		dependencies\observable\include\observable\observe.hpp = dependencies\observable\include\observable\observe.hpp
+		dependencies\observable\include\observable\subject.hpp = dependencies\observable\include\observable\subject.hpp
+		dependencies\observable\include\observable\subscription.hpp = dependencies\observable\include\observable\subscription.hpp
+		dependencies\observable\include\observable\value.hpp = dependencies\observable\include\observable\value.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{B2745187-7D45-485C-9891-6B7A69EFC503}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\observable\include\observable\detail\collection.hpp = dependencies\observable\include\observable\detail\collection.hpp
+		dependencies\observable\include\observable\detail\compiler_config.hpp = dependencies\observable\include\observable\detail\compiler_config.hpp
+		dependencies\observable\include\observable\detail\type_traits.hpp = dependencies\observable\include\observable\detail\type_traits.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "expressions", "expressions", "{4EDAC770-C53D-479D-A7D9-024C61D19C76}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\observable\include\observable\expressions\expression.hpp = dependencies\observable\include\observable\expressions\expression.hpp
+		dependencies\observable\include\observable\expressions\filters.hpp = dependencies\observable\include\observable\expressions\filters.hpp
+		dependencies\observable\include\observable\expressions\math.hpp = dependencies\observable\include\observable\expressions\math.hpp
+		dependencies\observable\include\observable\expressions\operators.hpp = dependencies\observable\include\observable\expressions\operators.hpp
+		dependencies\observable\include\observable\expressions\tree.hpp = dependencies\observable\include\observable\expressions\tree.hpp
+		dependencies\observable\include\observable\expressions\utility.hpp = dependencies\observable\include\observable\expressions\utility.hpp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -691,6 +721,11 @@ Global
 		{145A8F58-E9E4-45B3-A5F4-B1DA8A052874} = {3564A78C-0BB5-4B1A-826D-18BB14F5997D}
 		{825106A7-600B-4DC1-8CAC-9ADB7BD91610} = {3564A78C-0BB5-4B1A-826D-18BB14F5997D}
 		{A12FC920-3B3C-496E-8DE3-B209BFBA26F5} = {145A8F58-E9E4-45B3-A5F4-B1DA8A052874}
+		{D1E57E9A-DE6F-4F53-A835-E31FA05BEFD8} = {2884B755-835B-49DA-9E3F-E34AD401A5B9}
+		{3B9249C3-5C2B-43B2-848D-D7DFBE2F1266} = {D1E57E9A-DE6F-4F53-A835-E31FA05BEFD8}
+		{3BB28302-FC4C-43FF-A4E5-42A7E0955358} = {3B9249C3-5C2B-43B2-848D-D7DFBE2F1266}
+		{B2745187-7D45-485C-9891-6B7A69EFC503} = {3BB28302-FC4C-43FF-A4E5-42A7E0955358}
+		{4EDAC770-C53D-479D-A7D9-024C61D19C76} = {3BB28302-FC4C-43FF-A4E5-42A7E0955358}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24C0848B-7A5A-413D-9137-C6DF6EB4A1F0}

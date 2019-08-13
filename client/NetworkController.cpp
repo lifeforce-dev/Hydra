@@ -11,6 +11,7 @@
 #include "common/NetworkHelper.h"
 #include "common/NetworkTypes.h"
 
+#include <observable.hpp>
 #include <windows.h>
 #include <SFML/Network/IpAddress.hpp>
 #include <SFML/Network/TcpSocket.hpp>
