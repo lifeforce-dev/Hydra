@@ -76,6 +76,500 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "inc", "inc", "{73FF9142-C5B
 		dependencies\CRCpp\inc\CRC.h = dependencies\CRCpp\inc\CRC.h
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "asio", "asio", "{ECA7B013-B4D1-4A83-92A0-F9841ADB2872}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{C22DD287-8EB0-480F-8515-DA704C5C90C7}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio.hpp = dependencies\asio-1.12.2\include\asio.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B67BD4E6-93EB-41A8-A4ED-B00ADDFD8D4E}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\src\asio.cpp = dependencies\asio-1.12.2\src\asio.cpp
+		dependencies\asio-1.12.2\src\asio_ssl.cpp = dependencies\asio-1.12.2\src\asio_ssl.cpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "asio", "asio", "{7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{88DCC094-7083-4983-AD75-D6D0CD966CD2}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\detail\array.hpp = dependencies\asio-1.12.2\include\asio\detail\array.hpp
+		dependencies\asio-1.12.2\include\asio\detail\array_fwd.hpp = dependencies\asio-1.12.2\include\asio\detail\array_fwd.hpp
+		dependencies\asio-1.12.2\include\asio\detail\assert.hpp = dependencies\asio-1.12.2\include\asio\detail\assert.hpp
+		dependencies\asio-1.12.2\include\asio\detail\atomic_count.hpp = dependencies\asio-1.12.2\include\asio\detail\atomic_count.hpp
+		dependencies\asio-1.12.2\include\asio\detail\base_from_completion_cond.hpp = dependencies\asio-1.12.2\include\asio\detail\base_from_completion_cond.hpp
+		dependencies\asio-1.12.2\include\asio\detail\bind_handler.hpp = dependencies\asio-1.12.2\include\asio\detail\bind_handler.hpp
+		dependencies\asio-1.12.2\include\asio\detail\buffer_resize_guard.hpp = dependencies\asio-1.12.2\include\asio\detail\buffer_resize_guard.hpp
+		dependencies\asio-1.12.2\include\asio\detail\buffer_sequence_adapter.hpp = dependencies\asio-1.12.2\include\asio\detail\buffer_sequence_adapter.hpp
+		dependencies\asio-1.12.2\include\asio\detail\buffered_stream_storage.hpp = dependencies\asio-1.12.2\include\asio\detail\buffered_stream_storage.hpp
+		dependencies\asio-1.12.2\include\asio\detail\call_stack.hpp = dependencies\asio-1.12.2\include\asio\detail\call_stack.hpp
+		dependencies\asio-1.12.2\include\asio\detail\chrono.hpp = dependencies\asio-1.12.2\include\asio\detail\chrono.hpp
+		dependencies\asio-1.12.2\include\asio\detail\chrono_time_traits.hpp = dependencies\asio-1.12.2\include\asio\detail\chrono_time_traits.hpp
+		dependencies\asio-1.12.2\include\asio\detail\completion_handler.hpp = dependencies\asio-1.12.2\include\asio\detail\completion_handler.hpp
+		dependencies\asio-1.12.2\include\asio\detail\concurrency_hint.hpp = dependencies\asio-1.12.2\include\asio\detail\concurrency_hint.hpp
+		dependencies\asio-1.12.2\include\asio\detail\conditionally_enabled_event.hpp = dependencies\asio-1.12.2\include\asio\detail\conditionally_enabled_event.hpp
+		dependencies\asio-1.12.2\include\asio\detail\conditionally_enabled_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\conditionally_enabled_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\config.hpp = dependencies\asio-1.12.2\include\asio\detail\config.hpp
+		dependencies\asio-1.12.2\include\asio\detail\consuming_buffers.hpp = dependencies\asio-1.12.2\include\asio\detail\consuming_buffers.hpp
+		dependencies\asio-1.12.2\include\asio\detail\cstddef.hpp = dependencies\asio-1.12.2\include\asio\detail\cstddef.hpp
+		dependencies\asio-1.12.2\include\asio\detail\cstdint.hpp = dependencies\asio-1.12.2\include\asio\detail\cstdint.hpp
+		dependencies\asio-1.12.2\include\asio\detail\date_time_fwd.hpp = dependencies\asio-1.12.2\include\asio\detail\date_time_fwd.hpp
+		dependencies\asio-1.12.2\include\asio\detail\deadline_timer_service.hpp = dependencies\asio-1.12.2\include\asio\detail\deadline_timer_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\dependent_type.hpp = dependencies\asio-1.12.2\include\asio\detail\dependent_type.hpp
+		dependencies\asio-1.12.2\include\asio\detail\descriptor_ops.hpp = dependencies\asio-1.12.2\include\asio\detail\descriptor_ops.hpp
+		dependencies\asio-1.12.2\include\asio\detail\descriptor_read_op.hpp = dependencies\asio-1.12.2\include\asio\detail\descriptor_read_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\descriptor_write_op.hpp = dependencies\asio-1.12.2\include\asio\detail\descriptor_write_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\dev_poll_reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\dev_poll_reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\epoll_reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\epoll_reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\event.hpp = dependencies\asio-1.12.2\include\asio\detail\event.hpp
+		dependencies\asio-1.12.2\include\asio\detail\eventfd_select_interrupter.hpp = dependencies\asio-1.12.2\include\asio\detail\eventfd_select_interrupter.hpp
+		dependencies\asio-1.12.2\include\asio\detail\executor_op.hpp = dependencies\asio-1.12.2\include\asio\detail\executor_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\fd_set_adapter.hpp = dependencies\asio-1.12.2\include\asio\detail\fd_set_adapter.hpp
+		dependencies\asio-1.12.2\include\asio\detail\fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\functional.hpp = dependencies\asio-1.12.2\include\asio\detail\functional.hpp
+		dependencies\asio-1.12.2\include\asio\detail\future.hpp = dependencies\asio-1.12.2\include\asio\detail\future.hpp
+		dependencies\asio-1.12.2\include\asio\detail\gcc_arm_fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\gcc_arm_fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\gcc_hppa_fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\gcc_hppa_fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\gcc_sync_fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\gcc_sync_fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\gcc_x86_fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\gcc_x86_fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\global.hpp = dependencies\asio-1.12.2\include\asio\detail\global.hpp
+		dependencies\asio-1.12.2\include\asio\detail\handler_alloc_helpers.hpp = dependencies\asio-1.12.2\include\asio\detail\handler_alloc_helpers.hpp
+		dependencies\asio-1.12.2\include\asio\detail\handler_cont_helpers.hpp = dependencies\asio-1.12.2\include\asio\detail\handler_cont_helpers.hpp
+		dependencies\asio-1.12.2\include\asio\detail\handler_invoke_helpers.hpp = dependencies\asio-1.12.2\include\asio\detail\handler_invoke_helpers.hpp
+		dependencies\asio-1.12.2\include\asio\detail\handler_tracking.hpp = dependencies\asio-1.12.2\include\asio\detail\handler_tracking.hpp
+		dependencies\asio-1.12.2\include\asio\detail\handler_type_requirements.hpp = dependencies\asio-1.12.2\include\asio\detail\handler_type_requirements.hpp
+		dependencies\asio-1.12.2\include\asio\detail\handler_work.hpp = dependencies\asio-1.12.2\include\asio\detail\handler_work.hpp
+		dependencies\asio-1.12.2\include\asio\detail\hash_map.hpp = dependencies\asio-1.12.2\include\asio\detail\hash_map.hpp
+		dependencies\asio-1.12.2\include\asio\detail\io_control.hpp = dependencies\asio-1.12.2\include\asio\detail\io_control.hpp
+		dependencies\asio-1.12.2\include\asio\detail\is_buffer_sequence.hpp = dependencies\asio-1.12.2\include\asio\detail\is_buffer_sequence.hpp
+		dependencies\asio-1.12.2\include\asio\detail\is_executor.hpp = dependencies\asio-1.12.2\include\asio\detail\is_executor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\keyword_tss_ptr.hpp = dependencies\asio-1.12.2\include\asio\detail\keyword_tss_ptr.hpp
+		dependencies\asio-1.12.2\include\asio\detail\kqueue_reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\kqueue_reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\limits.hpp = dependencies\asio-1.12.2\include\asio\detail\limits.hpp
+		dependencies\asio-1.12.2\include\asio\detail\local_free_on_block_exit.hpp = dependencies\asio-1.12.2\include\asio\detail\local_free_on_block_exit.hpp
+		dependencies\asio-1.12.2\include\asio\detail\macos_fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\macos_fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\memory.hpp = dependencies\asio-1.12.2\include\asio\detail\memory.hpp
+		dependencies\asio-1.12.2\include\asio\detail\mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\noncopyable.hpp = dependencies\asio-1.12.2\include\asio\detail\noncopyable.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_event.hpp = dependencies\asio-1.12.2\include\asio\detail\null_event.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\null_fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_global.hpp = dependencies\asio-1.12.2\include\asio\detail\null_global.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\null_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\null_reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_signal_blocker.hpp = dependencies\asio-1.12.2\include\asio\detail\null_signal_blocker.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_socket_service.hpp = dependencies\asio-1.12.2\include\asio\detail\null_socket_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_static_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\null_static_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_thread.hpp = dependencies\asio-1.12.2\include\asio\detail\null_thread.hpp
+		dependencies\asio-1.12.2\include\asio\detail\null_tss_ptr.hpp = dependencies\asio-1.12.2\include\asio\detail\null_tss_ptr.hpp
+		dependencies\asio-1.12.2\include\asio\detail\object_pool.hpp = dependencies\asio-1.12.2\include\asio\detail\object_pool.hpp
+		dependencies\asio-1.12.2\include\asio\detail\old_win_sdk_compat.hpp = dependencies\asio-1.12.2\include\asio\detail\old_win_sdk_compat.hpp
+		dependencies\asio-1.12.2\include\asio\detail\op_queue.hpp = dependencies\asio-1.12.2\include\asio\detail\op_queue.hpp
+		dependencies\asio-1.12.2\include\asio\detail\operation.hpp = dependencies\asio-1.12.2\include\asio\detail\operation.hpp
+		dependencies\asio-1.12.2\include\asio\detail\pipe_select_interrupter.hpp = dependencies\asio-1.12.2\include\asio\detail\pipe_select_interrupter.hpp
+		dependencies\asio-1.12.2\include\asio\detail\pop_options.hpp = dependencies\asio-1.12.2\include\asio\detail\pop_options.hpp
+		dependencies\asio-1.12.2\include\asio\detail\posix_event.hpp = dependencies\asio-1.12.2\include\asio\detail\posix_event.hpp
+		dependencies\asio-1.12.2\include\asio\detail\posix_fd_set_adapter.hpp = dependencies\asio-1.12.2\include\asio\detail\posix_fd_set_adapter.hpp
+		dependencies\asio-1.12.2\include\asio\detail\posix_global.hpp = dependencies\asio-1.12.2\include\asio\detail\posix_global.hpp
+		dependencies\asio-1.12.2\include\asio\detail\posix_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\posix_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\posix_signal_blocker.hpp = dependencies\asio-1.12.2\include\asio\detail\posix_signal_blocker.hpp
+		dependencies\asio-1.12.2\include\asio\detail\posix_static_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\posix_static_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\posix_thread.hpp = dependencies\asio-1.12.2\include\asio\detail\posix_thread.hpp
+		dependencies\asio-1.12.2\include\asio\detail\posix_tss_ptr.hpp = dependencies\asio-1.12.2\include\asio\detail\posix_tss_ptr.hpp
+		dependencies\asio-1.12.2\include\asio\detail\push_options.hpp = dependencies\asio-1.12.2\include\asio\detail\push_options.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_descriptor_service.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_descriptor_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_null_buffers_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_null_buffers_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_serial_port_service.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_serial_port_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_socket_accept_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_socket_accept_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_socket_connect_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_socket_connect_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_socket_recv_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_socket_recv_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_socket_recvfrom_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_socket_recvfrom_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_socket_recvmsg_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_socket_recvmsg_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_socket_send_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_socket_send_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_socket_sendto_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_socket_sendto_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_socket_service.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_socket_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_socket_service_base.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_socket_service_base.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactive_wait_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactive_wait_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactor_fwd.hpp = dependencies\asio-1.12.2\include\asio\detail\reactor_fwd.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactor_op.hpp = dependencies\asio-1.12.2\include\asio\detail\reactor_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\reactor_op_queue.hpp = dependencies\asio-1.12.2\include\asio\detail\reactor_op_queue.hpp
+		dependencies\asio-1.12.2\include\asio\detail\recycling_allocator.hpp = dependencies\asio-1.12.2\include\asio\detail\recycling_allocator.hpp
+		dependencies\asio-1.12.2\include\asio\detail\regex_fwd.hpp = dependencies\asio-1.12.2\include\asio\detail\regex_fwd.hpp
+		dependencies\asio-1.12.2\include\asio\detail\resolve_endpoint_op.hpp = dependencies\asio-1.12.2\include\asio\detail\resolve_endpoint_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\resolve_op.hpp = dependencies\asio-1.12.2\include\asio\detail\resolve_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\resolve_query_op.hpp = dependencies\asio-1.12.2\include\asio\detail\resolve_query_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\resolver_service.hpp = dependencies\asio-1.12.2\include\asio\detail\resolver_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\resolver_service_base.hpp = dependencies\asio-1.12.2\include\asio\detail\resolver_service_base.hpp
+		dependencies\asio-1.12.2\include\asio\detail\scheduler.hpp = dependencies\asio-1.12.2\include\asio\detail\scheduler.hpp
+		dependencies\asio-1.12.2\include\asio\detail\scheduler_operation.hpp = dependencies\asio-1.12.2\include\asio\detail\scheduler_operation.hpp
+		dependencies\asio-1.12.2\include\asio\detail\scheduler_thread_info.hpp = dependencies\asio-1.12.2\include\asio\detail\scheduler_thread_info.hpp
+		dependencies\asio-1.12.2\include\asio\detail\scoped_lock.hpp = dependencies\asio-1.12.2\include\asio\detail\scoped_lock.hpp
+		dependencies\asio-1.12.2\include\asio\detail\scoped_ptr.hpp = dependencies\asio-1.12.2\include\asio\detail\scoped_ptr.hpp
+		dependencies\asio-1.12.2\include\asio\detail\select_interrupter.hpp = dependencies\asio-1.12.2\include\asio\detail\select_interrupter.hpp
+		dependencies\asio-1.12.2\include\asio\detail\select_reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\select_reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\service_registry.hpp = dependencies\asio-1.12.2\include\asio\detail\service_registry.hpp
+		dependencies\asio-1.12.2\include\asio\detail\signal_blocker.hpp = dependencies\asio-1.12.2\include\asio\detail\signal_blocker.hpp
+		dependencies\asio-1.12.2\include\asio\detail\signal_handler.hpp = dependencies\asio-1.12.2\include\asio\detail\signal_handler.hpp
+		dependencies\asio-1.12.2\include\asio\detail\signal_init.hpp = dependencies\asio-1.12.2\include\asio\detail\signal_init.hpp
+		dependencies\asio-1.12.2\include\asio\detail\signal_op.hpp = dependencies\asio-1.12.2\include\asio\detail\signal_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\signal_set_service.hpp = dependencies\asio-1.12.2\include\asio\detail\signal_set_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\socket_holder.hpp = dependencies\asio-1.12.2\include\asio\detail\socket_holder.hpp
+		dependencies\asio-1.12.2\include\asio\detail\socket_ops.hpp = dependencies\asio-1.12.2\include\asio\detail\socket_ops.hpp
+		dependencies\asio-1.12.2\include\asio\detail\socket_option.hpp = dependencies\asio-1.12.2\include\asio\detail\socket_option.hpp
+		dependencies\asio-1.12.2\include\asio\detail\socket_select_interrupter.hpp = dependencies\asio-1.12.2\include\asio\detail\socket_select_interrupter.hpp
+		dependencies\asio-1.12.2\include\asio\detail\socket_types.hpp = dependencies\asio-1.12.2\include\asio\detail\socket_types.hpp
+		dependencies\asio-1.12.2\include\asio\detail\solaris_fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\solaris_fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\static_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\static_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\std_event.hpp = dependencies\asio-1.12.2\include\asio\detail\std_event.hpp
+		dependencies\asio-1.12.2\include\asio\detail\std_fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\std_fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\std_global.hpp = dependencies\asio-1.12.2\include\asio\detail\std_global.hpp
+		dependencies\asio-1.12.2\include\asio\detail\std_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\std_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\std_static_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\std_static_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\std_thread.hpp = dependencies\asio-1.12.2\include\asio\detail\std_thread.hpp
+		dependencies\asio-1.12.2\include\asio\detail\strand_executor_service.hpp = dependencies\asio-1.12.2\include\asio\detail\strand_executor_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\strand_service.hpp = dependencies\asio-1.12.2\include\asio\detail\strand_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\string_view.hpp = dependencies\asio-1.12.2\include\asio\detail\string_view.hpp
+		dependencies\asio-1.12.2\include\asio\detail\thread.hpp = dependencies\asio-1.12.2\include\asio\detail\thread.hpp
+		dependencies\asio-1.12.2\include\asio\detail\thread_context.hpp = dependencies\asio-1.12.2\include\asio\detail\thread_context.hpp
+		dependencies\asio-1.12.2\include\asio\detail\thread_group.hpp = dependencies\asio-1.12.2\include\asio\detail\thread_group.hpp
+		dependencies\asio-1.12.2\include\asio\detail\thread_info_base.hpp = dependencies\asio-1.12.2\include\asio\detail\thread_info_base.hpp
+		dependencies\asio-1.12.2\include\asio\detail\throw_error.hpp = dependencies\asio-1.12.2\include\asio\detail\throw_error.hpp
+		dependencies\asio-1.12.2\include\asio\detail\throw_exception.hpp = dependencies\asio-1.12.2\include\asio\detail\throw_exception.hpp
+		dependencies\asio-1.12.2\include\asio\detail\timer_queue.hpp = dependencies\asio-1.12.2\include\asio\detail\timer_queue.hpp
+		dependencies\asio-1.12.2\include\asio\detail\timer_queue_base.hpp = dependencies\asio-1.12.2\include\asio\detail\timer_queue_base.hpp
+		dependencies\asio-1.12.2\include\asio\detail\timer_queue_ptime.hpp = dependencies\asio-1.12.2\include\asio\detail\timer_queue_ptime.hpp
+		dependencies\asio-1.12.2\include\asio\detail\timer_queue_set.hpp = dependencies\asio-1.12.2\include\asio\detail\timer_queue_set.hpp
+		dependencies\asio-1.12.2\include\asio\detail\timer_scheduler.hpp = dependencies\asio-1.12.2\include\asio\detail\timer_scheduler.hpp
+		dependencies\asio-1.12.2\include\asio\detail\timer_scheduler_fwd.hpp = dependencies\asio-1.12.2\include\asio\detail\timer_scheduler_fwd.hpp
+		dependencies\asio-1.12.2\include\asio\detail\tss_ptr.hpp = dependencies\asio-1.12.2\include\asio\detail\tss_ptr.hpp
+		dependencies\asio-1.12.2\include\asio\detail\type_traits.hpp = dependencies\asio-1.12.2\include\asio\detail\type_traits.hpp
+		dependencies\asio-1.12.2\include\asio\detail\variadic_templates.hpp = dependencies\asio-1.12.2\include\asio\detail\variadic_templates.hpp
+		dependencies\asio-1.12.2\include\asio\detail\wait_handler.hpp = dependencies\asio-1.12.2\include\asio\detail\wait_handler.hpp
+		dependencies\asio-1.12.2\include\asio\detail\wait_op.hpp = dependencies\asio-1.12.2\include\asio\detail\wait_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_event.hpp = dependencies\asio-1.12.2\include\asio\detail\win_event.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_fd_set_adapter.hpp = dependencies\asio-1.12.2\include\asio\detail\win_fd_set_adapter.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_fenced_block.hpp = dependencies\asio-1.12.2\include\asio\detail\win_fenced_block.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_global.hpp = dependencies\asio-1.12.2\include\asio\detail\win_global.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_handle_read_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_handle_read_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_handle_service.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_handle_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_handle_write_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_handle_write_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_io_context.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_io_context.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_null_buffers_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_null_buffers_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_operation.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_operation.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_overlapped_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_overlapped_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_overlapped_ptr.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_overlapped_ptr.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_serial_port_service.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_serial_port_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_accept_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_accept_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_connect_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_connect_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_recv_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_recv_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_recvfrom_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_recvfrom_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_recvmsg_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_recvmsg_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_send_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_send_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_service.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_service_base.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_socket_service_base.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_thread_info.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_thread_info.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_iocp_wait_op.hpp = dependencies\asio-1.12.2\include\asio\detail\win_iocp_wait_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\win_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_object_handle_service.hpp = dependencies\asio-1.12.2\include\asio\detail\win_object_handle_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_static_mutex.hpp = dependencies\asio-1.12.2\include\asio\detail\win_static_mutex.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_thread.hpp = dependencies\asio-1.12.2\include\asio\detail\win_thread.hpp
+		dependencies\asio-1.12.2\include\asio\detail\win_tss_ptr.hpp = dependencies\asio-1.12.2\include\asio\detail\win_tss_ptr.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winapp_thread.hpp = dependencies\asio-1.12.2\include\asio\detail\winapp_thread.hpp
+		dependencies\asio-1.12.2\include\asio\detail\wince_thread.hpp = dependencies\asio-1.12.2\include\asio\detail\wince_thread.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_async_manager.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_async_manager.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_async_op.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_async_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_resolve_op.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_resolve_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_resolver_service.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_resolver_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_socket_connect_op.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_socket_connect_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_socket_recv_op.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_socket_recv_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_socket_send_op.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_socket_send_op.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_ssocket_service.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_ssocket_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_ssocket_service_base.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_ssocket_service_base.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_timer_scheduler.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_timer_scheduler.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winrt_utils.hpp = dependencies\asio-1.12.2\include\asio\detail\winrt_utils.hpp
+		dependencies\asio-1.12.2\include\asio\detail\winsock_init.hpp = dependencies\asio-1.12.2\include\asio\detail\winsock_init.hpp
+		dependencies\asio-1.12.2\include\asio\detail\work_dispatcher.hpp = dependencies\asio-1.12.2\include\asio\detail\work_dispatcher.hpp
+		dependencies\asio-1.12.2\include\asio\detail\wrapped_handler.hpp = dependencies\asio-1.12.2\include\asio\detail\wrapped_handler.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "experimental", "experimental", "{05FD922A-6D2A-42F7-A0E9-8ECF6840B386}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\experimental\co_spawn.hpp = dependencies\asio-1.12.2\include\asio\experimental\co_spawn.hpp
+		dependencies\asio-1.12.2\include\asio\experimental\detached.hpp = dependencies\asio-1.12.2\include\asio\experimental\detached.hpp
+		dependencies\asio-1.12.2\include\asio\experimental\redirect_error.hpp = dependencies\asio-1.12.2\include\asio\experimental\redirect_error.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "generic", "generic", "{64D613A4-DDC8-46A1-863C-B3D800E40EA2}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\generic\basic_endpoint.hpp = dependencies\asio-1.12.2\include\asio\generic\basic_endpoint.hpp
+		dependencies\asio-1.12.2\include\asio\generic\datagram_protocol.hpp = dependencies\asio-1.12.2\include\asio\generic\datagram_protocol.hpp
+		dependencies\asio-1.12.2\include\asio\generic\raw_protocol.hpp = dependencies\asio-1.12.2\include\asio\generic\raw_protocol.hpp
+		dependencies\asio-1.12.2\include\asio\generic\seq_packet_protocol.hpp = dependencies\asio-1.12.2\include\asio\generic\seq_packet_protocol.hpp
+		dependencies\asio-1.12.2\include\asio\generic\stream_protocol.hpp = dependencies\asio-1.12.2\include\asio\generic\stream_protocol.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{D3F634E1-EADE-4F6F-BDE4-78D2CAE334F6}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\impl\buffered_read_stream.hpp = dependencies\asio-1.12.2\include\asio\impl\buffered_read_stream.hpp
+		dependencies\asio-1.12.2\include\asio\impl\buffered_write_stream.hpp = dependencies\asio-1.12.2\include\asio\impl\buffered_write_stream.hpp
+		dependencies\asio-1.12.2\include\asio\impl\connect.hpp = dependencies\asio-1.12.2\include\asio\impl\connect.hpp
+		dependencies\asio-1.12.2\include\asio\impl\defer.hpp = dependencies\asio-1.12.2\include\asio\impl\defer.hpp
+		dependencies\asio-1.12.2\include\asio\impl\dispatch.hpp = dependencies\asio-1.12.2\include\asio\impl\dispatch.hpp
+		dependencies\asio-1.12.2\include\asio\impl\error.ipp = dependencies\asio-1.12.2\include\asio\impl\error.ipp
+		dependencies\asio-1.12.2\include\asio\impl\error_code.ipp = dependencies\asio-1.12.2\include\asio\impl\error_code.ipp
+		dependencies\asio-1.12.2\include\asio\impl\execution_context.hpp = dependencies\asio-1.12.2\include\asio\impl\execution_context.hpp
+		dependencies\asio-1.12.2\include\asio\impl\execution_context.ipp = dependencies\asio-1.12.2\include\asio\impl\execution_context.ipp
+		dependencies\asio-1.12.2\include\asio\impl\executor.hpp = dependencies\asio-1.12.2\include\asio\impl\executor.hpp
+		dependencies\asio-1.12.2\include\asio\impl\executor.ipp = dependencies\asio-1.12.2\include\asio\impl\executor.ipp
+		dependencies\asio-1.12.2\include\asio\impl\handler_alloc_hook.ipp = dependencies\asio-1.12.2\include\asio\impl\handler_alloc_hook.ipp
+		dependencies\asio-1.12.2\include\asio\impl\io_context.hpp = dependencies\asio-1.12.2\include\asio\impl\io_context.hpp
+		dependencies\asio-1.12.2\include\asio\impl\io_context.ipp = dependencies\asio-1.12.2\include\asio\impl\io_context.ipp
+		dependencies\asio-1.12.2\include\asio\impl\post.hpp = dependencies\asio-1.12.2\include\asio\impl\post.hpp
+		dependencies\asio-1.12.2\include\asio\impl\read.hpp = dependencies\asio-1.12.2\include\asio\impl\read.hpp
+		dependencies\asio-1.12.2\include\asio\impl\read_at.hpp = dependencies\asio-1.12.2\include\asio\impl\read_at.hpp
+		dependencies\asio-1.12.2\include\asio\impl\read_until.hpp = dependencies\asio-1.12.2\include\asio\impl\read_until.hpp
+		dependencies\asio-1.12.2\include\asio\impl\serial_port_base.hpp = dependencies\asio-1.12.2\include\asio\impl\serial_port_base.hpp
+		dependencies\asio-1.12.2\include\asio\impl\serial_port_base.ipp = dependencies\asio-1.12.2\include\asio\impl\serial_port_base.ipp
+		dependencies\asio-1.12.2\include\asio\impl\spawn.hpp = dependencies\asio-1.12.2\include\asio\impl\spawn.hpp
+		dependencies\asio-1.12.2\include\asio\impl\src.cpp = dependencies\asio-1.12.2\include\asio\impl\src.cpp
+		dependencies\asio-1.12.2\include\asio\impl\src.hpp = dependencies\asio-1.12.2\include\asio\impl\src.hpp
+		dependencies\asio-1.12.2\include\asio\impl\system_context.hpp = dependencies\asio-1.12.2\include\asio\impl\system_context.hpp
+		dependencies\asio-1.12.2\include\asio\impl\system_context.ipp = dependencies\asio-1.12.2\include\asio\impl\system_context.ipp
+		dependencies\asio-1.12.2\include\asio\impl\system_executor.hpp = dependencies\asio-1.12.2\include\asio\impl\system_executor.hpp
+		dependencies\asio-1.12.2\include\asio\impl\thread_pool.hpp = dependencies\asio-1.12.2\include\asio\impl\thread_pool.hpp
+		dependencies\asio-1.12.2\include\asio\impl\thread_pool.ipp = dependencies\asio-1.12.2\include\asio\impl\thread_pool.ipp
+		dependencies\asio-1.12.2\include\asio\impl\use_future.hpp = dependencies\asio-1.12.2\include\asio\impl\use_future.hpp
+		dependencies\asio-1.12.2\include\asio\impl\write.hpp = dependencies\asio-1.12.2\include\asio\impl\write.hpp
+		dependencies\asio-1.12.2\include\asio\impl\write_at.hpp = dependencies\asio-1.12.2\include\asio\impl\write_at.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ip", "ip", "{82BC4BBA-4242-42D7-A7FB-522901F19862}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\ip\address.hpp = dependencies\asio-1.12.2\include\asio\ip\address.hpp
+		dependencies\asio-1.12.2\include\asio\ip\address_v4.hpp = dependencies\asio-1.12.2\include\asio\ip\address_v4.hpp
+		dependencies\asio-1.12.2\include\asio\ip\address_v4_iterator.hpp = dependencies\asio-1.12.2\include\asio\ip\address_v4_iterator.hpp
+		dependencies\asio-1.12.2\include\asio\ip\address_v4_range.hpp = dependencies\asio-1.12.2\include\asio\ip\address_v4_range.hpp
+		dependencies\asio-1.12.2\include\asio\ip\address_v6.hpp = dependencies\asio-1.12.2\include\asio\ip\address_v6.hpp
+		dependencies\asio-1.12.2\include\asio\ip\address_v6_iterator.hpp = dependencies\asio-1.12.2\include\asio\ip\address_v6_iterator.hpp
+		dependencies\asio-1.12.2\include\asio\ip\address_v6_range.hpp = dependencies\asio-1.12.2\include\asio\ip\address_v6_range.hpp
+		dependencies\asio-1.12.2\include\asio\ip\bad_address_cast.hpp = dependencies\asio-1.12.2\include\asio\ip\bad_address_cast.hpp
+		dependencies\asio-1.12.2\include\asio\ip\basic_endpoint.hpp = dependencies\asio-1.12.2\include\asio\ip\basic_endpoint.hpp
+		dependencies\asio-1.12.2\include\asio\ip\basic_resolver.hpp = dependencies\asio-1.12.2\include\asio\ip\basic_resolver.hpp
+		dependencies\asio-1.12.2\include\asio\ip\basic_resolver_entry.hpp = dependencies\asio-1.12.2\include\asio\ip\basic_resolver_entry.hpp
+		dependencies\asio-1.12.2\include\asio\ip\basic_resolver_iterator.hpp = dependencies\asio-1.12.2\include\asio\ip\basic_resolver_iterator.hpp
+		dependencies\asio-1.12.2\include\asio\ip\basic_resolver_query.hpp = dependencies\asio-1.12.2\include\asio\ip\basic_resolver_query.hpp
+		dependencies\asio-1.12.2\include\asio\ip\basic_resolver_results.hpp = dependencies\asio-1.12.2\include\asio\ip\basic_resolver_results.hpp
+		dependencies\asio-1.12.2\include\asio\ip\host_name.hpp = dependencies\asio-1.12.2\include\asio\ip\host_name.hpp
+		dependencies\asio-1.12.2\include\asio\ip\icmp.hpp = dependencies\asio-1.12.2\include\asio\ip\icmp.hpp
+		dependencies\asio-1.12.2\include\asio\ip\multicast.hpp = dependencies\asio-1.12.2\include\asio\ip\multicast.hpp
+		dependencies\asio-1.12.2\include\asio\ip\network_v4.hpp = dependencies\asio-1.12.2\include\asio\ip\network_v4.hpp
+		dependencies\asio-1.12.2\include\asio\ip\network_v6.hpp = dependencies\asio-1.12.2\include\asio\ip\network_v6.hpp
+		dependencies\asio-1.12.2\include\asio\ip\resolver_base.hpp = dependencies\asio-1.12.2\include\asio\ip\resolver_base.hpp
+		dependencies\asio-1.12.2\include\asio\ip\resolver_query_base.hpp = dependencies\asio-1.12.2\include\asio\ip\resolver_query_base.hpp
+		dependencies\asio-1.12.2\include\asio\ip\resolver_service.hpp = dependencies\asio-1.12.2\include\asio\ip\resolver_service.hpp
+		dependencies\asio-1.12.2\include\asio\ip\tcp.hpp = dependencies\asio-1.12.2\include\asio\ip\tcp.hpp
+		dependencies\asio-1.12.2\include\asio\ip\udp.hpp = dependencies\asio-1.12.2\include\asio\ip\udp.hpp
+		dependencies\asio-1.12.2\include\asio\ip\unicast.hpp = dependencies\asio-1.12.2\include\asio\ip\unicast.hpp
+		dependencies\asio-1.12.2\include\asio\ip\v6_only.hpp = dependencies\asio-1.12.2\include\asio\ip\v6_only.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "local", "local", "{71F44D95-2462-4DA7-AEDB-89B570D53A09}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\local\basic_endpoint.hpp = dependencies\asio-1.12.2\include\asio\local\basic_endpoint.hpp
+		dependencies\asio-1.12.2\include\asio\local\connect_pair.hpp = dependencies\asio-1.12.2\include\asio\local\connect_pair.hpp
+		dependencies\asio-1.12.2\include\asio\local\datagram_protocol.hpp = dependencies\asio-1.12.2\include\asio\local\datagram_protocol.hpp
+		dependencies\asio-1.12.2\include\asio\local\stream_protocol.hpp = dependencies\asio-1.12.2\include\asio\local\stream_protocol.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "posix", "posix", "{6604DA70-95B0-43F0-A503-18815EEC9DE9}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\posix\basic_descriptor.hpp = dependencies\asio-1.12.2\include\asio\posix\basic_descriptor.hpp
+		dependencies\asio-1.12.2\include\asio\posix\basic_stream_descriptor.hpp = dependencies\asio-1.12.2\include\asio\posix\basic_stream_descriptor.hpp
+		dependencies\asio-1.12.2\include\asio\posix\descriptor.hpp = dependencies\asio-1.12.2\include\asio\posix\descriptor.hpp
+		dependencies\asio-1.12.2\include\asio\posix\descriptor_base.hpp = dependencies\asio-1.12.2\include\asio\posix\descriptor_base.hpp
+		dependencies\asio-1.12.2\include\asio\posix\stream_descriptor.hpp = dependencies\asio-1.12.2\include\asio\posix\stream_descriptor.hpp
+		dependencies\asio-1.12.2\include\asio\posix\stream_descriptor_service.hpp = dependencies\asio-1.12.2\include\asio\posix\stream_descriptor_service.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ssl", "ssl", "{3564A78C-0BB5-4B1A-826D-18BB14F5997D}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\ssl\context.hpp = dependencies\asio-1.12.2\include\asio\ssl\context.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\context_base.hpp = dependencies\asio-1.12.2\include\asio\ssl\context_base.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\error.hpp = dependencies\asio-1.12.2\include\asio\ssl\error.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\rfc2818_verification.hpp = dependencies\asio-1.12.2\include\asio\ssl\rfc2818_verification.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\stream.hpp = dependencies\asio-1.12.2\include\asio\ssl\stream.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\stream_base.hpp = dependencies\asio-1.12.2\include\asio\ssl\stream_base.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\verify_context.hpp = dependencies\asio-1.12.2\include\asio\ssl\verify_context.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\verify_mode.hpp = dependencies\asio-1.12.2\include\asio\ssl\verify_mode.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ts", "ts", "{92821FB8-3712-4578-B3FF-223984CEFE4A}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\ts\buffer.hpp = dependencies\asio-1.12.2\include\asio\ts\buffer.hpp
+		dependencies\asio-1.12.2\include\asio\ts\executor.hpp = dependencies\asio-1.12.2\include\asio\ts\executor.hpp
+		dependencies\asio-1.12.2\include\asio\ts\internet.hpp = dependencies\asio-1.12.2\include\asio\ts\internet.hpp
+		dependencies\asio-1.12.2\include\asio\ts\io_context.hpp = dependencies\asio-1.12.2\include\asio\ts\io_context.hpp
+		dependencies\asio-1.12.2\include\asio\ts\net.hpp = dependencies\asio-1.12.2\include\asio\ts\net.hpp
+		dependencies\asio-1.12.2\include\asio\ts\netfwd.hpp = dependencies\asio-1.12.2\include\asio\ts\netfwd.hpp
+		dependencies\asio-1.12.2\include\asio\ts\socket.hpp = dependencies\asio-1.12.2\include\asio\ts\socket.hpp
+		dependencies\asio-1.12.2\include\asio\ts\timer.hpp = dependencies\asio-1.12.2\include\asio\ts\timer.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows", "windows", "{18D5A30F-FCEC-4673-B14F-166ED6A36AD0}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\windows\basic_handle.hpp = dependencies\asio-1.12.2\include\asio\windows\basic_handle.hpp
+		dependencies\asio-1.12.2\include\asio\windows\basic_object_handle.hpp = dependencies\asio-1.12.2\include\asio\windows\basic_object_handle.hpp
+		dependencies\asio-1.12.2\include\asio\windows\basic_random_access_handle.hpp = dependencies\asio-1.12.2\include\asio\windows\basic_random_access_handle.hpp
+		dependencies\asio-1.12.2\include\asio\windows\basic_stream_handle.hpp = dependencies\asio-1.12.2\include\asio\windows\basic_stream_handle.hpp
+		dependencies\asio-1.12.2\include\asio\windows\object_handle.hpp = dependencies\asio-1.12.2\include\asio\windows\object_handle.hpp
+		dependencies\asio-1.12.2\include\asio\windows\object_handle_service.hpp = dependencies\asio-1.12.2\include\asio\windows\object_handle_service.hpp
+		dependencies\asio-1.12.2\include\asio\windows\overlapped_handle.hpp = dependencies\asio-1.12.2\include\asio\windows\overlapped_handle.hpp
+		dependencies\asio-1.12.2\include\asio\windows\overlapped_ptr.hpp = dependencies\asio-1.12.2\include\asio\windows\overlapped_ptr.hpp
+		dependencies\asio-1.12.2\include\asio\windows\random_access_handle.hpp = dependencies\asio-1.12.2\include\asio\windows\random_access_handle.hpp
+		dependencies\asio-1.12.2\include\asio\windows\random_access_handle_service.hpp = dependencies\asio-1.12.2\include\asio\windows\random_access_handle_service.hpp
+		dependencies\asio-1.12.2\include\asio\windows\stream_handle.hpp = dependencies\asio-1.12.2\include\asio\windows\stream_handle.hpp
+		dependencies\asio-1.12.2\include\asio\windows\stream_handle_service.hpp = dependencies\asio-1.12.2\include\asio\windows\stream_handle_service.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{4A3A07BB-09F7-4595-A3D3-08D5656236CA}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\detail\impl\buffer_sequence_adapter.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\buffer_sequence_adapter.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\descriptor_ops.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\descriptor_ops.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\dev_poll_reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\impl\dev_poll_reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\impl\dev_poll_reactor.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\dev_poll_reactor.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\epoll_reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\impl\epoll_reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\impl\epoll_reactor.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\epoll_reactor.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\eventfd_select_interrupter.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\eventfd_select_interrupter.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\handler_tracking.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\handler_tracking.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\kqueue_reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\impl\kqueue_reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\impl\kqueue_reactor.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\kqueue_reactor.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\null_event.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\null_event.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\pipe_select_interrupter.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\pipe_select_interrupter.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\posix_event.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\posix_event.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\posix_mutex.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\posix_mutex.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\posix_thread.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\posix_thread.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\posix_tss_ptr.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\posix_tss_ptr.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\reactive_descriptor_service.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\reactive_descriptor_service.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\reactive_serial_port_service.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\reactive_serial_port_service.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\reactive_socket_service_base.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\reactive_socket_service_base.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\resolver_service_base.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\resolver_service_base.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\scheduler.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\scheduler.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\select_reactor.hpp = dependencies\asio-1.12.2\include\asio\detail\impl\select_reactor.hpp
+		dependencies\asio-1.12.2\include\asio\detail\impl\select_reactor.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\select_reactor.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\service_registry.hpp = dependencies\asio-1.12.2\include\asio\detail\impl\service_registry.hpp
+		dependencies\asio-1.12.2\include\asio\detail\impl\service_registry.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\service_registry.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\signal_set_service.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\signal_set_service.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\socket_ops.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\socket_ops.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\socket_select_interrupter.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\socket_select_interrupter.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\strand_executor_service.hpp = dependencies\asio-1.12.2\include\asio\detail\impl\strand_executor_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\impl\strand_executor_service.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\strand_executor_service.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\strand_service.hpp = dependencies\asio-1.12.2\include\asio\detail\impl\strand_service.hpp
+		dependencies\asio-1.12.2\include\asio\detail\impl\strand_service.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\strand_service.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\throw_error.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\throw_error.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\timer_queue_ptime.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\timer_queue_ptime.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\timer_queue_set.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\timer_queue_set.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_event.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_event.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_handle_service.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_handle_service.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_io_context.hpp = dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_io_context.hpp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_io_context.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_io_context.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_serial_port_service.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_serial_port_service.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_socket_service_base.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_iocp_socket_service_base.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_mutex.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_mutex.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_object_handle_service.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_object_handle_service.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_static_mutex.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_static_mutex.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_thread.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_thread.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\win_tss_ptr.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\win_tss_ptr.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\winrt_ssocket_service_base.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\winrt_ssocket_service_base.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\winrt_timer_scheduler.hpp = dependencies\asio-1.12.2\include\asio\detail\impl\winrt_timer_scheduler.hpp
+		dependencies\asio-1.12.2\include\asio\detail\impl\winrt_timer_scheduler.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\winrt_timer_scheduler.ipp
+		dependencies\asio-1.12.2\include\asio\detail\impl\winsock_init.ipp = dependencies\asio-1.12.2\include\asio\detail\impl\winsock_init.ipp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{9581B94C-B14C-4756-A602-D1AD5F1D9E64}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\experimental\impl\co_spawn.hpp = dependencies\asio-1.12.2\include\asio\experimental\impl\co_spawn.hpp
+		dependencies\asio-1.12.2\include\asio\experimental\impl\detached.hpp = dependencies\asio-1.12.2\include\asio\experimental\impl\detached.hpp
+		dependencies\asio-1.12.2\include\asio\experimental\impl\redirect_error.hpp = dependencies\asio-1.12.2\include\asio\experimental\impl\redirect_error.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{F6E15520-0887-4B4C-9B9D-392AA8591CAE}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\generic\detail\endpoint.hpp = dependencies\asio-1.12.2\include\asio\generic\detail\endpoint.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{C04AC067-83BC-472B-BD4F-42A633609D2D}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\generic\detail\impl\endpoint.ipp = dependencies\asio-1.12.2\include\asio\generic\detail\impl\endpoint.ipp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{D3CAEFFF-FAD3-4461-A665-7A814EDB62DB}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\ip\detail\endpoint.hpp = dependencies\asio-1.12.2\include\asio\ip\detail\endpoint.hpp
+		dependencies\asio-1.12.2\include\asio\ip\detail\socket_option.hpp = dependencies\asio-1.12.2\include\asio\ip\detail\socket_option.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{4F77C28D-F5AC-4A58-BD72-8A1829CA407A}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\ip\impl\address.hpp = dependencies\asio-1.12.2\include\asio\ip\impl\address.hpp
+		dependencies\asio-1.12.2\include\asio\ip\impl\address.ipp = dependencies\asio-1.12.2\include\asio\ip\impl\address.ipp
+		dependencies\asio-1.12.2\include\asio\ip\impl\address_v4.hpp = dependencies\asio-1.12.2\include\asio\ip\impl\address_v4.hpp
+		dependencies\asio-1.12.2\include\asio\ip\impl\address_v4.ipp = dependencies\asio-1.12.2\include\asio\ip\impl\address_v4.ipp
+		dependencies\asio-1.12.2\include\asio\ip\impl\address_v6.hpp = dependencies\asio-1.12.2\include\asio\ip\impl\address_v6.hpp
+		dependencies\asio-1.12.2\include\asio\ip\impl\address_v6.ipp = dependencies\asio-1.12.2\include\asio\ip\impl\address_v6.ipp
+		dependencies\asio-1.12.2\include\asio\ip\impl\basic_endpoint.hpp = dependencies\asio-1.12.2\include\asio\ip\impl\basic_endpoint.hpp
+		dependencies\asio-1.12.2\include\asio\ip\impl\host_name.ipp = dependencies\asio-1.12.2\include\asio\ip\impl\host_name.ipp
+		dependencies\asio-1.12.2\include\asio\ip\impl\network_v4.hpp = dependencies\asio-1.12.2\include\asio\ip\impl\network_v4.hpp
+		dependencies\asio-1.12.2\include\asio\ip\impl\network_v4.ipp = dependencies\asio-1.12.2\include\asio\ip\impl\network_v4.ipp
+		dependencies\asio-1.12.2\include\asio\ip\impl\network_v6.hpp = dependencies\asio-1.12.2\include\asio\ip\impl\network_v6.hpp
+		dependencies\asio-1.12.2\include\asio\ip\impl\network_v6.ipp = dependencies\asio-1.12.2\include\asio\ip\impl\network_v6.ipp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{3040C96A-721E-4FAA-90FD-8B5B5785055C}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\ip\detail\impl\endpoint.ipp = dependencies\asio-1.12.2\include\asio\ip\detail\impl\endpoint.ipp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{951E261B-220D-4263-8FC5-323A2EF1D6B6}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\local\detail\endpoint.hpp = dependencies\asio-1.12.2\include\asio\local\detail\endpoint.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{3139C4CC-B8AB-443A-A944-02A89DD6A851}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\local\detail\impl\endpoint.ipp = dependencies\asio-1.12.2\include\asio\local\detail\impl\endpoint.ipp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{145A8F58-E9E4-45B3-A5F4-B1DA8A052874}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\ssl\detail\buffered_handshake_op.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\buffered_handshake_op.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\engine.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\engine.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\handshake_op.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\handshake_op.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\io.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\io.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\openssl_init.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\openssl_init.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\openssl_types.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\openssl_types.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\password_callback.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\password_callback.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\read_op.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\read_op.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\shutdown_op.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\shutdown_op.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\stream_core.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\stream_core.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\verify_callback.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\verify_callback.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\write_op.hpp = dependencies\asio-1.12.2\include\asio\ssl\detail\write_op.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{825106A7-600B-4DC1-8CAC-9ADB7BD91610}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\ssl\impl\context.hpp = dependencies\asio-1.12.2\include\asio\ssl\impl\context.hpp
+		dependencies\asio-1.12.2\include\asio\ssl\impl\context.ipp = dependencies\asio-1.12.2\include\asio\ssl\impl\context.ipp
+		dependencies\asio-1.12.2\include\asio\ssl\impl\error.ipp = dependencies\asio-1.12.2\include\asio\ssl\impl\error.ipp
+		dependencies\asio-1.12.2\include\asio\ssl\impl\rfc2818_verification.ipp = dependencies\asio-1.12.2\include\asio\ssl\impl\rfc2818_verification.ipp
+		dependencies\asio-1.12.2\include\asio\ssl\impl\src.hpp = dependencies\asio-1.12.2\include\asio\ssl\impl\src.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "impl", "impl", "{A12FC920-3B3C-496E-8DE3-B209BFBA26F5}"
+	ProjectSection(SolutionItems) = preProject
+		dependencies\asio-1.12.2\include\asio\ssl\detail\impl\engine.ipp = dependencies\asio-1.12.2\include\asio\ssl\detail\impl\engine.ipp
+		dependencies\asio-1.12.2\include\asio\ssl\detail\impl\openssl_init.ipp = dependencies\asio-1.12.2\include\asio\ssl\detail\impl\openssl_init.ipp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -171,6 +665,32 @@ Global
 		{6E014294-6EF9-4CC3-A7AF-EA428B7CCBA7} = {A60EC5AA-A998-400F-B8B3-30E56EC45F3E}
 		{F5CB6B47-8D21-40E2-9D4D-CDE60CCA5BC0} = {2884B755-835B-49DA-9E3F-E34AD401A5B9}
 		{73FF9142-C5B3-4594-AA1F-F5AE3D471261} = {F5CB6B47-8D21-40E2-9D4D-CDE60CCA5BC0}
+		{ECA7B013-B4D1-4A83-92A0-F9841ADB2872} = {2884B755-835B-49DA-9E3F-E34AD401A5B9}
+		{C22DD287-8EB0-480F-8515-DA704C5C90C7} = {ECA7B013-B4D1-4A83-92A0-F9841ADB2872}
+		{B67BD4E6-93EB-41A8-A4ED-B00ADDFD8D4E} = {ECA7B013-B4D1-4A83-92A0-F9841ADB2872}
+		{7EB241F8-47B9-4359-9F5A-E8A8275A3CC2} = {C22DD287-8EB0-480F-8515-DA704C5C90C7}
+		{88DCC094-7083-4983-AD75-D6D0CD966CD2} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{05FD922A-6D2A-42F7-A0E9-8ECF6840B386} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{64D613A4-DDC8-46A1-863C-B3D800E40EA2} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{D3F634E1-EADE-4F6F-BDE4-78D2CAE334F6} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{82BC4BBA-4242-42D7-A7FB-522901F19862} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{71F44D95-2462-4DA7-AEDB-89B570D53A09} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{6604DA70-95B0-43F0-A503-18815EEC9DE9} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{3564A78C-0BB5-4B1A-826D-18BB14F5997D} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{92821FB8-3712-4578-B3FF-223984CEFE4A} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{18D5A30F-FCEC-4673-B14F-166ED6A36AD0} = {7EB241F8-47B9-4359-9F5A-E8A8275A3CC2}
+		{4A3A07BB-09F7-4595-A3D3-08D5656236CA} = {88DCC094-7083-4983-AD75-D6D0CD966CD2}
+		{9581B94C-B14C-4756-A602-D1AD5F1D9E64} = {05FD922A-6D2A-42F7-A0E9-8ECF6840B386}
+		{F6E15520-0887-4B4C-9B9D-392AA8591CAE} = {64D613A4-DDC8-46A1-863C-B3D800E40EA2}
+		{C04AC067-83BC-472B-BD4F-42A633609D2D} = {F6E15520-0887-4B4C-9B9D-392AA8591CAE}
+		{D3CAEFFF-FAD3-4461-A665-7A814EDB62DB} = {82BC4BBA-4242-42D7-A7FB-522901F19862}
+		{4F77C28D-F5AC-4A58-BD72-8A1829CA407A} = {82BC4BBA-4242-42D7-A7FB-522901F19862}
+		{3040C96A-721E-4FAA-90FD-8B5B5785055C} = {D3CAEFFF-FAD3-4461-A665-7A814EDB62DB}
+		{951E261B-220D-4263-8FC5-323A2EF1D6B6} = {71F44D95-2462-4DA7-AEDB-89B570D53A09}
+		{3139C4CC-B8AB-443A-A944-02A89DD6A851} = {951E261B-220D-4263-8FC5-323A2EF1D6B6}
+		{145A8F58-E9E4-45B3-A5F4-B1DA8A052874} = {3564A78C-0BB5-4B1A-826D-18BB14F5997D}
+		{825106A7-600B-4DC1-8CAC-9ADB7BD91610} = {3564A78C-0BB5-4B1A-826D-18BB14F5997D}
+		{A12FC920-3B3C-496E-8DE3-B209BFBA26F5} = {145A8F58-E9E4-45B3-A5F4-B1DA8A052874}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24C0848B-7A5A-413D-9137-C6DF6EB4A1F0}
