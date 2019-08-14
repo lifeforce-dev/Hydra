@@ -146,7 +146,6 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameTypes.h" />
     <ClInclude Include="Log.h" />
-    <ClInclude Include="NetworkEvents.h" />
     <ClInclude Include="NetworkHelper.h" />
     <ClInclude Include="NetworkMessageParser.h" />
     <ClInclude Include="NetworkTypes.h" />
