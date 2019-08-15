@@ -38,7 +38,7 @@ SPDLOG_INLINE void file_helper::open(const filename_t &fname, bool truncate)
 
         details::os::sleep_for_millis(open_interval);
     }
-
+	int a = GetLastError();
     throw spdlog_ex("Failed opening file " + os::filename_to_str(_filename) + " for writing", errno);
 }
 
