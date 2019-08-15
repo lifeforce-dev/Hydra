@@ -10,7 +10,7 @@
     </Link>
     <ClCompile>
       <PreprocessorDefinitions>_MBCS;SFML_STATIC;_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;ASIO_STANDALONE;_WIN32_WINNT=0x601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..;$(ProjectDir)..\dependencies;$(ProjectDir)..\dependencies\protobuf\src;$(ProjectDir)..\dependencies\sfml\include;$(ProjectDir)..\dependencies\asio-1.12.2\include;$(ProjectDir)..\dependencies\observable\include\;$(ProjectDir)..\dependencies\randutils;$(ProjectDir)..\dependencies\observable\include\observable</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(ProjectDir)..\dependencies;$(ProjectDir)..\dependencies\protobuf\src;$(ProjectDir)..\dependencies\sfml\include;$(ProjectDir)..\dependencies\asio-1.12.2\include;$(ProjectDir)..\dependencies\observable\include\;$(ProjectDir)..\dependencies\randutils;$(ProjectDir)..\dependencies\observable\include\observable;$(ProjectDir)..\dependencies\spdlog\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DisableSpecificWarnings>

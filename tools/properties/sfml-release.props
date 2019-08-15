@@ -10,7 +10,7 @@
     </Link>
     <ClCompile>
       <PreprocessorDefinitions>_MBCS;SFML_STATIC;_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;ASIO_STANDALONE;_WIN32_WINNT=0x601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..;$(ProjectDir)..\dependencies;$(ProjectDir)..\dependencies\protobuf\src;$(ProjectDir)..\dependencies\sfml\include;C:\source\Hydra\dependencies\asio-1.12.2\include;C:\source\Hydra\dependencies\observable\include\observable;C:\source\Hydra\dependencies\observable\include;C:\source\Hydra\dependencies\randutils</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(ProjectDir)..\dependencies;$(ProjectDir)..\dependencies\protobuf\src;$(ProjectDir)..\dependencies\sfml\include;C:\source\Hydra\dependencies\asio-1.12.2\include;C:\source\Hydra\dependencies\observable\include\observable;C:\source\Hydra\dependencies\observable\include;C:\source\Hydra\dependencies\randutils;$(ProjectDir)..\dependencies\spdlog\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
