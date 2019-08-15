@@ -5,31 +5,27 @@
 
 #pragma once
 
-#include <string>
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace Logger {
 
 //==============================================================================
 
-enum LogSink
+static bool loggerInitialized = false;
+static spdlog::logger& Logger()
 {
-	DEBUG_WINDOW,
-	CONSOLE
-};
+	static auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+	consoleSink->set_level(spdlog::level::warn);
+	consoleSink->set_pattern("[console_sink] [%^%l%$] %v");
 
-void LogDebugMessage(const std::string& message, LogSink messageType, const char* fileName,
-	int lineNumber);
+	static auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/log.txt", true);
+	fileSink->set_level(spdlog::level::trace);
 
-#define LOG_DEBUG_CONSOLE(msg)                                          \
-{                                                                       \
-	LogDebugMessage(msg, Logger::CONSOLE, __FILE__, __LINE__);          \
+	static spdlog::logger logger("multiSink", {consoleSink, fileSink});
+	return logger;
 }
-
-#define LOG_DEBUG(msg)                                    \
-{                                                                       \
-	LogDebugMessage(msg, Logger::DEBUG_WINDOW, __FILE__, __LINE__);     \
-}
-
 //==============================================================================
 
 } // namespace Logger
