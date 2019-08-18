@@ -13,6 +13,12 @@ namespace Server {
 
 //===============================================================================
 
+namespace {
+
+std::shared_ptr<spdlog::logger> s_logger;
+
+} // anon namespace
+
 Game::Game()
 	: m_server(std::make_unique<GameServer>())
 {
@@ -20,9 +26,11 @@ Game::Game()
 	events.GetSessionCreatedEvent().subscribe(
 		[this](uint32_t clientId)
 		{
-			// NYI
+			SPDLOG_LOGGER_INFO(s_logger, "OnSessionCreatedEvent");
 		});
 
+	REGISTER_LOGGER("Server::Game");
+	s_logger = Log::Logger("Server::Game");
 	m_server->Start();
 }
 

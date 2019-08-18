@@ -22,9 +22,13 @@ namespace Server {
 //===============================================================================
 
 namespace {
-	const char* s_localIp = "127.0.0.1";
-	const uint16_t s_port = 26000;
-	const std::thread::id s_mainThreadId = std::this_thread::get_id();
+
+const char* s_localIp = "127.0.0.1";
+const uint16_t s_port = 26000;
+const std::thread::id s_mainThreadId = std::this_thread::get_id();
+
+std::shared_ptr<spdlog::logger> s_logger;
+
 } // anon namespace
 
 //-------------------------------------------------------------------------------
@@ -47,7 +51,7 @@ public:
 
 	void Start()
 	{
-		Logger::ServerLogger().info("Created session. id={}", m_clientId);
+		SPDLOG_LOGGER_INFO(s_logger, "Created session. id={}", m_clientId);
 		DoRead();
 	}
 
@@ -83,7 +87,7 @@ private:
 
 		if (ec)
 		{
-			Logger::ServerLogger().error("Error reading data. clientId= {} ec= {}",
+			SPDLOG_LOGGER_ERROR(s_logger, "Error reading data. clientId= {} ec= {}",
 				m_clientId, ec.value());
 			if (ec != asio::error::operation_aborted)
 			{
@@ -117,7 +121,7 @@ private:
 	{
 		if (ec)
 		{
-			Logger::ServerLogger().error("Error writing data. ec= {} bytes written= {}",
+			SPDLOG_LOGGER_ERROR(s_logger, "Error writing data. ec= {} bytes written= {}",
 				ec.value(), bytesWritten);
 
 			if (ec != asio::error::operation_aborted)
@@ -195,7 +199,8 @@ public:
 			return *it;
 		}
 
-		Logger::ServerLogger().error("Tried to get session that doesn't exist. clientId= {}", clientId);
+		SPDLOG_LOGGER_ERROR(s_logger, "Tried to get session that doesn't exist. clientId= {}",
+			clientId);
 		return nullptr;
 	}
 
@@ -219,9 +224,9 @@ public:
 	{
 		m_work.reset(new asio::io_service::work(*m_ios));
 		m_ios->post([this]()
-			{
-				m_isReady = true;
-			});
+		{
+			m_isReady = true;
+		});
 	}
 
 	~AsioEventProcessor()
@@ -255,7 +260,8 @@ private:
 
 		if (ec)
 		{
-			Logger::ServerLogger().error("ASIO error occurred while running a task. ec={}", ec.value());
+			SPDLOG_LOGGER_ERROR(s_logger, "ASIO error occurred while running a task. ec={}",
+				ec.value());
 		}
 	}
 
@@ -284,28 +290,31 @@ public:
 		std::error_code ec;
 
 		tcp::endpoint endPoint{ asio::ip::make_address(s_localIp), s_port };
-		Logger::ServerLogger().info("Attempting to listen on port{}", s_port);
+		SPDLOG_LOGGER_INFO(s_logger, "Attempting to listen on port{}", s_port);
 
 		tcp::acceptor acceptor{ m_socket.get_io_context() };
 
 		acceptor.open(endPoint.protocol(), ec);
 		if (ec)
 		{
-			Logger::ServerLogger().error("Error opening acceptor. ec={}", ec.value());
+			SPDLOG_LOGGER_ERROR(s_logger,"Error opening acceptor. ec={}",
+				ec.value());
 			return;
 		}
 
 		acceptor.bind(endPoint, ec);
 		if (ec)
 		{
-			Logger::ServerLogger().error("Error binding acceptor to endpoint. ec={}", ec.value());
+			SPDLOG_LOGGER_ERROR(s_logger, "Error binding acceptor to endpoint. ec={}",
+				ec.value());
 			return;
 		}
 			
 		acceptor.listen(asio::socket_base::max_listen_connections, ec);
 		if (ec)
 		{
-			Logger::ServerLogger().error("Error listening for connections. ec={}", ec.value());
+			SPDLOG_LOGGER_ERROR(s_logger, "Error listening for connections. ec={}",
+				ec.value());
 			return;
 		}
 
@@ -313,13 +322,14 @@ public:
 
 		if (!m_acceptor.is_open())
 		{
-			Logger::ServerLogger().error("Failed to find available port. ec={}", ec.value());
+			SPDLOG_LOGGER_ERROR(s_logger, "Failed to find available port. ec={}",
+				ec.value());
 			return;
 		}
 
 		m_isRunning = true;
 		m_port = m_acceptor.local_endpoint(ec).port();
-		Logger::ServerLogger().info("Listening on port {}", m_port);
+		SPDLOG_LOGGER_INFO(s_logger, "Listening on port {}", m_port);
 		DoAccept();
 	}
 
@@ -328,13 +338,14 @@ private:
 	{
 		if (ec)
 		{
-			Logger::ServerLogger().error("Error accepting incoming connection. ec={}", ec.value());
+			SPDLOG_LOGGER_ERROR(s_logger, "Error accepting incoming connection. ec={}",
+				ec.value());
 		}
 		else
 		{
-			// create session
-			Logger::ServerLogger().info("Socket accepted. Creating session.");
+			SPDLOG_LOGGER_INFO(s_logger, "Socket accepted. Creating session.");
 
+			// create session
 			m_connectionManager->CreateSession(std::move(m_socket));
 		}
 
@@ -365,6 +376,8 @@ GameServer::GameServer()
 	, m_sessionManager(std::make_unique<ClientSessionManager>(this))
 	, m_events(std::make_unique<ClientSessionEvents>())
 {
+	REGISTER_LOGGER("Server");
+	s_logger = Log::Logger("Server");
 }
 
 //-------------------------------------------------------------------------------

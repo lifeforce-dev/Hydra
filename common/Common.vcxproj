@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="NetworkHelper.cpp" />
     <ClCompile Include="NetworkMessageParser.cpp" />
   </ItemGroup>

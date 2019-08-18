@@ -18,56 +18,42 @@
 #include <vector>
 
 using namespace std::experimental::filesystem::v1;
-namespace Logger {
+namespace Log {
 
 //==============================================================================
 
-// TODO:
-	// init logging by registering log sinks
-	// functions to get loggers from sinks
-	// all loggers should be be async
-class AsyncLogger {
+static const std::string& GetLogFile()
+{
+	static std::string s_logFile = "../logs/log.txt";
+	return s_logFile;
+}
+
+class LoggerManager
+{
 public:
-	AsyncLogger()
-		: m_consoleSink(std::make_shared<spdlog::sinks::stdout_color_sink_mt>())
-		, m_fileSink(std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/log.txt", true))
-	{
-		std::string path = "logs/log.txt";
-		if (!is_regular_file(path))
-		{
-			// create log file if it doesn't exist
-			create_directory("logs");
-			std::ofstream("logs/log.txt");
-		}
+	LoggerManager();
+	~LoggerManager();
 
-		spdlog::init_thread_pool(32768, 1);
-		spdlog::flush_every(std::chrono::seconds(1));
-		m_consoleSink->set_level(spdlog::level::trace);
-		m_consoleSink->set_pattern("[console_sink] [%^%l%$] %v");
-		m_fileSink->set_level(spdlog::level::trace);
-		m_sinks.push_back(m_consoleSink);
-		m_sinks.push_back(m_fileSink);
-		m_logger = std::make_shared<spdlog::async_logger>("Server",
-			m_sinks.begin(), m_sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
-	}
-	~AsyncLogger() {}
-
-	const std::shared_ptr<spdlog::async_logger>& GetLogger() { return m_logger; }
+void CreateLogger(const std::string& loggerName);
 
 private:
-	std::shared_ptr<spdlog::sinks::stdout_color_sink_mt> m_consoleSink;
-	std::shared_ptr< spdlog::sinks::basic_file_sink_mt> m_fileSink;
-	std::vector<spdlog::sink_ptr> m_sinks;
-
-	std::shared_ptr<spdlog::async_logger> m_logger;
+	void Init();
+	std::shared_ptr<spdlog::sinks::basic_file_sink_mt> m_sharedSink;
 };
 
-static bool loggerInitialized = false;
-static spdlog::logger& ServerLogger()
+void CreateAndRegisterLogger(const std::string& name);
+
+static std::shared_ptr<spdlog::logger> Logger(const std::string& name)
 {
-	static AsyncLogger asyncLogger;
-	return *asyncLogger.GetLogger();
+	return spdlog::get(name);
 }
+
+#define REGISTER_LOGGER(name)            \
+{                                        \
+	Log::CreateAndRegisterLogger(name);  \
+}
+
 //==============================================================================
 
 } // namespace Logger
+
