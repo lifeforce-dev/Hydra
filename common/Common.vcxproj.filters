@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Game">
       <UniqueIdentifier>{36029a25-ebde-4e5a-99ff-30f7b09a4c5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util">
+      <UniqueIdentifier>{a00222eb-9da0-40c9-9dd1-8cd2e3c6c8f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Util">
+      <UniqueIdentifier>{2a2d2cda-4313-4882-9f89-08b639d4b545}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NetworkHelper.cpp">
@@ -43,13 +49,13 @@
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="AsioEventProcessor.cpp">
+      <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NetworkTypes.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
@@ -59,14 +65,20 @@
     <ClInclude Include="NetworkMessageParser.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadSafeQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="GameTypes.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadSafeQueue.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="AsioEventProcessor.h">
+      <Filter>Header Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

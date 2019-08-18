@@ -4,6 +4,7 @@
 //
 
 #include "GameServer.h"
+#include "common/AsioEventProcessor.h"
 #include "common/Log.h"
 #include "common/NetworkMessageParser.h"
 #include "common/NetworkTypes.h"
@@ -221,64 +222,6 @@ public:
 
 //-------------------------------------------------------------------------------
 
-class AsioEventProcessor
-{
-public:
-	AsioEventProcessor()
-		: m_ios(std::make_unique<asio::io_service>())
-	{
-		m_work.reset(new asio::io_service::work(*m_ios));
-		m_ios->post([this]()
-		{
-			m_isReady = true;
-		});
-	}
-
-	~AsioEventProcessor()
-	{
-		if (m_thread.joinable())
-		{
-			m_thread.join();
-		}
-	}
-
-	asio::io_service& GetIoService()
-	{
-		return *m_ios;
-	}
-
-	void Post(const std::function<void()>& cb)
-	{
-		m_ios->post(cb);
-	}
-
-	void Run()
-	{
-		m_thread = std::thread(([this]() { DoRun(); }));
-	}
-
-private:
-	void DoRun()
-	{
-		std::error_code ec;
-		m_ios->run(ec);
-
-		if (ec)
-		{
-			SPDLOG_LOGGER_ERROR(s_logger, "ASIO error occurred while running a task. ec={}",
-				ec.value());
-		}
-	}
-
-private:
-	std::unique_ptr<asio::io_service> m_ios;
-	std::unique_ptr<asio::io_service::work> m_work;
-	std::thread m_thread;
-	bool m_isReady = false;
-};
-
-//-------------------------------------------------------------------------------
-
 class TcpListener : public std::enable_shared_from_this<TcpListener> {
 
 public:
@@ -377,7 +320,7 @@ private:
 };
 
 GameServer::GameServer(Game* game)
-	: m_asioEventProcessor(std::make_unique<AsioEventProcessor>())
+	: m_asioEventProcessor(std::make_unique<Common::AsioEventProcessor>())
 	, m_sessionManager(std::make_unique<ClientSessionManager>(this))
 	, m_events(std::make_unique<ClientSessionEvents>())
 	, m_game(game)

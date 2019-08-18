@@ -137,12 +137,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AsioEventProcessor.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="NetworkHelper.cpp" />
     <ClCompile Include="NetworkMessageParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AsioEventProcessor.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameTypes.h" />
     <ClInclude Include="Log.h" />

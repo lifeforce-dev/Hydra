@@ -12,11 +12,14 @@
 #include <memory>
 #include <thread>
 
+namespace Common {
+class AsioEventProcessor;
+}
+
 namespace Server {
 
 //===============================================================================
 
-class AsioEventProcessor;
 class ClientSessionManager;
 class ClientSessionEvents;
 class Game;
@@ -53,7 +56,7 @@ private:
 	std::shared_ptr<TcpListener> m_listener;
 
 	// Helper class that handles the asio work queue.
-	std::unique_ptr<AsioEventProcessor> m_asioEventProcessor;
+	std::unique_ptr<Common::AsioEventProcessor> m_asioEventProcessor;
 
 	// How many clients are currently connected.
 	std::atomic<uint32_t> m_currentConnectionCount{0};
