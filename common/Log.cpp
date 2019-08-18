@@ -8,7 +8,7 @@
 namespace Log {
 
 LoggerManager::LoggerManager()
-	: m_sharedSink(std::make_shared<spdlog::sinks::basic_file_sink_mt>(GetLogFile()))
+	: m_sharedSink(std::make_shared<spdlog::sinks::basic_file_sink_mt>(GetLogFile(), true))
 {
 	Init();
 }
