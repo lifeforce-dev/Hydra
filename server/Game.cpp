@@ -34,7 +34,7 @@ Game::Game()
 			assert(std::this_thread::get_id() == s_mainThreadId);
 			SPDLOG_LOGGER_INFO(s_logger, "OnSessionCreatedEvent clientId= {}", clientId);
 
-			m_clients.emplace_back(this, clientId);
+			m_clients.emplace_back(std::make_unique<GameClient>(this, clientId));
 		});
 
 	REGISTER_LOGGER("Server::Game");
