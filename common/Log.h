@@ -10,6 +10,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -31,12 +32,22 @@ public:
 		: m_consoleSink(std::make_shared<spdlog::sinks::stdout_color_sink_mt>())
 		, m_fileSink(std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/log.txt", true))
 	{
+		std::string path = "logs/log.txt";
+		if (!is_regular_file(path))
+		{
+			// create log file if it doesn't exist
+			create_directory("logs");
+			std::ofstream("logs/log.txt");
+		}
+
+		spdlog::init_thread_pool(32768, 1);
+		spdlog::flush_every(std::chrono::seconds(1));
 		m_consoleSink->set_level(spdlog::level::trace);
 		m_consoleSink->set_pattern("[console_sink] [%^%l%$] %v");
 		m_fileSink->set_level(spdlog::level::trace);
 		m_sinks.push_back(m_consoleSink);
 		m_sinks.push_back(m_fileSink);
-		m_logger = std::make_shared<spdlog::async_logger>("logger",
+		m_logger = std::make_shared<spdlog::async_logger>("Server",
 			m_sinks.begin(), m_sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
 	}
 	~AsyncLogger() {}
@@ -52,17 +63,8 @@ private:
 };
 
 static bool loggerInitialized = false;
-static spdlog::logger& Logger()
+static spdlog::logger& ServerLogger()
 {
-	spdlog::init_thread_pool(32768, 1);
-	static std::string path = "logs/log.txt";
-	if (!is_regular_file(path))
-	{
-		// create log file if it doesn't exist
-		create_directory("logs");
-		std::ofstream("logs/log.txt");
-	}
-
 	static AsyncLogger asyncLogger;
 	return *asyncLogger.GetLogger();
 }
