@@ -14,6 +14,7 @@
 namespace Server {
 
 //===============================================================================
+class GameClient;
 class GameServer;
 class NetworkController;
 class Game {
@@ -24,10 +25,13 @@ public:
 	void Run();
 	void PostToMainThread(const std::function<void()>& cb);
 
+	GameServer* GetGameServer() { return m_server.get(); }
+
 private:
 	void ProcessCallbackQueue();
 
 	std::unique_ptr<GameServer> m_server;
+	std::vector<std::unique_ptr<GameClient>> m_clients;
 
 	Common::ThreadSafeQueue<std::function<void()>> m_callbackQueue;
 	std::deque<std::function<void()>> m_processCbQueue;

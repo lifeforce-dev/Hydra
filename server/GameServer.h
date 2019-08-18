@@ -16,14 +16,16 @@ namespace Server {
 
 //===============================================================================
 
+class AsioEventProcessor;
 class ClientSessionManager;
 class ClientSessionEvents;
-class AsioEventProcessor;
+class Game;
 class TcpListener;
 class GameServer {
 
 public:
-	GameServer();
+	friend class ClientSessionManager;
+	GameServer(Game* game);
 	~GameServer();
 
 	// Start the server and begin listening for and handling connections.
@@ -61,6 +63,9 @@ private:
 
 	// Events related to client sessions.
 	std::unique_ptr<ClientSessionEvents> m_events;
+
+	// Pointer to parent.
+	Game* m_game;
 };
 
 //===============================================================================

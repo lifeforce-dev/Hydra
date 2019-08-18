@@ -8,6 +8,7 @@
 #include "common/NetworkMessageParser.h"
 #include "common/NetworkTypes.h"
 #include "server/ClientSessionEvents.h"
+#include "server/Game.h"
 
 #include <asio.hpp>
 #include <functional>
@@ -163,7 +164,11 @@ public:
 	{
 		uint32_t clientId = m_nextId++;
 		std::make_shared<TcpSession>(std::move(socket), clientId)->Start();
-		m_server->GetEvents().GetSessionCreatedEvent().notify(clientId);
+		
+		m_server->m_game->PostToMainThread([this, clientId]()
+		{
+			m_server->GetEvents().GetSessionCreatedEvent().notify(clientId);
+		});
 	}
 
 	void DestroySession(uint32_t clientId)
@@ -371,10 +376,11 @@ private:
 	bool m_isRunning = false;
 };
 
-GameServer::GameServer()
+GameServer::GameServer(Game* game)
 	: m_asioEventProcessor(std::make_unique<AsioEventProcessor>())
 	, m_sessionManager(std::make_unique<ClientSessionManager>(this))
 	, m_events(std::make_unique<ClientSessionEvents>())
+	, m_game(game)
 {
 	REGISTER_LOGGER("Server");
 	s_logger = Log::Logger("Server");
