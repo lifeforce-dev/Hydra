@@ -40,7 +40,6 @@ void NetworkHelper::SendMessages(sf::TcpSocket* socket)
 {
 	if (!socket)
 	{
-		LOG_DEBUG("Error: tried to send messages on a dead socket.");
 		return;
 	}
 
@@ -63,13 +62,9 @@ void NetworkHelper::SendMessages(sf::TcpSocket* socket)
 		else if (status == sf::TcpSocket::Partial)
 		{
 			// TODO: Handle this case.
-			LOG_DEBUG("Error: Only partial message sent to server.");
 		}
 		else if (status == sf::TcpSocket::Disconnected)
 		{
-			int ec = WSAGetLastError();
-
-			LOG_DEBUG("Error: Disconnected.error=" + std::to_string(ec));
 			m_messageQueue.clear();
 			socket->disconnect();
 		}
@@ -80,7 +75,6 @@ void NetworkHelper::ReceiveMessages(sf::TcpSocket* socket)
 {
 	if (!socket)
 	{
-		LOG_DEBUG("Error: tried to reveive messages on a dead socket.");
 		return;
 	}
 
@@ -93,7 +87,6 @@ void NetworkHelper::ReceiveMessages(sf::TcpSocket* socket)
 
 	if (!messages.empty())
 	{
-		LOG_DEBUG("Receving messages over the wire succeeded.");
 		HandleMessages(messages);
 		messages.clear();
 	}
@@ -101,8 +94,6 @@ void NetworkHelper::ReceiveMessages(sf::TcpSocket* socket)
 
 void NetworkHelper::QueueMessage(MessageId type, const std::string& message)
 {
-	LOG_DEBUG("Queuing Message to send to Server");
-
 	auto messageLength = message.size();
 	// Add the data to our message header.
 	MessageHeader messageHeader { type, messageLength };
