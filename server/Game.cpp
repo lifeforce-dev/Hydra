@@ -5,6 +5,8 @@
 
 #include "server/Game.h"
 
+#include "common/Log.h"
+#include "server/ClientSessionEvents.h"
 #include "server/GameServer.h"
 
 namespace Server {
@@ -14,6 +16,13 @@ namespace Server {
 Game::Game()
 	: m_server(std::make_unique<GameServer>())
 {
+	auto& events = m_server->GetEvents();
+	events.GetSessionCreatedEvent().subscribe(
+		[this](uint32_t clientId)
+		{
+			// NYI
+		});
+
 	m_server->Start();
 }
 

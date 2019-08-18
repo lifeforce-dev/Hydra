@@ -7,6 +7,7 @@
 #include "common/Log.h"
 #include "common/NetworkMessageParser.h"
 #include "common/NetworkTypes.h"
+#include "server/ClientSessionEvents.h"
 
 #include <asio.hpp>
 #include <functional>
@@ -147,12 +148,18 @@ private:
 class ClientSessionManager
 {
 public:
-	ClientSessionManager() {}
+	ClientSessionManager(GameServer* server)
+	: m_server(server)
+	{
+	}
+
 	~ClientSessionManager() {}
 
 	void CreateSession(tcp::socket socket)
 	{
-		std::make_shared<TcpSession>(std::move(socket), ++m_netxId)->Start();
+		uint32_t clientId = m_nextId++;
+		std::make_shared<TcpSession>(std::move(socket), clientId)->Start();
+		m_server->GetEvents().GetSessionCreatedEvent().notify(clientId);
 	}
 
 	void DestroySession(uint32_t clientId)
@@ -193,10 +200,13 @@ public:
 	}
 
 	// Increments every time a client is connected, guaranteeing uniqueness.
-	std::atomic<uint32_t> m_netxId{ 0 };
+	std::atomic<uint32_t> m_nextId{ 0 };
 
 	// Store sessions here.
 	std::vector<std::shared_ptr<TcpSession>> m_sessions;
+
+	// Pointer to parent.
+	GameServer* m_server;
 };
 
 //-------------------------------------------------------------------------------
@@ -273,7 +283,6 @@ public:
 	{
 		std::error_code ec;
 
-		
 		tcp::endpoint endPoint{ asio::ip::make_address(s_localIp), s_port };
 		Logger::ServerLogger().info("Attempting to listen on port{}", s_port);
 
@@ -353,7 +362,8 @@ private:
 
 GameServer::GameServer()
 	: m_asioEventProcessor(std::make_unique<AsioEventProcessor>())
-	, m_sessionManager(std::make_unique<ClientSessionManager>())
+	, m_sessionManager(std::make_unique<ClientSessionManager>(this))
+	, m_events(std::make_unique<ClientSessionEvents>())
 {
 }
 
@@ -385,6 +395,11 @@ void GameServer::PostMessageToClient(uint32_t clientId, const std::string& messa
 			session->Write(message);
 		});
 	}
+}
+
+ClientSessionEvents& GameServer::GetEvents()
+{
+	return *m_events;
 }
 
 //===============================================================================

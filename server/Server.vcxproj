@@ -140,6 +140,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClientSessionEvents.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameServer.h" />
   </ItemGroup>

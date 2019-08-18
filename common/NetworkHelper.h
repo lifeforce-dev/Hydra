@@ -6,7 +6,6 @@
 #pragma once
 
 #include "common/NetworkTypes.h"
-#include "common/Observatory.h"
 
 #include <memory>
 #include <deque>
@@ -26,7 +25,7 @@ enum struct MessageType : uint32_t;
 class NetworkMessageParser;
 struct NetworkMessage;
 
-class NetworkHelper : public Observatory<NetworkObserver>
+class NetworkHelper
 {
 public:
 	NetworkHelper();

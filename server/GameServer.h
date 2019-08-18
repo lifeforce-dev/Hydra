@@ -16,6 +16,7 @@ namespace Server {
 //===============================================================================
 
 class ClientSessionManager;
+class ClientSessionEvents;
 class AsioEventProcessor;
 class TcpListener;
 class GameServer {
@@ -39,6 +40,8 @@ public:
 	// Returns number of connected clients.
 	uint32_t GetConnectionClientCount() const { return m_currentConnectionCount; }
 
+	ClientSessionEvents& GetEvents();
+
 private:
 	// Helper class for managing client connection sessions.
 	std::unique_ptr<ClientSessionManager> m_sessionManager;
@@ -54,6 +57,9 @@ private:
 	
 	// True if the server is currently accepting and handling connections.
 	std::atomic<bool> m_isRunning;
+
+	// Events related to client sessions.
+	std::unique_ptr<ClientSessionEvents> m_events;
 };
 
 //===============================================================================

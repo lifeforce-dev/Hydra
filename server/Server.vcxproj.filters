@@ -44,5 +44,8 @@
     <ClInclude Include="GameServer.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
+    <ClInclude Include="ClientSessionEvents.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -103,11 +103,7 @@ void NetworkHelper::QueueMessage(MessageId type, const std::string& message)
 
 void NetworkHelper::HandleMessages(const std::vector<NetworkMessage>& messages)
 {
-	// Test each message type and handle accordingly.
-	NotifyObservers([&messages](NetworkObserver* observer)
-	{
-		observer->OnMessagesReceived(std::move(messages));
-	});
+
 }
 
 //===============================================================================
