@@ -3,15 +3,13 @@
 // main.cpp
 //
 
-#include "common/Log.h"
-#include "common/NetworkHelper.h"
-#include "server/GameServer.h"
+#include "server/Game.h"
 
 #include <memory>
 
 int main()
 {
-	Server::GameServer server;
-	server.Run();
+	Server::Game game;
+	game.Run();
 	return 0;
 }
