@@ -34,7 +34,6 @@ GameScene::GameScene(GameController* gameController, sf::RenderWindow* window)
 {
 	if (!m_font->loadFromFile(s_fontPath))
 	{
-		LOG_DEBUG("Error: Could not find font. path=" + s_fontPath);
 	}
 }
 

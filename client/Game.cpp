@@ -8,6 +8,7 @@
 #include "common/Log.h"
 #include "client/GameController.h"
 #include "client/NetworkController.h"
+#include <SFML/Graphics.hpp>
 
 namespace Client {
 
@@ -32,7 +33,6 @@ void Game::ConnectToServer()
 
 	if (m_networkController->IsConnected())
 	{
-		LOG_DEBUG("Successfully connected to server.");
 	}
 }
 

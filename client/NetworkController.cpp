@@ -70,10 +70,6 @@ bool NetworkController::IsConnected() const
 void NetworkController::OnConnectedToServer()
 {
 	const ClientTcpSocket& socket = *m_socket.get();
-	LOG_DEBUG("Connection attempt succeeded."
-		" remote-ip=" + socket.getRemoteAddress().toString() +
-		" remote-port=" + std::to_string(socket.getRemotePort()) +
-		" local-port=" + std::to_string(socket.getLocalPort()));
 }
 
 void NetworkController::UpdateConnectionStatus()
