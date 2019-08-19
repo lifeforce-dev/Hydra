@@ -283,11 +283,6 @@ void GameClient::PostMessageToServer(std::string message)
 	});
 }
 
-bool GameClient::IsConnected()
-{
-	return m_sessionConnector->IsConnected();
-}
-
 //===============================================================================
 
 } // namespace Client
