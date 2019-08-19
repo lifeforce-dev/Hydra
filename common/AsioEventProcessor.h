@@ -9,6 +9,8 @@
 
 namespace Common {
 
+//===============================================================================
+
 class AsioEventProcessor
 {
 public:
@@ -33,5 +35,7 @@ private:
 	std::thread m_thread;
 	bool m_isReady = false;
 };
+
+//===============================================================================
 
 } // namespace common

@@ -11,6 +11,8 @@
 
 namespace Common {
 
+//===============================================================================
+
 namespace {
 	std::shared_ptr<spdlog::logger> s_logger;
 } // anon namespace
@@ -58,5 +60,7 @@ void AsioEventProcessor::DoRun()
 			ec.value());
 	}
 }
+
+//===============================================================================
 
 } // namespace common
