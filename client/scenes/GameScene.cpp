@@ -6,7 +6,6 @@
 #include "GameScene.h"
 
 #include "client/GameController.h"
-#include "client/NetworkController.h"
 #include "common/Log.h"
 #include "common/NetworkMessageParser.h"
 #include "common/NetworkTypes.h"

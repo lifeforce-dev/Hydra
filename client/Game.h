@@ -21,8 +21,9 @@ namespace sf {
 namespace Client {
 
 //===============================================================================
+
+class GameClient;
 class GameController;
-class NetworkController;
 class Game
 {
 
@@ -34,7 +35,6 @@ public:
 	void PostToMainThread(const std::function<void()>& cb);
 
 	sf::RenderWindow* GetMainWindow() { return m_mainWindow.get(); }
-	NetworkController* GetNetworkController() { return m_networkController.get(); }
 
 private:
 	void ConnectToServer();
@@ -49,8 +49,9 @@ private:
 
 	// Don't reorder these.
 	std::unique_ptr<sf::RenderWindow> m_mainWindow;
-	std::unique_ptr<NetworkController> m_networkController;
 	std::unique_ptr<GameController> m_gameController;
+
+	std::unique_ptr<GameClient> m_client;
 };
 
 //===============================================================================

@@ -30,7 +30,6 @@ public:
 private:
 	void Initialize();
 	Game* m_game;
-	NetworkController* m_networkController;
 	std::unique_ptr<GameScene> m_gameScene;
 
 	bool m_isInitialized = false;

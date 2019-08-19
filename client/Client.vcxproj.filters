@@ -48,7 +48,7 @@
     <ClCompile Include="GameController.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkController.cpp">
+    <ClCompile Include="GameClient.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,11 +65,11 @@
     <ClInclude Include="GameController.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkController.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClient.h">
+      <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

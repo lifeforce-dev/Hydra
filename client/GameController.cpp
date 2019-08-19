@@ -6,7 +6,6 @@
 #include "GameController.h"
 
 #include "client/Game.h"
-#include "client/NetworkController.h"
 #include "client/scenes/GameScene.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -27,7 +26,6 @@ GameController::~GameController()
 
 void GameController::Initialize()
 {
-	m_networkController = m_game->GetNetworkController();
 	m_gameScene = std::make_unique<GameScene>(this, m_game->GetMainWindow());
 }
 
@@ -38,7 +36,6 @@ void GameController::Run()
 		Initialize();
 	}
 
-	m_networkController->Process();
 	m_gameScene->ProcessEvents();
 	m_gameScene->Update();
 	m_gameScene->Draw();
