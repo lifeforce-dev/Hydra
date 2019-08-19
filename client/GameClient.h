@@ -18,7 +18,6 @@ namespace Client {
 
 class Game;
 class TcpSessionConnector;
-class TcpSession;
 class GameClient {
 
 friend class TcpSessionConnector;

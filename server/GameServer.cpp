@@ -8,6 +8,7 @@
 #include "common/Log.h"
 #include "common/NetworkMessageParser.h"
 #include "common/NetworkTypes.h"
+#include "common/TcpSession.h"
 #include "server/ClientSessionEvents.h"
 #include "server/Game.h"
 
@@ -35,150 +36,30 @@ std::shared_ptr<spdlog::logger> s_logger;
 
 //-------------------------------------------------------------------------------
 
-class TcpSession : public std::enable_shared_from_this<TcpSession> {
+class ClientTcpSession : public std::enable_shared_from_this<ClientTcpSession> {
 
 public:
-	TcpSession(tcp::socket socket, uint32_t id)
-		: m_socket(std::move(socket))
+	ClientTcpSession(tcp::socket socket, uint32_t id)
+		: m_session(std::make_shared<Common::TcpSession>(std::move(socket),
+			"ServerClient-" + std::to_string(id)))
 		, m_clientId(id)
-		, m_parser(std::make_unique<Common::NetworkMessageParser>())
 	{
-		m_buffer.reserve(32768);
-		m_buffer.resize(32768);
 	}
 
-	TcpSession(const TcpSession& other) = delete;
-	bool operator==(TcpSession& other)
+	ClientTcpSession(const ClientTcpSession& other) = delete;
+	bool operator==(ClientTcpSession& other)
 	{
 		return other.m_clientId == m_clientId;
 	}
 
-	bool IsStopped() const { return !m_socket.is_open(); }
-
-	void Start()
-	{
-		SPDLOG_LOGGER_INFO(s_logger, "Created session. id={}", m_clientId);
-		m_socket.async_wait(tcp::socket::wait_read,
-			std::bind(&TcpSession::OnWaitReadComplete,
-				shared_from_this(),
-				std::placeholders::_1));
-	}
-
-	void OnWaitReadComplete(const std::error_code& ec)
-	{
-		if (ec)
-		{
-			SPDLOG_LOGGER_ERROR(s_logger,
-				"Error waiting for socket to be read ready. ec= {} ecc= {}",
-				ec.value(), ec.category().name());
-			return;
-		}
-		DoRead();
-	}
-
-	void Stop()
-	{
-		m_socket.close();
-	}
-
-	void Write(std::string data)
-	{
-		m_outputBuffer.push_back(std::move(data));
-
-		// Ensure that we're only processing one at a time. Begins async loop.
-		if (m_writeReady && m_outputBuffer.size() == 1)
-		{
-			DoWrite(data);
-		}
-	}
-
 	uint32_t GetClientId() { return m_clientId; }
+	std::shared_ptr<Common::TcpSession> GetSession() { return m_session; }
 
-private:
-	void DoRead()
-	{
-		asio::async_read(m_socket,
-			asio::buffer(m_buffer,
-			m_buffer.size()),
-			asio::transfer_at_least(56),
-			std::bind(&TcpSession::OnDoRead,
-				shared_from_this(),
-				std::placeholders::_1,
-				std::placeholders::_2));
-	}
-
-	void OnDoRead(const std::error_code& ec, std::size_t bytesRead)
-	{
-		if (IsStopped())
-			return;
-
-		if (ec)
-		{
-			SPDLOG_LOGGER_ERROR(s_logger, "Error readiung data from client. ec= {} ecc= {} bytes written= {}",
-				ec.value(), ec.category().name(), bytesRead);
-			if (ec != asio::error::operation_aborted)
-			{
-				Stop();
-			}
-			return;
-		}
-
-		// TODO
-		//m_parser->ExtractMessages(m_buffer, m_messages);
-		//HandleMessages();
-
-		DoRead();
-	}
-
-	void HandleMessages()
-	{
-		// NYI
-		m_messages.clear();
-	}
-
-	void DoWrite(const std::string& data)
-	{
-		asio::async_write(m_socket, asio::buffer(std::move(data)),
-			std::bind(&TcpSession::OnDoWrite,
-				shared_from_this(),
-				std::placeholders::_1,
-				std::placeholders::_2));
-	}
-
-	void OnDoWrite(const std::error_code& ec, uint32_t bytesWritten)
-	{
-		if (ec)
-		{
-			SPDLOG_LOGGER_ERROR(s_logger, "Error writing data. ec= {} ecc= {} bytes written= {}",
-				ec.value(), ec.category().name(), bytesWritten);
-
-			if (ec != asio::error::operation_aborted)
-			{
-				Stop();
-			}
-		}
-	}
-
-	// Indicates that the socket is ready to be written to.
-	bool m_writeReady = false;
-
-	// Messages are written one at a time. Store a backlog of them.
-	std::deque<std::string> m_outputBuffer;
+	// The current TcpSession for this client id.
+	std::shared_ptr<Common::TcpSession> m_session;
 
 	// Identifier for the client.
 	uint32_t m_clientId = 0;
-
-	// The connected socket.
-	tcp::socket m_socket;
-
-	// Filled with data over the wire before parsing.
-	std::string m_buffer;
-
-	// Will parse messages that we get over the wire.
-	std::unique_ptr<Common::NetworkMessageParser> m_parser;
-
-	// Parsed messages from over the wire.
-	std::vector<Common::NetworkMessage> m_messages;
 };
 
 //-------------------------------------------------------------------------------
@@ -196,8 +77,8 @@ public:
 	void CreateSession(tcp::socket socket)
 	{
 		uint32_t clientId = m_nextId++;
-		auto newSession = std::make_shared<TcpSession>(std::move(socket), clientId);
-		newSession->Start();
+		auto newSession = std::make_shared<ClientTcpSession>(std::move(socket), clientId);
+		newSession->GetSession()->Start();
 		m_sessions.insert(newSession);
 
 		m_server->m_game->PostToMainThread([this, clientId]()
@@ -211,7 +92,7 @@ public:
 		auto session = GetSessionById(clientId);
 		if (session)
 		{
-			session->Stop();
+			session->GetSession()->Stop();
 		}
 	}
 
@@ -221,15 +102,15 @@ public:
 		{
 			if (session)
 			{
-				session->Stop();
+				session->GetSession()->Stop();
 			}
 		}
 	}
 
-	const std::shared_ptr<TcpSession> GetSessionById(uint32_t clientId) const
+	const std::shared_ptr<ClientTcpSession> GetSessionById(uint32_t clientId) const
 	{
 		auto it = std::find_if(std::cbegin(m_sessions), std::cend(m_sessions),
-			[clientId](const std::shared_ptr<TcpSession>& session)
+			[clientId](const std::shared_ptr<ClientTcpSession>& session)
 			{
 				return session->GetClientId() == clientId;
 			});
@@ -248,7 +129,7 @@ public:
 	std::atomic<uint32_t> m_nextId{ 0 };
 
 	// Store sessions here.
-	std::set<std::shared_ptr<TcpSession>> m_sessions;
+	std::set<std::shared_ptr<ClientTcpSession>> m_sessions;
 
 	// Pointer to parent.
 	GameServer* m_server;
@@ -388,11 +269,11 @@ void GameServer::Stop()
 
 void GameServer::PostMessageToClient(uint32_t clientId, std::string message)
 {
-	if (std::shared_ptr<TcpSession> session = m_sessionManager->GetSessionById(clientId))
+	if (std::shared_ptr<ClientTcpSession> session = m_sessionManager->GetSessionById(clientId))
 	{
 		m_asioEventProcessor->Post([session, message{std::move(message)}]()
 		{
-			session->Write(message);
+			session->GetSession()->Write(message);
 		});
 	}
 }

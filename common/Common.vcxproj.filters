@@ -51,6 +51,9 @@
     <ClCompile Include="AsioEventProcessor.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
+    <ClCompile Include="TcpSession.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetworkTypes.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="AsioEventProcessor.h">
       <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpSession.h">
+      <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
