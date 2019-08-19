@@ -140,7 +140,6 @@
     <ClCompile Include="AsioEventProcessor.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="NetworkHelper.cpp" />
     <ClCompile Include="NetworkMessageParser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +147,6 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameTypes.h" />
     <ClInclude Include="Log.h" />
-    <ClInclude Include="NetworkHelper.h" />
     <ClInclude Include="NetworkMessageParser.h" />
     <ClInclude Include="NetworkTypes.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
