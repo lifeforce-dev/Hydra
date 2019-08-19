@@ -41,7 +41,7 @@ public:
 	bool IsRunning() const { return m_isRunning; };
 
 	// Posts a serialized message to the specified client.
-	void PostMessageToClient(uint32_t clientId, const std::string& message);
+	void PostMessageToClient(uint32_t clientId, std::string message);
 
 	// Returns number of connected clients.
 	uint32_t GetConnectionClientCount() const { return m_currentConnectionCount; }

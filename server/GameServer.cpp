@@ -48,12 +48,31 @@ public:
 	}
 
 	TcpSession(const TcpSession& other) = delete;
+	bool operator==(TcpSession& other)
+	{
+		return other.m_clientId == m_clientId;
+	}
 
 	bool IsStopped() const { return !m_socket.is_open(); }
 
 	void Start()
 	{
 		SPDLOG_LOGGER_INFO(s_logger, "Created session. id={}", m_clientId);
+		m_socket.async_wait(tcp::socket::wait_read,
+			std::bind(&TcpSession::OnWaitReadComplete,
+				shared_from_this(),
+				std::placeholders::_1));
+	}
+
+	void OnWaitReadComplete(const std::error_code& ec)
+	{
+		if (ec)
+		{
+			SPDLOG_LOGGER_ERROR(s_logger,
+				"Error waiting for socket to be read ready. ec= {} ecc= {}",
+				ec.value(), ec.category().name());
+			return;
+		}
 		DoRead();
 	}
 
@@ -62,9 +81,12 @@ public:
 		m_socket.close();
 	}
 
-	void Write(const std::string& data)
+	void Write(std::string data)
 	{
-		if (m_socket.is_open())
+		m_outputBuffer.push_back(std::move(data));
+
+		// Ensure that we're only processing one at a time. Begins async loop.
+		if (m_writeReady && m_outputBuffer.size() == 1)
 		{
 			DoWrite(data);
 		}
@@ -75,22 +97,25 @@ public:
 private:
 	void DoRead()
 	{
-		asio::async_read(m_socket, asio::buffer(m_buffer),
+		asio::async_read(m_socket,
+			asio::buffer(m_buffer,
+			m_buffer.size()),
+			asio::transfer_at_least(56),
 			std::bind(&TcpSession::OnDoRead,
 				shared_from_this(),
 				std::placeholders::_1,
 				std::placeholders::_2));
 	}
 
-	void OnDoRead(const std::error_code& ec, std::size_t bytesTransferred)
+	void OnDoRead(const std::error_code& ec, std::size_t bytesRead)
 	{
 		if (IsStopped())
 			return;
 
 		if (ec)
 		{
-			SPDLOG_LOGGER_ERROR(s_logger, "Error reading data. clientId= {} ec= {}",
-				m_clientId, ec.value());
+			SPDLOG_LOGGER_ERROR(s_logger, "Error readiung data from client. ec= {} ecc= {} bytes written= {}",
+				ec.value(), ec.category().name(), bytesRead);
 			if (ec != asio::error::operation_aborted)
 			{
 				Stop();
@@ -98,8 +123,9 @@ private:
 			return;
 		}
 
-		m_parser->ExtractMessages(m_buffer, m_messages);
-		HandleMessages();
+		// TODO
+		//m_parser->ExtractMessages(m_buffer, m_messages);
+		//HandleMessages();
 
 		DoRead();
 	}
@@ -123,8 +149,8 @@ private:
 	{
 		if (ec)
 		{
-			SPDLOG_LOGGER_ERROR(s_logger, "Error writing data. ec= {} bytes written= {}",
-				ec.value(), bytesWritten);
+			SPDLOG_LOGGER_ERROR(s_logger, "Error writing data. ec= {} ecc= {} bytes written= {}",
+				ec.value(), ec.category().name(), bytesWritten);
 
 			if (ec != asio::error::operation_aborted)
 			{
@@ -132,6 +158,12 @@ private:
 			}
 		}
 	}
+
+	// Indicates that the socket is ready to be written to.
+	bool m_writeReady = false;
+
+	// Messages are written one at a time. Store a backlog of them.
+	std::deque<std::string> m_outputBuffer;
 
 	// Identifier for the client.
 	uint32_t m_clientId = 0;
@@ -164,8 +196,10 @@ public:
 	void CreateSession(tcp::socket socket)
 	{
 		uint32_t clientId = m_nextId++;
-		std::make_shared<TcpSession>(std::move(socket), clientId)->Start();
-		
+		auto newSession = std::make_shared<TcpSession>(std::move(socket), clientId);
+		newSession->Start();
+		m_sessions.insert(newSession);
+
 		m_server->m_game->PostToMainThread([this, clientId]()
 		{
 			m_server->GetEvents().GetSessionCreatedEvent().notify(clientId);
@@ -214,7 +248,7 @@ public:
 	std::atomic<uint32_t> m_nextId{ 0 };
 
 	// Store sessions here.
-	std::vector<std::shared_ptr<TcpSession>> m_sessions;
+	std::set<std::shared_ptr<TcpSession>> m_sessions;
 
 	// Pointer to parent.
 	GameServer* m_server;
@@ -265,6 +299,9 @@ public:
 				ec.value());
 			return;
 		}
+
+		asio::socket_base::reuse_address option(true);
+		acceptor.set_option(option);
 
 		m_acceptor = std::move(acceptor);
 
@@ -333,7 +370,8 @@ GameServer::GameServer(Game* game)
 
 void GameServer::Start()
 {
-	m_listener = std::make_shared<TcpListener>(m_asioEventProcessor->GetIoService(), m_sessionManager.get());
+	m_listener = std::make_shared<TcpListener>(m_asioEventProcessor->GetIoService(),
+		m_sessionManager.get());
 	m_listener->Run();
 
 	m_asioEventProcessor->Run();
@@ -348,9 +386,9 @@ void GameServer::Stop()
 	m_sessionManager->DestroyAllSessions();
 }
 
-void GameServer::PostMessageToClient(uint32_t clientId, const std::string& message)
+void GameServer::PostMessageToClient(uint32_t clientId, std::string message)
 {
-	if (const std::shared_ptr<TcpSession>& session = std::move(m_sessionManager->GetSessionById(clientId)))
+	if (std::shared_ptr<TcpSession> session = m_sessionManager->GetSessionById(clientId))
 	{
 		m_asioEventProcessor->Post([session, message{std::move(message)}]()
 		{
