@@ -87,11 +87,6 @@ private:
 		m_isConnected = true;
 		m_session = std::make_shared<Common::TcpSession>(std::move(m_socket), "Client::GameClient");
 		m_session->Start();
-
-		//for (int i = 0; i < 10; ++i)
-		//{
-		//	m_session->Write("1 ");
-		//}
 	}
 
 	// Empty after connected.

@@ -99,19 +99,16 @@ void TcpSession::OnWaitReadComplete(const std::error_code& ec)
 
 void TcpSession::DoRead()
 {
-	asio::async_read(m_socket,
-		asio::buffer(m_inputBuffer,
-			m_inputBuffer.size()),
-		asio::transfer_at_least(2),
+	m_socket.async_read_some(asio::buffer(m_inputBuffer),
 		std::bind(&TcpSession::OnDoRead,
 			shared_from_this(),
 			std::placeholders::_1,
-			std::placeholders::_2));
+			std::placeholders::_2)
+	);
 }
 
 void TcpSession::OnDoRead(const std::error_code ec, std::size_t bytesRead)
 {
-
 	if (IsStopped())
 	{
 		m_inputBuffer.clear();
@@ -125,16 +122,14 @@ void TcpSession::OnDoRead(const std::error_code ec, std::size_t bytesRead)
 		{
 			Stop();
 		}
-		m_inputBuffer.clear();
 		return;
 	}
 
-	//if (bytesRead > 0)
-	//{
-	//	SPDLOG_LOGGER_INFO(s_logger, m_inputBuffer.substr(0, bytesRead));
-	//}
-
-	m_inputBuffer.clear();
+	if (!m_messages.empty())
+	{
+		m_parser->ExtractMessages(m_inputBuffer, m_messages);
+		// TODO: Notify that we have messages;
+	}
 }
 
 void TcpSession::DoWrite()
