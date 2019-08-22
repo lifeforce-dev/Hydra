@@ -8,9 +8,6 @@
 #include "client/Game.h"
 #include "client/scenes/GameScene.h"
 
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Window/VideoMode.hpp>
-
 namespace Client {
 
 //===============================================================================
@@ -26,7 +23,7 @@ GameController::~GameController()
 
 void GameController::Initialize()
 {
-	m_gameScene = std::make_unique<GameScene>(this, m_game->GetMainWindow());
+	// TODO: init game module and pass main window (render window).
 }
 
 void GameController::Run()

@@ -8,18 +8,15 @@
 #include "common/Log.h"
 #include "client/GameClient.h"
 #include "client/GameController.h"
-#include <SFML/Graphics.hpp>
 
 namespace Client {
 
 //===============================================================================
 
 Game::Game()
-	: m_mainWindow(std::make_unique<sf::RenderWindow>(sf::VideoMode(640, 480), "Hydra"))
-	, m_gameController(std::make_unique<GameController>(this))
+	: m_gameController(std::make_unique<GameController>(this))
 	, m_client(std::make_unique<GameClient>(this))
 {
-	m_mainWindow->setFramerateLimit(60);
 }
 
 Game::~Game()
@@ -54,7 +51,8 @@ void Game::Run()
 {
 	ConnectToServer();
 
-	while (m_mainWindow->isOpen())
+	// TODO: while main window is open.
+	while (false)
 	{
 		ProcessCallbackQueue();
 		m_gameController->Run();

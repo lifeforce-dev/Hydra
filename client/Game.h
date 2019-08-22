@@ -8,8 +8,6 @@
 
 #include "common/ThreadSafeQueue.h"
 
-#include <SFML/Graphics/RenderWindow.hpp>
-
 #include <memory>
 #include <functional>
 #include <deque>
@@ -34,7 +32,8 @@ public:
 	void Run();
 	void PostToMainThread(const std::function<void()>& cb);
 
-	sf::RenderWindow* GetMainWindow() { return m_mainWindow.get(); }
+	// TODO: 
+	// GetMainWindow()
 
 private:
 	void ConnectToServer();
@@ -48,7 +47,8 @@ private:
 	std::deque<std::function<void()>> m_processCbQueue;
 
 	// Don't reorder these.
-	std::unique_ptr<sf::RenderWindow> m_mainWindow;
+	// TODO:
+	// unique_ptr SDL window, w/e that means
 	std::unique_ptr<GameController> m_gameController;
 
 	std::unique_ptr<GameClient> m_client;

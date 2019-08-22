@@ -7,13 +7,7 @@
 
 #include "client/scenes/Scene.h"
 
-#include <SFML/Window/Event.hpp>
 #include <memory>
-
-namespace sf {
-	class RenderWindow;
-	class Font;
-}
 
 namespace Common {
 	class Connection;
@@ -30,10 +24,10 @@ class GameController;
 class GameScene : public Scene
 {
 public:
-	GameScene(GameController* gameController, sf::RenderWindow* window);
+	GameScene(GameController* gameController);
 	~GameScene();
 
-	// Screen impl.
+	// Scene impl.
 
 	// Will pump all event queues here.
 	virtual void ProcessEvents() override;
@@ -45,15 +39,7 @@ public:
 	// Called in the event loop.
 	virtual void Draw() override;
 
-	//---------------------------------------------------------------------------
-
 private:
-	void HandleKeyPress(const sf::Event::KeyEvent& e);
-	void SendTestMessageToServer();
-
-private:
-	sf::RenderWindow* m_window;
-	std::unique_ptr<sf::Font> m_font;
 	GameController* m_application;
 };
 
