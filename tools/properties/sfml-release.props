@@ -6,11 +6,11 @@
   <ItemDefinitionGroup>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)build\$(Configuration)\lib\;$(SolutionDir)dependencies\sfml\extlibs\libs\x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Common.lib;sfml-audio-s.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-network-s.lib;sfml-graphics-s.lib;opengl32.lib;winmm.lib;ws2_32.lib;freetype.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;opengl32.lib;glu32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <PreprocessorDefinitions>_MBCS;SFML_STATIC;_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;ASIO_STANDALONE;_WIN32_WINNT=0x601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..;$(ProjectDir)..\dependencies;$(ProjectDir)..\dependencies\protobuf\src;C:\source\Hydra\dependencies\asio-1.12.2\include;C:\source\Hydra\dependencies\observable\include\observable;C:\source\Hydra\dependencies\observable\include;C:\source\Hydra\dependencies\randutils;$(ProjectDir)..\dependencies\spdlog\include;$(ProjectDir)..\dependencies\sdl\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(ProjectDir)..\dependencies;$(ProjectDir)..\dependencies\protobuf\src;$(ProjectDir)..\dependencies\asio-1.12.2\include;$(ProjectDir)..\dependencies\observable\include\observable;$(ProjectDir)..\dependencies\observable\include;$(ProjectDir)..\dependencies\randutils;$(ProjectDir)..\dependencies\spdlog\include;$(ProjectDir)..\dependencies\sdl\include;$(ProjectDir)..\dependencies\imgui</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
