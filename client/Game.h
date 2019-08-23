@@ -20,6 +20,7 @@ namespace Client {
 
 //===============================================================================
 
+class MainWindow;
 class GameClient;
 class GameController;
 class Game
@@ -54,6 +55,10 @@ private:
 	std::unique_ptr<GameController> m_gameController;
 
 	std::unique_ptr<GameClient> m_client;
+
+	std::unique_ptr<MainWindow> m_mainWindow;
+
+	bool m_isInitialized = false;
 };
 
 //===============================================================================

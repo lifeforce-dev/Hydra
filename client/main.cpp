@@ -17,7 +17,10 @@ int main()
 	}
 
 	Client::Game game;
-	game.Init();
-	game.Run();
+	if (game.Init())
+	{
+		game.Run();
+	}
+
 	return 0;
 }

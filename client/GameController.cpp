@@ -14,6 +14,7 @@ namespace Client {
 
 GameController::GameController(Game* game)
 	: m_game(game)
+	, m_gameScene(std::make_unique<GameScene>(this))
 {
 }
 
