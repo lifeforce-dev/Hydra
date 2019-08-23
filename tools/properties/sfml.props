@@ -6,7 +6,7 @@
   <ItemDefinitionGroup>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)build\$(Configuration)\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glu32.lib;Common.lib;opengl32.lib;winmm.lib;version.lib;setupapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <PreprocessorDefinitions>_MBCS;SFML_STATIC;_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;ASIO_STANDALONE;_WIN32_WINNT=0x601;%(PreprocessorDefinitions)</PreprocessorDefinitions>

@@ -15,8 +15,8 @@ namespace Client {
 //===============================================================================
 
 namespace {
-	const int32_t s_screenHeight = 1920;
 	const int32_t s_screenWidth = 1920;
+	const int32_t s_screenHeight = 1080;
 
 	std::shared_ptr<spdlog::logger> s_logger;
 }
@@ -28,8 +28,8 @@ Game::Game()
 	, m_client(std::make_unique<GameClient>(this))
 	//, m_mainWindow(std::make_unique<SDL_Window>())
 {
-	REGISTER_LOGGER("GameClient");
-	s_logger = Log::Logger("GameClient");
+	REGISTER_LOGGER("Game");
+	s_logger = Log::Logger("Game");
 
 
 	Init();
@@ -49,7 +49,7 @@ bool Game::Init()
 	}
 
 	window = SDL_CreateWindow("Hydra", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		s_screenHeight, s_screenWidth, SDL_WINDOW_SHOWN);
+		s_screenWidth , s_screenHeight, SDL_WINDOW_SHOWN);
 
 	if (!window)
 	{
