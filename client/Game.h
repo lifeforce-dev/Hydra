@@ -29,17 +29,21 @@ public:
 	Game();
 	~Game();
 
-	void Run();
-	void PostToMainThread(const std::function<void()>& cb);
+	// Initialized game systems. Returns true if succesful.
+	bool Init();
 
-	// TODO: 
-	// GetMainWindow()
+	// Run the game.
+	void Run();
+
+	// Ensures that any callback passed in here gets executed on the main thread.
+	void PostToMainThread(const std::function<void()>& cb);
 
 private:
 	void ConnectToServer();
 	void ProcessCallbackQueue();
 
 private:
+
 	// Functions that need to get processed on the main thread get pushed here.
 	Common::ThreadSafeQueue<std::function<void()>> m_callbackQueue;
 
@@ -47,8 +51,6 @@ private:
 	std::deque<std::function<void()>> m_processCbQueue;
 
 	// Don't reorder these.
-	// TODO:
-	// unique_ptr SDL window, w/e that means
 	std::unique_ptr<GameController> m_gameController;
 
 	std::unique_ptr<GameClient> m_client;
