@@ -54,7 +54,7 @@ public:
 
 	void Connect()
 	{
-		SPDLOG_INFO("Attempting to connect client to server");
+		SPDLOG_LOGGER_INFO(s_logger, "Attempting to connect client to server");
 		DoConnect();
 	}
 
@@ -71,7 +71,7 @@ private:
 	{
 		if (ec)
 		{
-			SPDLOG_ERROR("Error connecting to server. ec= {}", ec.value());
+			SPDLOG_LOGGER_ERROR(s_logger, "Error connecting to server. ec= {}", ec.value());
 
 			// Server may not be running, keep trying.
 			if (ec == asio::error::connection_refused)
@@ -82,7 +82,7 @@ private:
 			return;
 		}
 
-		SPDLOG_INFO("Client connected to server.");
+		SPDLOG_LOGGER_INFO(s_logger, "Client connected to server.");
 
 		m_isConnected = true;
 		m_session = std::make_shared<Common::TcpSession>(std::move(m_socket), "Client::GameClient");
