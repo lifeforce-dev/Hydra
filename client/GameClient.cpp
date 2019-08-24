@@ -105,8 +105,8 @@ GameClient::GameClient(Game* game)
 	: m_asioEventProcessor(std::make_unique<Common::AsioEventProcessor>())
 	, m_game(game)
 {
-	REGISTER_LOGGER("GameClient");
-	s_logger = Log::Logger("GameClient");
+	REGISTER_LOGGER("Client::GameClient");
+	s_logger = Log::Logger("Client::GameClient");
 }
 
 GameClient::~GameClient()

@@ -8,7 +8,6 @@
 #include "common/Log.h"
 #include "client/GameClient.h"
 #include "client/GameController.h"
-#include "client/MainWindow.h"
 
 #include <SDL.h>
 
@@ -19,8 +18,134 @@ namespace Client {
 namespace {
 	const int32_t s_screenWidth = 1920;
 	const int32_t s_screenHeight = 1080;
+
 	std::shared_ptr<spdlog::logger> s_logger;
 }
+
+class MainWindow {
+public:
+
+	MainWindow()
+	{
+	}
+
+	~MainWindow()
+	{
+		Close();
+	}
+
+	bool Init()
+	{
+		if (m_window)
+		{
+			return true;
+		}
+
+		m_window = nullptr;
+		if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		{
+			SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize SDL. error={}", SDL_GetError());
+			return false;
+		}
+
+		m_window = SDL_CreateWindow("Hydra", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+			s_screenWidth, s_screenHeight, SDL_WINDOW_SHOWN);
+
+		if (!m_window)
+		{
+			SPDLOG_LOGGER_ERROR(s_logger, "Failed to create SDL window. error={}", SDL_GetError());
+			return false;
+		}
+
+		m_isOpen = true;
+
+		m_screenSurface = SDL_GetWindowSurface(m_window);
+
+		// Initialize surface.
+		SDL_FillRect(m_screenSurface, nullptr, SDL_MapRGB(m_screenSurface->format, 0x00, 0x00, 0x00));
+
+		if (!LoadMedia())
+		{
+			SPDLOG_LOGGER_ERROR(s_logger, "Failed to load media", SDL_GetError());
+		}
+		else
+		{
+			SDL_BlitSurface(m_fox, nullptr, m_screenSurface, nullptr);
+		}
+
+		return true;
+	}
+	
+	void Close()
+	{
+		if (m_window)
+		{
+			SDL_DestroyWindow(m_window);
+			m_window = nullptr;
+		}
+
+		if (m_fox)
+		{
+			SDL_FreeSurface(m_fox);
+			m_fox = nullptr;
+		}
+
+		SDL_Quit();
+	}
+
+	bool IsOpen()
+	{
+		return m_isOpen;
+	}
+
+	void Update()
+	{
+		HandleInput();
+
+		SDL_UpdateWindowSurface(m_window);
+	}
+
+private:
+
+	bool LoadMedia()
+	{
+		m_fox = SDL_LoadBMP("resources/sprites/fox-alpha.bmp");
+		if (!m_fox)
+		{
+			SPDLOG_LOGGER_ERROR(s_logger, "Failed to load fox.bmp", SDL_GetError());
+			return false;
+		}
+
+		return true;
+	}
+
+	void HandleInput()
+	{
+		SDL_Event e;
+		while (SDL_PollEvent(&e) != 0)
+		{
+			// Handle Quit
+			if (e.type == SDL_QUIT)
+			{
+				m_isOpen = false;
+			}
+		}
+	}
+
+private:
+
+	// Whether the window is open or not.
+	bool m_isOpen = false;
+
+	// The window we will render to.
+	SDL_Window* m_window = nullptr;
+
+	// The rendering surface covering the entire rendering pane of the window.
+	SDL_Surface* m_screenSurface = nullptr;
+
+	// Fox image data
+	SDL_Surface* m_fox = nullptr;
+};
 
 //-------------------------------------------------------------------------------
 
@@ -80,7 +205,7 @@ void Game::Run()
 	{
 		ProcessCallbackQueue();
 		m_gameController->Run();
-		m_mainWindow->Process();
+		m_mainWindow->Update();
 	}
 }
 
