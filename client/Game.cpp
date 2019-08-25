@@ -9,6 +9,7 @@
 #include "client/GameClient.h"
 #include "client/GameController.h"
 
+#include <algorithm>
 #include <SDL.h>
 
 namespace Client {
@@ -20,7 +21,19 @@ namespace {
 	const int32_t s_screenHeight = 1080;
 
 	std::shared_ptr<spdlog::logger> s_logger;
+
 }
+
+enum struct ImageKey : uint16_t
+{
+	None = 0,
+	Up,
+	Down,
+	Left,
+	Right
+};
+
+using SDL_SurfacePtr = std::unique_ptr < SDL_Surface, decltype(&SDL_FreeSurface)>;
 
 class MainWindow {
 public:
@@ -70,7 +83,7 @@ public:
 		}
 		else
 		{
-			SDL_BlitSurface(m_fox, nullptr, m_screenSurface, nullptr);
+			SDL_BlitSurface(m_currentSurface, nullptr, m_screenSurface, nullptr);
 		}
 
 		return true;
@@ -84,11 +97,7 @@ public:
 			m_window = nullptr;
 		}
 
-		if (m_fox)
-		{
-			SDL_FreeSurface(m_fox);
-			m_fox = nullptr;
-		}
+		m_currentSurface = nullptr;
 
 		SDL_Quit();
 	}
@@ -102,6 +111,7 @@ public:
 	{
 		HandleInput();
 
+		SDL_BlitSurface(m_currentSurface, nullptr, m_screenSurface, nullptr);
 		SDL_UpdateWindowSurface(m_window);
 	}
 
@@ -109,14 +119,29 @@ private:
 
 	bool LoadMedia()
 	{
-		m_fox = SDL_LoadBMP("resources/sprites/fox-alpha.bmp");
-		if (!m_fox)
-		{
-			SPDLOG_LOGGER_ERROR(s_logger, "Failed to load fox.bmp", SDL_GetError());
-			return false;
-		}
+		m_keySurfaces.emplace(ImageKey::Up, std::move(LoadSurfaceFromPath("resources/icons/up.bmp")));
+		m_keySurfaces.emplace(ImageKey::Down, std::move(LoadSurfaceFromPath("resources/icons/down.bmp")));
+		m_keySurfaces.emplace(ImageKey::Left, std::move(LoadSurfaceFromPath("resources/icons/left.bmp")));
+		m_keySurfaces.emplace(ImageKey::Right, std::move(LoadSurfaceFromPath("resources/icons/right.bmp")));
 
-		return true;
+		return std::all_of(std::cbegin(m_keySurfaces), std::cend(m_keySurfaces),
+			[](const auto& surface)
+		{
+			return surface.second != nullptr;
+		});
+	}
+
+	SDL_SurfacePtr LoadSurfaceFromPath(const std::string& path)
+	{
+		SDL_SurfacePtr s(SDL_LoadBMP(path.c_str()), SDL_FreeSurface);
+		if (!s)
+		{
+			SPDLOG_LOGGER_ERROR(s_logger, "Failed to load resource. error{} resource{}",
+				SDL_GetError(), path);
+
+			return SDL_SurfacePtr(nullptr, SDL_FreeSurface);
+		}
+		return s;
 	}
 
 	void HandleInput()
@@ -128,6 +153,26 @@ private:
 			if (e.type == SDL_QUIT)
 			{
 				m_isOpen = false;
+			}
+			else if (e.type == SDL_KEYDOWN)
+			{
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_UP:
+					m_currentSurface = m_keySurfaces.at(ImageKey::Up).get();
+					break;
+				case SDLK_DOWN:
+					m_currentSurface = m_keySurfaces.at(ImageKey::Down).get();
+					break;
+				case SDLK_LEFT:
+					m_currentSurface = m_keySurfaces.at(ImageKey::Left).get();
+					break;
+				case SDLK_RIGHT:
+					m_currentSurface = m_keySurfaces.at(ImageKey::Up).get();
+					break;
+				default:
+					break;
+				}
 			}
 		}
 	}
@@ -143,8 +188,11 @@ private:
 	// The rendering surface covering the entire rendering pane of the window.
 	SDL_Surface* m_screenSurface = nullptr;
 
-	// Fox image data
-	SDL_Surface* m_fox = nullptr;
+	// Pointer to the current image data we're rendering.
+	SDL_Surface*  m_currentSurface = nullptr;
+
+	// Map of image keys to image data.
+	std::unordered_map<ImageKey, SDL_SurfacePtr> m_keySurfaces;
 };
 
 //-------------------------------------------------------------------------------
