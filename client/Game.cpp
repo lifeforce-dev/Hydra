@@ -33,7 +33,13 @@ enum struct ImageKey : uint16_t
 	Right
 };
 
-using SDL_SurfacePtr = std::unique_ptr < SDL_Surface, decltype(&SDL_FreeSurface)>;
+enum struct Feature : uint16_t
+{
+	KeyPresses,
+	StretchImages
+};
+
+using SDL_SurfacePtr = std::unique_ptr <SDL_Surface, decltype(&SDL_FreeSurface)>;
 
 class MainWindow {
 public:
@@ -111,11 +117,63 @@ public:
 	{
 		HandleInput();
 
-		SDL_BlitSurface(m_currentSurface, nullptr, m_screenSurface, nullptr);
+		SDL_Surface* renderSurface = nullptr;
+
+		switch (m_currentFeature)
+		{
+		case Feature::KeyPresses:
+			HandleTransitioningFeatures();
+			renderSurface = m_currentSurface;
+			SDL_BlitSurface(renderSurface, nullptr, m_screenSurface, nullptr);
+			break;
+		case Feature::StretchImages:
+			HandleTransitioningFeatures();
+			renderSurface = m_foxSurface.get();
+			if (!renderSurface)
+			{
+				SPDLOG_LOGGER_ERROR(s_logger, "Failed to optimize surface");
+			}
+			SDL_BlitScaled(m_foxSurface.get(), nullptr, m_screenSurface, &m_foxRect);
+			break;
+		default:
+			break;
+		}
+
 		SDL_UpdateWindowSurface(m_window);
 	}
 
 private:
+
+	// Handle any initialization that needs to happen when transitioning features.
+	void HandleTransitioningFeatures()
+	{
+		if (!m_justTransitionedFeatures)
+		{
+			return;
+		}
+
+		switch (m_currentFeature)
+		{
+		case Feature::KeyPresses:
+			break;
+		case Feature::StretchImages:
+		{
+			// If you do this you preserve format of the screen, which doesn't have alpha.
+			//auto optimized = SDL_ConvertSurface(m_foxSurface.get(), m_screenSurface->format, 0);
+			auto optimized = SDL_ConvertSurfaceFormat(m_foxSurface.get(), SDL_PIXELFORMAT_RGBA8888, 0);
+			m_foxSurface.reset(std::move(optimized));
+			m_foxRect.x = 65;
+			m_foxRect.y = 65;
+			m_foxRect.w = 128;
+			m_foxRect.h = 128;
+		}
+			break;
+		default:
+			break;
+		}
+
+		m_justTransitionedFeatures = false;
+	}
 
 	bool LoadMedia()
 	{
@@ -140,6 +198,7 @@ private:
 				SDL_GetError(), path);
 
 			return SDL_SurfacePtr(nullptr, SDL_FreeSurface);
+
 		}
 		return s;
 	}
@@ -160,16 +219,41 @@ private:
 				{
 				case SDLK_UP:
 					m_currentSurface = m_keySurfaces.at(ImageKey::Up).get();
+					if (m_currentFeature != Feature::KeyPresses)
+					{
+						m_justTransitionedFeatures = true;
+					}
+					m_currentFeature = Feature::KeyPresses;
+					
 					break;
 				case SDLK_DOWN:
+					if (m_currentFeature != Feature::KeyPresses)
+					{
+						m_justTransitionedFeatures = true;
+					}
 					m_currentSurface = m_keySurfaces.at(ImageKey::Down).get();
+					m_currentFeature = Feature::KeyPresses;
 					break;
 				case SDLK_LEFT:
+					if (m_currentFeature != Feature::KeyPresses)
+					{
+						m_justTransitionedFeatures = true;
+					}
 					m_currentSurface = m_keySurfaces.at(ImageKey::Left).get();
+					m_currentFeature = Feature::KeyPresses;
 					break;
 				case SDLK_RIGHT:
+					if (m_currentFeature != Feature::KeyPresses)
+					{
+						m_justTransitionedFeatures = true;
+					}
 					m_currentSurface = m_keySurfaces.at(ImageKey::Up).get();
+					m_currentFeature = Feature::KeyPresses;
 					break;
+				case SDLK_f:
+					m_currentSurface = m_foxSurface.get();
+					m_currentFeature = Feature::StretchImages;
+					m_justTransitionedFeatures = true;
 				default:
 					break;
 				}
@@ -193,6 +277,14 @@ private:
 
 	// Map of image keys to image data.
 	std::unordered_map<ImageKey, SDL_SurfacePtr> m_keySurfaces;
+
+	// Image to stretch
+	SDL_SurfacePtr m_foxSurface = SDL_SurfacePtr(std::move(SDL_LoadBMP("resources/sprites/fox-alpha.bmp")), SDL_FreeSurface);
+	SDL_Rect m_foxRect;
+
+	bool m_justTransitionedFeatures = false;
+	Feature m_currentFeature = Feature::KeyPresses;
+
 };
 
 //-------------------------------------------------------------------------------
