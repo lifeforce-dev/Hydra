@@ -130,6 +130,9 @@
     <ProjectReference Include="..\common\Common.vcxproj">
       <Project>{7966f8ea-b5fe-44de-86cc-867ac0a0eed0}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\dependencies\libpng\libpng.vcxproj">
+      <Project>{d6973076-9317-4ef2-a0b8-b7a18ac0713e}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\dependencies\projects\libprotobuf.vcxproj">
       <Project>{6ececb50-9de7-4e61-beed-c377c4d87b28}</Project>
     </ProjectReference>
@@ -138,6 +141,9 @@
     </ProjectReference>
     <ProjectReference Include="..\dependencies\sdl\VisualC\SDL\SDL.vcxproj">
       <Project>{81ce8daf-ebb2-4761-8e45-b71abcca8c68}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\dependencies\zlib\zlib.vcxproj">
+      <Project>{d5fc478c-d94c-437f-9911-14f1fb7b9a2b}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

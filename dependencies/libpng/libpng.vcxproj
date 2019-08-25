@@ -53,7 +53,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v142</PlatformToolset>
@@ -63,7 +63,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
@@ -92,7 +92,7 @@
     <LinkIncremental>false</LinkIncremental>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
-    <TargetName>$(ProjectName)16</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
     <OutDir>$(ProjectDir)..\..\build\$(Configuration)\lib\</OutDir>
     <IntDir>$(ProjectDir)..\..\build\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -105,9 +105,9 @@
     <LinkIncremental>false</LinkIncremental>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
-    <TargetName>$(ProjectName)16</TargetName>
-    <OutDir>$(ProjectDir)..\..\..\..\build\$(Configuration)\lib\</OutDir>
-    <IntDir>$(ProjectDir)..\..\..\..\build\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(ProjectDir)..\..\build\$(Configuration)\lib\</OutDir>
+    <IntDir>$(ProjectDir)..\..\build\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Library|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -134,7 +134,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\zlib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>$(TreatWarningAsError)</TreatWarningAsError>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -190,13 +190,15 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\zlib\include;C:\source\Hydra\dependencies\zlib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>$(TreatWarningAsError)</TreatWarningAsError>
       <Optimization>Full</Optimization>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>zlib.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
       <Version>16</Version>
       <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)build\$(Configuration)\lib\</AdditionalLibraryDirectories>
     </Link>
