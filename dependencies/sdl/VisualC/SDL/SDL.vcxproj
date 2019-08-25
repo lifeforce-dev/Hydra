@@ -87,8 +87,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);$(DXSDK_DIR)\Include;$(ProjectDir)..\..\..\libpng</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_WINDOWS;LOAD_PNG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeader>
@@ -141,8 +141,8 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <IntrinsicFunctions>false</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);"$(DXSDK_DIR)\Include";</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;NDEBUG;_WINDOWS;HAVE_LIBC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);$(DXSDK_DIR)\Include;$(ProjectDir)..\..\..\libpng</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;HAVE_LIBC;LOAD_PNG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -213,6 +213,7 @@
     <ClInclude Include="..\..\include\SDL_gesture.h" />
     <ClInclude Include="..\..\include\SDL_haptic.h" />
     <ClInclude Include="..\..\include\SDL_hints.h" />
+    <ClInclude Include="..\..\include\SDL_image.h" />
     <ClInclude Include="..\..\include\SDL_joystick.h" />
     <ClInclude Include="..\..\include\SDL_keyboard.h" />
     <ClInclude Include="..\..\include\SDL_keycode.h" />
@@ -396,6 +397,23 @@
     <ClCompile Include="..\..\src\haptic\windows\SDL_windowshaptic.c" />
     <ClCompile Include="..\..\src\haptic\windows\SDL_xinputhaptic.c" />
     <ClCompile Include="..\..\src\hidapi\windows\hid.c" />
+    <ClCompile Include="..\..\src\IMG.c" />
+    <ClCompile Include="..\..\src\IMG_bmp.c" />
+    <ClCompile Include="..\..\src\IMG_gif.c" />
+    <ClCompile Include="..\..\src\IMG_jpg.c" />
+    <ClCompile Include="..\..\src\IMG_lbm.c" />
+    <ClCompile Include="..\..\src\IMG_pcx.c" />
+    <ClCompile Include="..\..\src\IMG_png.c" />
+    <ClCompile Include="..\..\src\IMG_pnm.c" />
+    <ClCompile Include="..\..\src\IMG_svg.c" />
+    <ClCompile Include="..\..\src\IMG_tga.c" />
+    <ClCompile Include="..\..\src\IMG_tif.c" />
+    <ClCompile Include="..\..\src\IMG_webp.c" />
+    <ClCompile Include="..\..\src\IMG_WIC.c" />
+    <ClCompile Include="..\..\src\IMG_xcf.c" />
+    <ClCompile Include="..\..\src\IMG_xpm.c" />
+    <ClCompile Include="..\..\src\IMG_xv.c" />
+    <ClCompile Include="..\..\src\IMG_xxx.c" />
     <ClCompile Include="..\..\src\joystick\hidapi\SDL_hidapijoystick.c" />
     <ClCompile Include="..\..\src\joystick\hidapi\SDL_hidapi_ps4.c" />
     <ClCompile Include="..\..\src\joystick\hidapi\SDL_hidapi_switch.c" />
