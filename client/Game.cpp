@@ -11,14 +11,15 @@
 
 #include <algorithm>
 #include <SDL.h>
+#include <SDL_image.h>
 
 namespace Client {
 
 //===============================================================================
 
 namespace {
-	const int32_t s_screenWidth = 1920;
-	const int32_t s_screenHeight = 1080;
+	const int32_t s_screenWidth = 2560;
+	const int32_t s_screenHeight = 1440;
 
 	std::shared_ptr<spdlog::logger> s_logger;
 
@@ -36,7 +37,8 @@ enum struct ImageKey : uint16_t
 enum struct Feature : uint16_t
 {
 	KeyPresses,
-	StretchImages
+	StretchImages,
+	LoadPng,
 };
 
 using SDL_SurfacePtr = std::unique_ptr <SDL_Surface, decltype(&SDL_FreeSurface)>;
@@ -117,23 +119,21 @@ public:
 	{
 		HandleInput();
 
-		SDL_Surface* renderSurface = nullptr;
-
 		switch (m_currentFeature)
 		{
 		case Feature::KeyPresses:
 			HandleTransitioningFeatures();
-			renderSurface = m_currentSurface;
-			SDL_BlitSurface(renderSurface, nullptr, m_screenSurface, nullptr);
+			SDL_BlitSurface(m_currentSurface, nullptr, m_screenSurface, nullptr);
 			break;
 		case Feature::StretchImages:
 			HandleTransitioningFeatures();
-			renderSurface = m_foxSurface.get();
-			if (!renderSurface)
-			{
-				SPDLOG_LOGGER_ERROR(s_logger, "Failed to optimize surface");
-			}
 			SDL_BlitScaled(m_foxSurface.get(), nullptr, m_screenSurface, &m_foxRect);
+			break;
+		case Feature::LoadPng:
+		{
+			HandleTransitioningFeatures();
+			SDL_BlitSurface(m_foxSurface.get(), nullptr, m_screenSurface, nullptr);
+		}
 			break;
 		default:
 			break;
@@ -160,12 +160,29 @@ private:
 		{
 			// If you do this you preserve format of the screen, which doesn't have alpha.
 			//auto optimized = SDL_ConvertSurface(m_foxSurface.get(), m_screenSurface->format, 0);
+			m_foxSurface = SDL_SurfacePtr(std::move(SDL_LoadBMP("resources/sprites/fox-alpha.bmp")), SDL_FreeSurface);
 			auto optimized = SDL_ConvertSurfaceFormat(m_foxSurface.get(), SDL_PIXELFORMAT_RGBA8888, 0);
 			m_foxSurface.reset(std::move(optimized));
 			m_foxRect.x = 65;
 			m_foxRect.y = 65;
 			m_foxRect.w = 128;
 			m_foxRect.h = 128;
+		}
+		case Feature::LoadPng:
+		{
+			int imgFlags = IMG_INIT_PNG;
+			if (!(IMG_Init(imgFlags) & imgFlags))
+			{
+				SPDLOG_LOGGER_ERROR(s_logger, "Failed to load png. error= {}", IMG_GetError());
+				return;
+			}
+			m_foxSurface = SDL_SurfacePtr(std::move(IMG_Load("resources/sprites/fox-alpha.png")), SDL_FreeSurface);
+			auto optimized = SDL_ConvertSurfaceFormat(m_foxSurface.get(), SDL_PIXELFORMAT_RGBA8888, 0);
+			if (!optimized)
+			{
+				SPDLOG_LOGGER_ERROR(s_logger, "Failed to load png. error= {}", SDL_GetError());
+				return;
+			}
 		}
 			break;
 		default:
@@ -254,6 +271,10 @@ private:
 					m_currentSurface = m_foxSurface.get();
 					m_currentFeature = Feature::StretchImages;
 					m_justTransitionedFeatures = true;
+				case SDLK_p:
+					m_currentSurface = m_foxSurface.get();
+					m_currentFeature = Feature::LoadPng;
+					m_justTransitionedFeatures = true;
 				default:
 					break;
 				}
@@ -279,7 +300,7 @@ private:
 	std::unordered_map<ImageKey, SDL_SurfacePtr> m_keySurfaces;
 
 	// Image to stretch
-	SDL_SurfacePtr m_foxSurface = SDL_SurfacePtr(std::move(SDL_LoadBMP("resources/sprites/fox-alpha.bmp")), SDL_FreeSurface);
+	SDL_SurfacePtr m_foxSurface = SDL_SurfacePtr(nullptr, SDL_FreeSurface);
 	SDL_Rect m_foxRect;
 
 	bool m_justTransitionedFeatures = false;
