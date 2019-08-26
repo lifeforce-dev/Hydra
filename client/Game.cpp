@@ -369,8 +369,8 @@ private:
 	Feature m_currentFeature = Feature::KeyPresses;
 
 	// Hardware accelerated rendering.
-	SDL_TexturePtr m_foxTexture = SDL_TexturePtr(nullptr, SDL_DestroyTexture);
 	SDL_RendererPtr m_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
+	SDL_TexturePtr m_foxTexture = SDL_TexturePtr(nullptr, SDL_DestroyTexture);
 
 };
 
