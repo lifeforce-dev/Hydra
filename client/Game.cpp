@@ -39,9 +39,12 @@ enum struct Feature : uint16_t
 	KeyPresses,
 	StretchImages,
 	LoadPng,
+	HardwareAcceleration,
 };
 
-using SDL_SurfacePtr = std::unique_ptr <SDL_Surface, decltype(&SDL_FreeSurface)>;
+using SDL_SurfacePtr = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
+using SDL_TexturePtr = std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)>;
+using SDL_RendererPtr = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>;
 
 class MainWindow {
 public:
@@ -124,22 +127,32 @@ public:
 		case Feature::KeyPresses:
 			HandleTransitioningFeatures();
 			SDL_BlitSurface(m_currentSurface, nullptr, m_screenSurface, nullptr);
+			SDL_UpdateWindowSurface(m_window);
+			SDL_FillRect(m_screenSurface, nullptr, SDL_MapRGB(m_screenSurface->format, 0x00, 0x00, 0x00));
 			break;
 		case Feature::StretchImages:
 			HandleTransitioningFeatures();
 			SDL_BlitScaled(m_foxSurface.get(), nullptr, m_screenSurface, &m_foxRect);
+			SDL_UpdateWindowSurface(m_window);
+			SDL_FillRect(m_screenSurface, nullptr, SDL_MapRGB(m_screenSurface->format, 0x00, 0x00, 0x00));
 			break;
 		case Feature::LoadPng:
 		{
 			HandleTransitioningFeatures();
 			SDL_BlitSurface(m_foxSurface.get(), nullptr, m_screenSurface, nullptr);
+			SDL_UpdateWindowSurface(m_window);
+			SDL_FillRect(m_screenSurface, nullptr, SDL_MapRGB(m_screenSurface->format, 0x00, 0x00, 0x00));
+			break;
 		}
+		case Feature::HardwareAcceleration:
+			HandleTransitioningFeatures();
+			SDL_RenderClear(m_renderer.get());
+			SDL_RenderCopy(m_renderer.get(), m_foxTexture.get(), nullptr, &m_foxRect);
+			SDL_RenderPresent(m_renderer.get());
 			break;
 		default:
 			break;
 		}
-
-		SDL_UpdateWindowSurface(m_window);
 	}
 
 private:
@@ -165,9 +178,11 @@ private:
 			m_foxSurface.reset(std::move(optimized));
 			m_foxRect.x = 65;
 			m_foxRect.y = 65;
-			m_foxRect.w = 128;
-			m_foxRect.h = 128;
+			m_foxRect.w = 170;
+			m_foxRect.h = 98;
+			m_currentSurface = optimized;
 		}
+		break;
 		case Feature::LoadPng:
 		{
 			int imgFlags = IMG_INIT_PNG;
@@ -176,13 +191,56 @@ private:
 				SPDLOG_LOGGER_ERROR(s_logger, "Failed to load png. error= {}", IMG_GetError());
 				return;
 			}
-			m_foxSurface = SDL_SurfacePtr(std::move(IMG_Load("resources/sprites/fox-alpha.png")), SDL_FreeSurface);
+			m_foxSurface = SDL_SurfacePtr(std::move(IMG_Load("resources/sprites/fox-alpha.png")),
+				SDL_FreeSurface);
 			auto optimized = SDL_ConvertSurfaceFormat(m_foxSurface.get(), SDL_PIXELFORMAT_RGBA8888, 0);
 			if (!optimized)
 			{
 				SPDLOG_LOGGER_ERROR(s_logger, "Failed to load png. error= {}", SDL_GetError());
 				return;
 			}
+			m_currentSurface = optimized;
+		}
+			break;
+		case Feature::HardwareAcceleration:
+		{
+			if (!m_renderer)
+			{
+				m_renderer = SDL_RendererPtr(
+					std::move(SDL_CreateRenderer(m_window,-1, SDL_RENDERER_ACCELERATED)),
+						SDL_DestroyRenderer);
+			}
+
+			SDL_SetRenderDrawColor(m_renderer.get(), 0x00, 0x00, 0x00, 0xff);
+
+			// Load into surface
+			// Load surface into texture
+			// Render the texture.
+			int imgFlags = IMG_INIT_PNG;
+			if (!(IMG_Init(imgFlags) & imgFlags))
+			{
+				SPDLOG_LOGGER_ERROR(s_logger, "Failed to load png. error= {}", IMG_GetError());
+				return;
+			}
+			m_foxSurface = SDL_SurfacePtr(std::move(IMG_Load("resources/sprites/fox-alpha.png")),
+				SDL_FreeSurface);
+			auto optimized = SDL_ConvertSurfaceFormat(m_foxSurface.get(), SDL_PIXELFORMAT_RGBA8888, 0);
+			if (!optimized)
+			{
+				SPDLOG_LOGGER_ERROR(s_logger, "Failed to load png. error= {}", SDL_GetError());
+				return;
+			}
+			m_currentSurface = optimized;
+			m_foxTexture = SDL_TexturePtr(std::move(SDL_CreateTextureFromSurface(m_renderer.get(),
+				m_currentSurface)), SDL_DestroyTexture);
+			if (!m_foxTexture)
+			{
+				SPDLOG_LOGGER_ERROR(s_logger, "Failed to create texture. error= {}", SDL_GetError());
+			}
+			m_foxRect.x = 65;
+			m_foxRect.y = 65;
+			m_foxRect.w = 170;
+			m_foxRect.h = 98;
 		}
 			break;
 		default:
@@ -264,17 +322,21 @@ private:
 					{
 						m_justTransitionedFeatures = true;
 					}
-					m_currentSurface = m_keySurfaces.at(ImageKey::Up).get();
+					m_currentSurface = m_keySurfaces.at(ImageKey::Right).get();
 					m_currentFeature = Feature::KeyPresses;
 					break;
-				case SDLK_f:
-					m_currentSurface = m_foxSurface.get();
+				case SDLK_s:
 					m_currentFeature = Feature::StretchImages;
 					m_justTransitionedFeatures = true;
+					break;
 				case SDLK_p:
-					m_currentSurface = m_foxSurface.get();
 					m_currentFeature = Feature::LoadPng;
 					m_justTransitionedFeatures = true;
+					break;
+				case SDLK_h:
+					m_currentFeature = Feature::HardwareAcceleration;
+					m_justTransitionedFeatures = true;
+					break;
 				default:
 					break;
 				}
@@ -305,6 +367,10 @@ private:
 
 	bool m_justTransitionedFeatures = false;
 	Feature m_currentFeature = Feature::KeyPresses;
+
+	// Hardware accelerated rendering.
+	SDL_TexturePtr m_foxTexture = SDL_TexturePtr(nullptr, SDL_DestroyTexture);
+	SDL_RendererPtr m_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
 
 };
 
