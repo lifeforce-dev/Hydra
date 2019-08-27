@@ -12,10 +12,6 @@
 #include <functional>
 #include <deque>
 
-namespace sf {
-	class RenderWindow;
-}
-
 namespace Client {
 
 //===============================================================================
