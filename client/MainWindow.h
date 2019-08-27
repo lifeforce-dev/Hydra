@@ -24,13 +24,17 @@ public:
 
 	bool Init();
 	void Close();
-	bool IsOpen();
+	bool IsOpen() const;
 	void Process();
 
 private:
-	void HandleInput();
+	void HandleEvents();
+	void HandleKeyEvent(const SDL_Event& e);
+	void HandleMouseEvent(const SDL_Event& e);
+	void HandleWindowEvent(const SDL_Event& e);
 
 private:
+
 	// Whether the window is open or not.
 	bool m_isOpen = false;
 
@@ -43,6 +47,9 @@ private:
 
 	// Render state and API for rendering.
 	SDL_RendererPtr m_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
+
+	// Current key state. Owned externally.
+	const uint8_t* m_keyState = nullptr;
 };
 
 //===============================================================================

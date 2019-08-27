@@ -8,6 +8,8 @@
 #include "common/log.h"
 
 #include <SDL_image.h>
+#include <string>
+#include <sstream>
 
 namespace Client {
 
@@ -101,14 +103,14 @@ void MainWindow::Close()
 	m_window = SDL_WindowPtr(nullptr, SDL_DestroyWindow);
 }
 
-bool MainWindow::IsOpen()
+bool MainWindow::IsOpen() const
 {
 	return m_isOpen;
 }
 
 void MainWindow::Process()
 {
-	HandleInput();
+	HandleEvents();
 	SDL_RenderClear(m_renderer.get());
 	
 	// NYI Render code goes here.
@@ -116,7 +118,29 @@ void MainWindow::Process()
 	SDL_RenderPresent(m_renderer.get());
 }
 
-void MainWindow::HandleInput()
+void MainWindow::HandleEvents()
+{
+	// Pump the event queue...
+	SDL_Event e;
+	while (SDL_PollEvent(&e) != 0)
+	{
+		HandleKeyEvent(e);
+		HandleMouseEvent(e);
+		HandleWindowEvent(e);
+	}
+}
+
+void MainWindow::HandleKeyEvent(const SDL_Event& e)
+{
+	// NYI
+}
+
+void MainWindow::HandleMouseEvent(const SDL_Event& e)
+{
+	// NYI
+}
+
+void MainWindow::HandleWindowEvent(const SDL_Event& e)
 {
 	// NYI
 }
