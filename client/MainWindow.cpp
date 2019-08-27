@@ -77,8 +77,6 @@ bool MainWindow::Init()
 		SPDLOG_LOGGER_ERROR(s_logger, "Failed to create renderer", SDL_GetError());
 	}
 
-	SDL_SetRenderDrawColor(m_renderer.get(), 0x00, 0x00, 0x00, 0xff);
-
 	// Init PNG loader.
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) & imgFlags))
@@ -111,9 +109,13 @@ bool MainWindow::IsOpen() const
 void MainWindow::Process()
 {
 	HandleEvents();
+	SDL_SetRenderDrawColor(m_renderer.get(), 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(m_renderer.get());
-	
-	// NYI Render code goes here.
+
+	//Draw red square
+	SDL_Rect fillRect = { 0, 0, 150, 150 };
+	SDL_SetRenderDrawColor(m_renderer.get(), 0xFF, 0x00, 0x00, 0xFF);
+	SDL_RenderFillRect(m_renderer.get(), &fillRect);
 
 	SDL_RenderPresent(m_renderer.get());
 }
