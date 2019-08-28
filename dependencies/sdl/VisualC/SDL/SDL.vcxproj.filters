@@ -323,6 +323,7 @@
     <ClInclude Include="..\..\src\video\windows\wmmsg.h" />
     <ClInclude Include="..\..\src\video\yuv2rgb\yuv_rgb.h" />
     <ClInclude Include="..\..\include\SDL_image.h" />
+    <ClInclude Include="..\..\include\SDL_ttf.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\atomic\SDL_atomic.c" />
@@ -490,6 +491,7 @@
     <ClCompile Include="..\..\src\IMG_xpm.c" />
     <ClCompile Include="..\..\src\IMG_xv.c" />
     <ClCompile Include="..\..\src\IMG_xxx.c" />
+    <ClCompile Include="..\..\src\SDL_ttf.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\src\main\windows\version.rc" />

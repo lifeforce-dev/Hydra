@@ -87,7 +87,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);$(DXSDK_DIR)\Include;$(ProjectDir)..\..\..\libpng</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);$(DXSDK_DIR)\Include;$(ProjectDir)..\..\..\libpng;$(ProjectDir)..\..\..\freetype-2.9.1\include\freetype;$(ProjectDir)..\..\..\freetype-2.9.1\include\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_WINDOWS;LOAD_PNG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -141,7 +141,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <IntrinsicFunctions>false</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);$(DXSDK_DIR)\Include;$(ProjectDir)..\..\..\libpng</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);$(DXSDK_DIR)\Include;$(ProjectDir)..\..\..\libpng;$(ProjectDir)..\dependencies\freetype-2.9.1\include\freetype;$(ProjectDir)..\..\..\freetype-2.9.1\include\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;HAVE_LIBC;LOAD_PNG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -262,6 +262,7 @@
     <ClInclude Include="..\..\include\SDL_thread.h" />
     <ClInclude Include="..\..\include\SDL_timer.h" />
     <ClInclude Include="..\..\include\SDL_touch.h" />
+    <ClInclude Include="..\..\include\SDL_ttf.h" />
     <ClInclude Include="..\..\include\SDL_types.h" />
     <ClInclude Include="..\..\include\SDL_version.h" />
     <ClInclude Include="..\..\include\SDL_video.h" />
@@ -472,6 +473,7 @@
     <ClCompile Include="..\..\src\SDL_error.c" />
     <ClCompile Include="..\..\src\SDL_hints.c" />
     <ClCompile Include="..\..\src\SDL_log.c" />
+    <ClCompile Include="..\..\src\SDL_ttf.c" />
     <ClCompile Include="..\..\src\sensor\dummy\SDL_dummysensor.c" />
     <ClCompile Include="..\..\src\sensor\SDL_sensor.c" />
     <ClCompile Include="..\..\src\stdlib\SDL_getenv.c" />

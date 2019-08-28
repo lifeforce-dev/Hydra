@@ -131,6 +131,9 @@
     <ProjectReference Include="..\common\Common.vcxproj">
       <Project>{7966f8ea-b5fe-44de-86cc-867ac0a0eed0}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\dependencies\freetype-2.9.1\builds\windows\vc2010\freetype.vcxproj">
+      <Project>{78b079bd-9fc7-4b9e-b4a6-96da0f00248b}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\dependencies\libpng\libpng.vcxproj">
       <Project>{d6973076-9317-4ef2-a0b8-b7a18ac0713e}</Project>
     </ProjectReference>

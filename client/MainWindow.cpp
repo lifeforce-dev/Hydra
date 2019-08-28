@@ -8,6 +8,8 @@
 #include "common/log.h"
 
 #include <SDL_image.h>
+#include <SDL_ttf.h>
+
 #include <string>
 #include <sstream>
 
@@ -84,7 +86,14 @@ bool MainWindow::Init()
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) & imgFlags))
 	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to load png. error= {}", IMG_GetError());
+		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize PNG loader. error= {}", IMG_GetError());
+		return false;
+	}
+
+	// Init font loader
+	if (TTF_Init() == -1)
+	{
+		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize font loader. error={}", TTF_GetError());
 		return false;
 	}
 
