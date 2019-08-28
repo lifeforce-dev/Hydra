@@ -29,7 +29,10 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-	Close();
+	if (m_isInitialized)
+	{
+		Close();
+	}
 }
 
 bool MainWindow::Init()
@@ -61,7 +64,7 @@ bool MainWindow::Init()
 		return false;
 	}
 
-	m_isOpen = true;
+	m_isInitialized = true;
 
 	// Initialize the screen surface and renderer.
 	m_screenSurface = SDL_GetWindowSurface(m_window.get());
@@ -90,7 +93,7 @@ bool MainWindow::Init()
 
 void MainWindow::Close()
 {
-	m_isOpen = false;
+	m_isInitialized = false;
 
 	m_renderer.reset();
 	m_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
@@ -103,7 +106,7 @@ void MainWindow::Close()
 
 bool MainWindow::IsOpen() const
 {
-	return m_isOpen;
+	return m_isInitialized;
 }
 
 void MainWindow::Process()
@@ -122,13 +125,33 @@ void MainWindow::Process()
 
 void MainWindow::HandleEvents()
 {
+	m_keyState = SDL_GetKeyboardState(nullptr);
+
 	// Pump the event queue...
 	SDL_Event e;
 	while (SDL_PollEvent(&e) != 0)
 	{
-		HandleKeyEvent(e);
-		HandleMouseEvent(e);
-		HandleWindowEvent(e);
+		// Handle single key events here
+		switch (e.type)
+		{
+		case SDL_KEYDOWN:
+		case SDL_KEYUP:
+			HandleKeyEvent(e);
+			break;
+		case SDL_MOUSEMOTION:
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+			HandleMouseEvent(e);
+			break;
+		case SDL_WINDOWEVENT:
+			HandleWindowEvent(e);
+			break;
+		case SDL_QUIT:
+			Close();
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -144,7 +167,20 @@ void MainWindow::HandleMouseEvent(const SDL_Event& e)
 
 void MainWindow::HandleWindowEvent(const SDL_Event& e)
 {
-	// NYI
+	switch (e.window.event)
+	{
+	case SDL_WINDOWEVENT_ENTER:
+		break;
+	case SDL_WINDOWEVENT_LEAVE:
+		break;
+	default:
+		break;
+	}
+}
+
+void MainWindow::HandleMovement()
+{
+	// NYI Handle movement from key states..
 }
 
 //===============================================================================

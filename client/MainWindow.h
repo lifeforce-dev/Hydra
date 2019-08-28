@@ -32,11 +32,12 @@ private:
 	void HandleKeyEvent(const SDL_Event& e);
 	void HandleMouseEvent(const SDL_Event& e);
 	void HandleWindowEvent(const SDL_Event& e);
+	void HandleMovement();
 
 private:
 
-	// Whether the window is open or not.
-	bool m_isOpen = false;
+	// Whether we're initialized or not.
+	bool m_isInitialized = false;
 
 	// The surface covering the entire rendering pane of the window.
 	// NOTE: owned by the window and freed as part of destroying the window.
