@@ -19,7 +19,6 @@ namespace Client {
 namespace {
 	const int32_t s_screenWidth = 1920;
 	const int32_t s_screenHeight = 1080;
-
 	std::shared_ptr<spdlog::logger> s_logger;
 }
 

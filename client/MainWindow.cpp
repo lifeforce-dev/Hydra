@@ -8,8 +8,6 @@
 #include "common/log.h"
 
 #include <SDL_image.h>
-#include <SDL_ttf.h>
-
 #include <string>
 #include <sstream>
 
@@ -21,6 +19,7 @@ namespace {
 std::shared_ptr<spdlog::logger> s_logger;
 const int32_t s_screenWidth = 2560;
 const int32_t s_screenHeight = 1440;
+const std::string s_fontFile = "resources/fonts/VL-PGothic-Regular.ttf";
 }
 
 MainWindow::MainWindow()
@@ -31,10 +30,7 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-	if (m_isInitialized)
-	{
-		Close();
-	}
+	Close();
 }
 
 bool MainWindow::Init()
@@ -66,7 +62,7 @@ bool MainWindow::Init()
 		return false;
 	}
 
-	m_isInitialized = true;
+	m_isOpen = true;
 
 	// Initialize the screen surface and renderer.
 	m_screenSurface = SDL_GetWindowSurface(m_window.get());
@@ -97,12 +93,19 @@ bool MainWindow::Init()
 		return false;
 	}
 
+	m_mainFont = TTF_FontPtr(std::move(TTF_OpenFont(s_fontFile.c_str(), 28)), TTF_CloseFont);
+	if (!m_mainFont)
+	{
+		SPDLOG_LOGGER_ERROR(s_logger, "Failed to load font. error={}", TTF_GetError());
+		return false;
+	}
+
 	return true;
 }
 
 void MainWindow::Close()
 {
-	m_isInitialized = false;
+	m_isOpen = false;
 
 	m_renderer.reset();
 	m_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
@@ -115,11 +118,15 @@ void MainWindow::Close()
 
 bool MainWindow::IsOpen() const
 {
-	return m_isInitialized;
+	return m_isOpen;
 }
 
 void MainWindow::Process()
 {
+	if (!m_renderer)
+	{
+		return;
+	}
 	HandleEvents();
 	SDL_SetRenderDrawColor(m_renderer.get(), 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(m_renderer.get());
@@ -156,7 +163,7 @@ void MainWindow::HandleEvents()
 			HandleWindowEvent(e);
 			break;
 		case SDL_QUIT:
-			Close();
+			m_isOpen = false;
 			break;
 		default:
 			break;

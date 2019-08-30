@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 namespace Client {
 
@@ -16,6 +17,7 @@ using SDL_SurfacePtr = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
 using SDL_TexturePtr = std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)>;
 using SDL_RendererPtr = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>;
 using SDL_WindowPtr = std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)>;
+using TTF_FontPtr = std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)>;
 
 class MainWindow {
 public:
@@ -37,7 +39,7 @@ private:
 private:
 
 	// Whether we're initialized or not.
-	bool m_isInitialized = false;
+	bool m_isOpen = false;
 
 	// The surface covering the entire rendering pane of the window.
 	// NOTE: owned by the window and freed as part of destroying the window.
@@ -48,6 +50,9 @@ private:
 
 	// Render state and API for rendering.
 	SDL_RendererPtr m_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
+
+	// Main game font.
+	TTF_FontPtr m_mainFont = TTF_FontPtr(nullptr, TTF_CloseFont);
 
 	// Current key state. Owned externally.
 	const uint8_t* m_keyState = nullptr;
