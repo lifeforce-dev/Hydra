@@ -114,7 +114,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <PropertyGroup>
-    <OutDir>$(ProjectDir)..\..\build\$(Configuration)\lib\</OutDir>
+    <OutDir>$(ProjectDir)..\..\..\..\..\build\$(Configuration)\lib\</OutDir>
     <IntDir>$(ProjectDir)..\..\build\$(Configuration)\$(ProjectName)\</IntDir>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -443,7 +443,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <Target Name="AfterBuild">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="..\..\..\objs" />
-  </Target>
 </Project>
