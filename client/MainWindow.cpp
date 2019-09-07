@@ -6,6 +6,7 @@
 #include "MainWindow.h"
 
 #include "common/log.h"
+#include "client/RenderEngine.h"
 
 #include <SDL_image.h>
 #include <string>
@@ -20,7 +21,7 @@ std::shared_ptr<spdlog::logger> s_logger;
 const int32_t s_screenWidth = 2560;
 const int32_t s_screenHeight = 1440;
 const std::string s_fontFile = "resources/fonts/VL-PGothic-Regular.ttf";
-}
+} // anon namespace
 
 MainWindow::MainWindow()
 {
@@ -33,19 +34,12 @@ MainWindow::~MainWindow()
 	Close();
 }
 
-bool MainWindow::Init()
+bool MainWindow::Initialize()
 {
 	if (m_window)
 	{
 		SPDLOG_LOGGER_WARN(s_logger, "Subsequent attempts to init main window. Ignoring...");
 		return true;
-	}
-
-	// Init SDL.
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize SDL. error={}", SDL_GetError());
-		return false;
 	}
 
 	// Init window.
@@ -62,6 +56,12 @@ bool MainWindow::Init()
 		return false;
 	}
 
+	// We know that we will need to create a renderer here.
+	if (RenderEngine::CreateRenderer(m_window.get()))
+	{
+		m_renderer = RenderEngine::GetRenderer();
+	}
+
 	m_isOpen = true;
 
 	// Initialize the screen surface and renderer.
@@ -69,29 +69,6 @@ bool MainWindow::Init()
 
 	// Initialize screen with black background.
 	SDL_FillRect(m_screenSurface, nullptr, SDL_MapRGB(m_screenSurface->format, 0x00, 0x00, 0x00));
-
-	m_renderer = SDL_RendererPtr(std::move(SDL_CreateRenderer(
-		m_window.get(), -1, SDL_RENDERER_ACCELERATED)), SDL_DestroyRenderer);
-
-	if (!m_renderer)
-	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to create renderer", SDL_GetError());
-	}
-
-	// Init PNG loader.
-	int imgFlags = IMG_INIT_PNG;
-	if (!(IMG_Init(imgFlags) & imgFlags))
-	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize PNG loader. error= {}", IMG_GetError());
-		return false;
-	}
-
-	// Init font loader
-	if (TTF_Init() == -1)
-	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize font loader. error={}", TTF_GetError());
-		return false;
-	}
 
 	m_mainFont = TTF_FontPtr(std::move(TTF_OpenFont(s_fontFile.c_str(), 28)), TTF_CloseFont);
 	if (!m_mainFont)
@@ -106,9 +83,6 @@ bool MainWindow::Init()
 void MainWindow::Close()
 {
 	m_isOpen = false;
-
-	m_renderer.reset();
-	m_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
 
 	m_screenSurface = nullptr;
 
@@ -127,16 +101,17 @@ void MainWindow::Process()
 	{
 		return;
 	}
+
 	HandleEvents();
-	SDL_SetRenderDrawColor(m_renderer.get(), 0x00, 0x00, 0x00, 0x00);
-	SDL_RenderClear(m_renderer.get());
+	SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, 0x00);
+	SDL_RenderClear(m_renderer);
 
 	//Draw red square
 	SDL_Rect fillRect = { 0, 0, 150, 150 };
-	SDL_SetRenderDrawColor(m_renderer.get(), 0xFF, 0x00, 0x00, 0xFF);
-	SDL_RenderFillRect(m_renderer.get(), &fillRect);
+	SDL_SetRenderDrawColor(m_renderer, 0xFF, 0x00, 0x00, 0xFF);
+	SDL_RenderFillRect(m_renderer, &fillRect);
 
-	SDL_RenderPresent(m_renderer.get());
+	SDL_RenderPresent(m_renderer);
 }
 
 void MainWindow::HandleEvents()

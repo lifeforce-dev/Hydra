@@ -125,6 +125,7 @@
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="RenderEngine.cpp" />
     <ClCompile Include="scenes\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,8 @@
     <ClInclude Include="GameClient.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="RenderEngine.h" />
+    <ClInclude Include="RenderEngineTypes.h" />
     <ClInclude Include="scenes\GameScene.h" />
     <ClInclude Include="scenes\Scene.h" />
   </ItemGroup>

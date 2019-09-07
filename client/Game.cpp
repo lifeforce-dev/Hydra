@@ -9,6 +9,7 @@
 #include "client/GameClient.h"
 #include "client/GameController.h"
 #include "client/MainWindow.h"
+#include "client/RenderEngine.h"
 
 #include <SDL.h>
 
@@ -28,6 +29,7 @@ Game::Game()
 	: m_gameController(std::make_unique<GameController>(this))
 	, m_client(std::make_unique<GameClient>(this))
 	, m_mainWindow(std::make_unique<MainWindow>())
+	, m_renderEngine(std::make_unique<RenderEngine>())
 {
 	REGISTER_LOGGER("Game");
 	s_logger = Log::Logger("Game");
@@ -39,7 +41,7 @@ Game::~Game()
 
 bool Game::Init()
 {
-	m_isInitialized = m_mainWindow->Init();
+	m_isInitialized = m_renderEngine->Initialize() && m_mainWindow->Initialize();
 
 	if (!m_isInitialized)
 	{

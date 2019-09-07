@@ -16,9 +16,10 @@ namespace Client {
 
 //===============================================================================
 
-class MainWindow;
 class GameClient;
 class GameController;
+class MainWindow;
+class RenderEngine;
 class Game
 {
 
@@ -26,7 +27,7 @@ public:
 	Game();
 	~Game();
 
-	// Initialized game systems. Returns true if succesful.
+	// Initialized game systems. Returns true if successful.
 	bool Init();
 
 	// Run the game.
@@ -53,6 +54,8 @@ private:
 	std::unique_ptr<GameClient> m_client;
 
 	std::unique_ptr<MainWindow> m_mainWindow;
+
+	std::unique_ptr<RenderEngine> m_renderEngine;
 
 	bool m_isInitialized = false;
 };

@@ -5,6 +5,9 @@
 
 #pragma once
 
+#include "client/RenderEngineTypes.h"
+
+
 #include <memory>
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -13,18 +16,12 @@ namespace Client {
 
 //===============================================================================
 
-using SDL_SurfacePtr = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
-using SDL_TexturePtr = std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)>;
-using SDL_RendererPtr = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>;
-using SDL_WindowPtr = std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)>;
-using TTF_FontPtr = std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)>;
-
 class MainWindow {
 public:
 	MainWindow();
 	~MainWindow();
 
-	bool Init();
+	bool Initialize();
 	void Close();
 	bool IsOpen() const;
 	void Process();
@@ -45,11 +42,11 @@ private:
 	// NOTE: owned by the window and freed as part of destroying the window.
 	SDL_Surface* m_screenSurface = nullptr;
 
+	// Render state and API for rendering.
+	SDL_Renderer* m_renderer = nullptr;
+
 	// The main internal window data. Used to provide render space, handle events, etc.
 	SDL_WindowPtr m_window = SDL_WindowPtr(nullptr, SDL_DestroyWindow);
-
-	// Render state and API for rendering.
-	SDL_RendererPtr m_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
 
 	// Main game font.
 	TTF_FontPtr m_mainFont = TTF_FontPtr(nullptr, TTF_CloseFont);
