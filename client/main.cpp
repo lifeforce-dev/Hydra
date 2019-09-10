@@ -6,7 +6,7 @@
 #include "common/Log.h"
 #include "Game.h"
 
-int main()
+int main(int argc, char* argv[])
 {
 	//init directories.
 	if (!is_regular_file(Log::GetLogFile()))

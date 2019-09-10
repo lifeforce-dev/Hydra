@@ -5,7 +5,7 @@
 
 #pragma once
 
-
+#include "client/RenderEngine.h"
 #include "common/ThreadSafeQueue.h"
 
 #include <memory>
@@ -16,13 +16,16 @@ namespace Client {
 
 //===============================================================================
 
+class Game;
 class GameClient;
 class GameController;
 class MainWindow;
 class RenderEngine;
+
+extern Game* g_game;
+
 class Game
 {
-
 public:
 	Game();
 	~Game();
@@ -36,11 +39,16 @@ public:
 	// Ensures that any callback passed in here gets executed on the main thread.
 	void PostToMainThread(const std::function<void()>& cb);
 
+	// Getters.
+	TTF_Font* GetDefaultFont();
+	RenderEngine* GetRenderEngine() const;
+
 private:
 	void ConnectToServer();
 	void ProcessCallbackQueue();
 
 private:
+	MainWindow* m_mainWindow = nullptr;
 
 	// Functions that need to get processed on the main thread get pushed here.
 	Common::ThreadSafeQueue<std::function<void()>> m_callbackQueue;
@@ -50,12 +58,12 @@ private:
 
 	// Don't reorder these.
 	std::unique_ptr<GameController> m_gameController;
-
 	std::unique_ptr<GameClient> m_client;
 
-	std::unique_ptr<MainWindow> m_mainWindow;
-
+	// Must be initialized before any UI may be initialized.
 	std::unique_ptr<RenderEngine> m_renderEngine;
+
+	SDL_FontPtr m_defaultFont = SDL_FontPtr(nullptr, TTF_CloseFont);
 
 	bool m_isInitialized = false;
 };

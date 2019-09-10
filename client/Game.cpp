@@ -9,9 +9,6 @@
 #include "client/GameClient.h"
 #include "client/GameController.h"
 #include "client/MainWindow.h"
-#include "client/RenderEngine.h"
-
-#include <SDL.h>
 
 namespace Client {
 
@@ -23,29 +20,45 @@ namespace {
 	std::shared_ptr<spdlog::logger> s_logger;
 }
 
+Game* g_game = nullptr;
+
 //-------------------------------------------------------------------------------
 
 Game::Game()
-	: m_gameController(std::make_unique<GameController>(this))
-	, m_client(std::make_unique<GameClient>(this))
-	, m_mainWindow(std::make_unique<MainWindow>())
-	, m_renderEngine(std::make_unique<RenderEngine>())
+
 {
 	REGISTER_LOGGER("Game");
 	s_logger = Log::Logger("Game");
+	g_game = this;
 }
 
 Game::~Game()
 {
+	g_game = nullptr;
 }
 
 bool Game::Init()
 {
-	m_isInitialized = m_renderEngine->Initialize() && m_mainWindow->Initialize();
+	m_renderEngine = std::make_unique<RenderEngine>();
+	m_isInitialized = m_renderEngine->Initialize();
+	m_mainWindow = m_renderEngine->GetMainWindow();
+
+	m_gameController = std::make_unique<GameController>(this);
+	m_client = std::make_unique<GameClient>(this);
+
+	m_defaultFont = SDL_FontPtr(std::move(
+		TTF_OpenFont("resources/fonts/VL-PGothic-Regular.ttf", 28)), TTF_CloseFont);
+
+	if (!m_defaultFont)
+	{
+		SPDLOG_LOGGER_ERROR(s_logger, "Failed to load font. error=", TTF_GetError());
+		m_isInitialized = false;
+	}
 
 	if (!m_isInitialized)
 	{
 		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize game. Exiting...");
+		m_isInitialized = false;
 	}
 
 	return m_isInitialized;
@@ -81,14 +94,27 @@ void Game::Run()
 	while (m_mainWindow->IsOpen())
 	{
 		ProcessCallbackQueue();
-		m_gameController->Run();
 		m_mainWindow->Process();
+
+		m_gameController->Run();
+
+		m_renderEngine->Render();
 	}
 }
 
 void Game::PostToMainThread(const std::function<void()>& cb)
 {
 	m_callbackQueue.Push(cb);
+}
+
+TTF_Font* Game::GetDefaultFont()
+{
+	return m_defaultFont.get();
+}
+
+Client::RenderEngine* Game::GetRenderEngine() const
+{
+	return m_renderEngine.get();
 }
 
 //===============================================================================

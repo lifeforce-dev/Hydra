@@ -9,8 +9,6 @@
 
 
 #include <memory>
-#include <SDL.h>
-#include <SDL_ttf.h>
 
 namespace Client {
 
@@ -21,20 +19,31 @@ public:
 	MainWindow();
 	~MainWindow();
 
+	// Returns true if everything initialized correctly.
 	bool Initialize();
+
+	// Close the main window. Systems should listen for this event and shut down.
 	void Close();
-	bool IsOpen() const;
+
+	// Process window events.
 	void Process();
+
+	// Any special render handling for the main window.
+	void Render();
+
+	// Returns the raw SDL window data.
+	SDL_Window* GetWindowData() const;
+
+	// Returns whether the window is open or not.
+	bool IsOpen() const;
 
 private:
 	void HandleEvents();
 	void HandleKeyEvent(const SDL_Event& e);
 	void HandleMouseEvent(const SDL_Event& e);
 	void HandleWindowEvent(const SDL_Event& e);
-	void HandleMovement();
 
 private:
-
 	// Whether we're initialized or not.
 	bool m_isOpen = false;
 
@@ -42,14 +51,8 @@ private:
 	// NOTE: owned by the window and freed as part of destroying the window.
 	SDL_Surface* m_screenSurface = nullptr;
 
-	// Render state and API for rendering.
-	SDL_Renderer* m_renderer = nullptr;
-
 	// The main internal window data. Used to provide render space, handle events, etc.
 	SDL_WindowPtr m_window = SDL_WindowPtr(nullptr, SDL_DestroyWindow);
-
-	// Main game font.
-	TTF_FontPtr m_mainFont = TTF_FontPtr(nullptr, TTF_CloseFont);
 
 	// Current key state. Owned externally.
 	const uint8_t* m_keyState = nullptr;

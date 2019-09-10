@@ -54,6 +54,12 @@
     <ClCompile Include="RenderEngine.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderableImpl.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scenes\GameScene.h">
@@ -78,6 +84,15 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="RenderEngineTypes.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderable.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderableImpl.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
