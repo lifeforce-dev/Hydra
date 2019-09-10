@@ -35,7 +35,6 @@ public:
 	// Updates resulting from the event processing will be handled here.
 	virtual void Update() override;
 
-
 	// Called in the event loop.
 	virtual void Draw() override;
 
