@@ -43,6 +43,7 @@ bool Game::Init()
 	m_isInitialized = m_renderEngine->Initialize();
 	m_mainWindow = m_renderEngine->GetMainWindow();
 
+	// TODO: Pull this from a file with a FontManager.
 	m_defaultFont = SDL_FontPtr(std::move(
 		TTF_OpenFont("resources/fonts/Charter Regular.ttf", 24)), TTF_CloseFont);
 

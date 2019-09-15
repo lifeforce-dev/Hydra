@@ -36,7 +36,7 @@ void GameController::Run()
 
 	m_gameScene->ProcessEvents();
 	m_gameScene->Update();
-	m_gameScene->Draw();
+	m_gameScene->Render();
 
 }
 

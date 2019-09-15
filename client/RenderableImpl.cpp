@@ -39,24 +39,15 @@ uint64_t RenderableImpl::GetId() const
 	return m_id;
 }
 
+bool RenderableImpl::IsVisible() const
+{
+	return m_isVisible;
+}
+
 int32_t RenderableImpl::GetZOrder() const
 {
+	// TODO: Make this a real value.
 	return 1;
-}
-
-glm::vec2 RenderableImpl::GetPosition() const
-{
-	return glm::vec2();
-}
-
-float RenderableImpl::GetWidth() const
-{
-	return m_width;
-}
-
-float RenderableImpl::GetHeight() const
-{
-	return m_height;
 }
 
 //===============================================================================

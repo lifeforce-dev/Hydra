@@ -90,7 +90,7 @@ bool RenderEngine::Initialize()
 
 void RenderEngine::Render() const
 {
-	SDL_SetRenderDrawColor(s_renderer.get(), 0x00, 0x00, 0x00, 0x00);
+	SDL_SetRenderDrawColor(s_renderer.get(), 0, 0,0, 0xFF);
 	SDL_RenderClear(s_renderer.get());
 
 	m_mainWindow->Render();
@@ -104,7 +104,10 @@ void RenderEngine::Render() const
 			continue;
 		}
 
-		r->Render();
+		if (r->IsVisible())
+		{
+			r->Render();
+		}
 	}
 
 	SDL_RenderPresent(s_renderer.get());
@@ -181,7 +184,7 @@ bool RenderEngine::CreateRenderer()
 
 	if (!s_renderer)
 	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to create renderer. error=", SDL_GetError());
+		SPDLOG_LOGGER_ERROR(s_logger, "Failed to create renderer. error={}", SDL_GetError());
 		return false;
 	}
 

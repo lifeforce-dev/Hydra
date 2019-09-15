@@ -18,6 +18,7 @@ namespace Client {
 
 //===============================================================================
 
+class Label;
 class NetworkController;
 class GameController;
 
@@ -36,10 +37,11 @@ public:
 	virtual void Update() override;
 
 	// Called in the event loop.
-	virtual void Draw() override;
+	virtual void Render() override;
 
 private:
-	GameController* m_application;
+	GameController* m_controller;
+	std::unique_ptr<Label> m_label;
 };
 
 //===============================================================================

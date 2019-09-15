@@ -19,7 +19,7 @@ public:
 	virtual void Update() = 0;
 
 	// Render loop.
-	virtual void Draw() = 0;
+	virtual void Render() = 0;
 };
 
 //===============================================================================
