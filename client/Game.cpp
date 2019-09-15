@@ -43,11 +43,8 @@ bool Game::Init()
 	m_isInitialized = m_renderEngine->Initialize();
 	m_mainWindow = m_renderEngine->GetMainWindow();
 
-	m_gameController = std::make_unique<GameController>(this);
-	m_client = std::make_unique<GameClient>(this);
-
 	m_defaultFont = SDL_FontPtr(std::move(
-		TTF_OpenFont("resources/fonts/VL-PGothic-Regular.ttf", 28)), TTF_CloseFont);
+		TTF_OpenFont("resources/fonts/Charter Regular.ttf", 24)), TTF_CloseFont);
 
 	if (!m_defaultFont)
 	{
@@ -60,6 +57,9 @@ bool Game::Init()
 		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize game. Exiting...");
 		m_isInitialized = false;
 	}
+
+	m_gameController = std::make_unique<GameController>(this);
+	m_client = std::make_unique<GameClient>(this);
 
 	return m_isInitialized;
 }
