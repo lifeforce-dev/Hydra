@@ -30,6 +30,9 @@
     <ClCompile Include="proto\TestMessage.pb.cc">
       <Filter>Proto\Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="TimerTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MessageParserTest.h">
@@ -38,10 +41,16 @@
     <ClInclude Include="proto\TestMessage.pb.h">
       <Filter>Proto\Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="TimerTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ProtocolBuffer Include="proto\TestMessage.proto">
       <Filter>Proto</Filter>
     </ProtocolBuffer>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
