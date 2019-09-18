@@ -142,10 +142,8 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="NetworkMessageParser.cpp" />
-    <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="TcpSession.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Worker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsioEventProcessor.h" />
@@ -154,11 +152,9 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="NetworkMessageParser.h" />
     <ClInclude Include="NetworkTypes.h" />
-    <ClInclude Include="Scheduler.h" />
     <ClInclude Include="TcpSession.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Worker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
