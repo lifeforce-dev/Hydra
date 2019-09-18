@@ -112,7 +112,7 @@
       <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)$(Configuration)\tests.exe -o $(SolutionDir)tests\test_output.log</Command>
+      <Command>$(SolutionDir)$(Configuration)\tests.exe -o $(SolutionDir)logs\tests\test_output.log</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

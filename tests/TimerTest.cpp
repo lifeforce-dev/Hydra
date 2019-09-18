@@ -16,307 +16,311 @@ namespace Test {
 
 namespace {
 	// Allow timers that are a few ms off to pass as its likely due to debug mode.
-	uint32_t acceptableMarginOfErrorMs = 5;
+	uint32_t s_acceptableMarginOfErrorMs = 5;
+
+	using namespace std::chrono_literals;
+	auto s_timeToSleepMs = 50ms;
 
 	// Timing is hard in debug mode. If we're within a few ms or so, I think that's okay.
-	auto isRoughlyCorrect = [](long long value, uint32_t target) -> bool
+	auto isRoughlyCorrect = [](std::chrono::milliseconds value, std::chrono::milliseconds target) -> bool
 	{
-		bool isInRange = value <= target + static_cast<long long>(acceptableMarginOfErrorMs)
-			&& value >= target - static_cast<long long>(acceptableMarginOfErrorMs);
-		return value == target || isInRange;
+		bool isInRange = value.count() <= target.count() + static_cast<long long>(s_acceptableMarginOfErrorMs)
+			&& value.count() >= target.count() - static_cast<long long>(s_acceptableMarginOfErrorMs);
+		return value.count() == target.count() || isInRange;
 	};
 }
 
-SCENARIO("Calling Start multiple times still produces correct output.", "[Timer]")
+SCENARIO("Duplicate calls to Start don't break state.", "[Timer]")
 {
 	using namespace std::chrono;
-	GIVEN("A started timer and a loop that checkes elapsed time")
+	GIVEN("A timer.")
 	{
 		Common::Timer t;
-		t.Start();
-		SteadyClock::time_point start = SteadyClock::now();
 
-		WHEN("Calling Start() on timer continually for 5 seconds completes")
+		WHEN("Calling Start() on timer continually for s_timeToSleepMs.")
 		{
+			SteadyClock::time_point start = SteadyClock::now();
 			while (duration_cast<milliseconds>(SteadyClock::now() - start).count() != 50)
 			{
 				t.Start();
 			}
 
-			REQUIRE(t.GetElapsedMs().count() == 50);
+			THEN("State should not be effected.")
+			{
+				REQUIRE(t.GetElapsedMs().count() == 50);
+			}
 		}
 	}
 }
 
-SCENARIO("Pausing and Unpausing while Timer is running produces correct output.", "[Timer]")
+SCENARIO("Pausing a running timer.", "[Timer]")
 {
 	using namespace std::chrono;
-	uint32_t timeToSleepMs = 50;
-	bool intermediateChecksPass = true;
-
-	GIVEN("A running timer")
+	GIVEN("A timer that has been running for s_timeToSleepMs")
 	{
 		Common::Timer timer;
-		WHEN("Timer is paused an unpaused every second for 5 seconds")
+		timer.Start();
+		std::this_thread::sleep_for(s_timeToSleepMs);
+
+		WHEN("The timer is paused")
 		{
-			timer.Start();
-
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
-
 			timer.Pause();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 50);
-			intermediateChecksPass &= timer.IsPaused();
 
-			timer.Unpause();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
+			THEN("Paused state should change")
+			{ 
+				bool isPaused = timer.IsPaused();
+				CAPTURE(isPaused);
 
-			timer.Pause();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 100);
-			intermediateChecksPass &= timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
+				REQUIRE(timer.IsPaused());
+			}
 
-			timer.Unpause();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 150);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimeMs().count(), 250);
-			REQUIRE(intermediateChecksPass);
+			AND_THEN("Timer is paused for s_timeToSleepMs")
+			{
+				std::this_thread::sleep_for(s_timeToSleepMs);
+
+				milliseconds elapsed = timer.GetElapsedPausedMs();
+				CAPTURE(elapsed.count());
+
+				REQUIRE(isRoughlyCorrect(timer.GetElapsedPausedMs(), 50ms));
+			}
 		}
 	}
 }
 
-SCENARIO("Starting and stopping the timer produces correct results.", "[Timer]")
+SCENARIO("Running a timer.", "[Timer]")
 {
 	using namespace std::chrono;
-
-	uint32_t timeToSleepMs = 50;
-	bool intermediateChecksPass = true;
 	GIVEN("A newly created timer.")
 	{
 		Common::Timer timer;
+		REQUIRE(!timer.IsRunning());
+		REQUIRE(!timer.IsPaused());
 
-		WHEN("Time is started, stopped, and paused repeatedly.")
+		WHEN("Timer is started")
 		{
-			// Ensure state is reset properly after starting again from a stop.
 			timer.Start();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= timer.IsRunning();
 
-			timer.Pause();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			auto i = timer.GetElapsedMs().count();
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 50);
-			intermediateChecksPass &= timer.IsPaused();
+			THEN("IsRunning state should change.")
+			{
+				auto isRunning = timer.IsRunning();
+				CAPTURE(isRunning);
 
-			timer.Unpause();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 100);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 50);
-			intermediateChecksPass &= !timer.IsPaused();
+				REQUIRE(timer.IsRunning());
+			}
+			AND_THEN("Timer is left running for s_timeToSleepMs.")
+			{
+				std::this_thread::sleep_for(s_timeToSleepMs);
 
-			timer.Stop();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 100);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 50);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= !timer.IsRunning();
+				milliseconds elapsed = timer.GetElapsedMs();
+				CAPTURE(elapsed.count());
 
-			timer.Start();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
-
-			timer.Stop();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= !timer.IsRunning();
-
-			// Ensure timer will not pause or unpause while stopped.
-			timer.Pause();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= !timer.IsPaused();
-
-			timer.Unpause();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-			intermediateChecksPass &= !timer.IsRunning();
-
-			REQUIRE(intermediateChecksPass);
+				REQUIRE(isRoughlyCorrect(elapsed, 50ms));
+			}
 		}
 	}
 }
 
-SCENARIO("Restarting timer properly restarts it.", "[Timer]")
+SCENARIO("Resuming a timer.")
 {
 	using namespace std::chrono;
 
-	uint32_t timeToSleepMs = 50;
-	bool intermediateChecksPass = true;
-
-	GIVEN("A timer with a bunch of established state")
+	GIVEN("A previously running time that has since been paused.")
 	{
 		Common::Timer timer;
+
 		timer.Start();
-		std::this_thread::sleep_for(milliseconds(timeToSleepMs));
+		std::this_thread::sleep_for(s_timeToSleepMs);
 
 		timer.Pause();
-		std::this_thread::sleep_for(milliseconds(timeToSleepMs));
+		std::this_thread::sleep_for(s_timeToSleepMs);
 
-		timer.Unpause();
-		std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-
-		timer.Pause();
-		std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-
-		intermediateChecksPass &= timer.IsPaused();
-		intermediateChecksPass &= timer.IsRunning();
-		intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 100);
-		intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 50);
-		intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 100);
-
-		WHEN("Timer is restarted from a paused state")
+		WHEN("Timer is resumed after being paused.")
 		{
-			timer.Restart();
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
+			timer.Resume();
 
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
+			THEN("Timer paused flag should be switched off")
+			{
+				bool isPaused = timer.IsPaused();
+				CAPTURE(isPaused);
 
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
+				REQUIRE(!isPaused);
+			}
+			AND_THEN("Timer should have correct elapsed time.")
+			{
+				milliseconds elapsed = timer.GetElapsedMs();
+				CAPTURE(elapsed.count());
 
-			REQUIRE(intermediateChecksPass);
-		}
-		AND_WHEN("Timer is restarted from a running state")
-		{
-			timer.Unpause();
-			timer.Restart();
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
+				REQUIRE(isRoughlyCorrect(elapsed, 50ms));
+			}
+			AND_THEN("Timer should report 0ms elapsedPauseTime, since we're not paused.")
+			{
+				milliseconds elapsedPaused = timer.GetElapsedPausedMs();
+				CAPTURE(elapsedPaused.count());
 
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
-
-			REQUIRE(intermediateChecksPass);
-		}
-		AND_WHEN("Timer is restarted from a stopped state")
-		{
-			timer.Stop();
-			timer.Restart();
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
-
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
-
-			REQUIRE(intermediateChecksPass);
+				REQUIRE(elapsedPaused == 0ms);
+			}
 		}
 	}
 }
 
-SCENARIO("Clearing a timer", "[Timer]")
+SCENARIO("Timer has accumulated total elapsed time across pauses/resumes.", "[Timer]")
 {
 	using namespace std::chrono;
 
-	uint32_t timeToSleepMs = 50;
-	bool intermediateChecksPass = true;
-	GIVEN("A timer with a bunch of established state")
+	GIVEN("A timer that has been paused and resumed a few times")
+	{
+		Common::Timer timer;
+
+		timer.Start();
+		std::this_thread::sleep_for(s_timeToSleepMs);
+
+		timer.Pause();
+		std::this_thread::sleep_for(s_timeToSleepMs);
+
+		timer.Resume();
+		std::this_thread::sleep_for(s_timeToSleepMs);
+
+		timer.Pause();
+		std::this_thread::sleep_for(s_timeToSleepMs);
+
+		timer.Resume();
+		std::this_thread::sleep_for(s_timeToSleepMs * 2);
+
+		WHEN("Asked about total elapsed time")
+		{
+			THEN("The timer should return the sum of paused time and running time.")
+			{
+				milliseconds totalElapsed = timer.GetTotalElapsedMs();
+				CAPTURE(totalElapsed.count());
+
+				REQUIRE(isRoughlyCorrect(totalElapsed, 300ms));
+			}
+		}
+		AND_WHEN("Asked about total elapsed paused time")
+		{
+			THEN("The timer should return the sum of all time spent paused")
+			{
+				milliseconds totalElapsedPaused = timer.GetTotalElapsedPausedMs();
+				CAPTURE(totalElapsedPaused.count());
+
+				REQUIRE(isRoughlyCorrect(totalElapsedPaused, 100ms));
+			}
+		}
+	}
+}
+
+SCENARIO("Clearing a timer.", "[Timer]")
+{
+	using namespace std::chrono;
+	GIVEN("A used timer with some accumulated state.")
 	{
 		Common::Timer timer;
 		timer.Start();
-		std::this_thread::sleep_for(milliseconds(timeToSleepMs));
+		std::this_thread::sleep_for(s_timeToSleepMs);
 
 		timer.Pause();
-		std::this_thread::sleep_for(milliseconds(timeToSleepMs));
+		std::this_thread::sleep_for(s_timeToSleepMs);
 
-		timer.Unpause();
-		std::this_thread::sleep_for(milliseconds(timeToSleepMs));
+		timer.Resume();
+		std::this_thread::sleep_for(s_timeToSleepMs);
 
-		timer.Pause();
-		std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-
-		intermediateChecksPass &= timer.IsPaused();
-		intermediateChecksPass &= timer.IsRunning();
-		intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 100);
-		intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 50);
-		intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 100);
-
-		WHEN("Clearing the timer")
+		WHEN("Timer is cleared.")
 		{
 			timer.Clear();
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= !timer.IsRunning();
 
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
-
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= !timer.IsRunning();
+			THEN("All state is properly cleared on the timer.")
+			{
+				bool isPaused = timer.IsPaused();
+				bool isRunning = timer.IsRunning();
+				milliseconds elapsed = timer.GetElapsedMs();
+				milliseconds elapsedPaused = timer.GetElapsedPausedMs();
+				milliseconds totalElapsed = timer.GetTotalElapsedMs();
+				milliseconds totalElapsedPaused = timer.GetTotalElapsedPausedMs();
+				CAPTURE(isPaused, isRunning, elapsed.count(), elapsedPaused.count(),
+					totalElapsed.count(), totalElapsedPaused.count());
+				
+				REQUIRE(!isPaused);
+				REQUIRE(!isRunning);
+				REQUIRE(elapsed == 0ms);
+				REQUIRE(elapsedPaused == 0ms);
+				REQUIRE(totalElapsed == 0ms);
+				REQUIRE(totalElapsedPaused == 0ms);
+			}
 		}
-		WHEN("Starting the timer after the clear")
+	}
+}
+
+SCENARIO("Stopping a running timer")
+{
+	using namespace std::chrono;
+
+	GIVEN("A running timer with some accumulated state.")
+	{
+		Common::Timer timer;
+
+		timer.Start();
+		std::this_thread::sleep_for(s_timeToSleepMs);
+
+		timer.Pause();
+		std::this_thread::sleep_for(s_timeToSleepMs);
+
+		timer.Resume();
+		std::this_thread::sleep_for(s_timeToSleepMs);
+
+		WHEN("Timer is stopped")
 		{
-			timer.Clear();
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= !timer.IsRunning();
+			timer.Stop();
 
-			timer.Start();
-			std::this_thread::sleep_for(milliseconds(timeToSleepMs));
+			THEN("Timer running flag is shut off.")
+			{
+				REQUIRE(!timer.IsRunning());
+			}
+			AND_THEN("Timer paused flag is shut off.")
+			{
+				REQUIRE(!timer.IsPaused());
+			}
+			AND_THEN("Elapsed time includes only up until when timer was stopped.")
+			{
+				std::this_thread::sleep_for(s_timeToSleepMs);
+				milliseconds elapsed = timer.GetElapsedMs();
+				CAPTURE(elapsed.count());
 
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedMs().count(), 50);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= isRoughlyCorrect(timer.GetTotalElapsedTimePausedMs().count(), 0);
-			intermediateChecksPass &= !timer.IsPaused();
-			intermediateChecksPass &= timer.IsRunning();
+				REQUIRE(isRoughlyCorrect(elapsed, 100ms));
+			}
+			AND_THEN("Elapsed paused times are not cleared.")
+			{
+				milliseconds totalElapsedPaused = timer.GetTotalElapsedPausedMs();
+				CAPTURE(totalElapsedPaused.count());
+
+				REQUIRE(totalElapsedPaused != milliseconds::zero());
+			}
+		}
+	}
+}
+
+SCENARIO("Restarting a timer", "[Timer]")
+{
+	using namespace std::chrono;
+
+	GIVEN("A timer that has been running for 100ms")
+	{
+		Common::Timer timer;
+
+		timer.Start();
+		std::this_thread::sleep_for(s_timeToSleepMs*4);
+
+		WHEN("Timer is restarted and run for s_timeToSleepMs")
+		{
+			timer.Restart();
+			std::this_thread::sleep_for(s_timeToSleepMs);
+
+			THEN("Elapsed time should be corect")
+			{
+				milliseconds elapsed = timer.GetElapsedMs();
+				CAPTURE(elapsed.count());
+
+				REQUIRE(isRoughlyCorrect(elapsed, 50ms));
+			}
 		}
 	}
 }

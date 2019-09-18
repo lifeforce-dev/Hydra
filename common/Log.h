@@ -24,8 +24,14 @@ namespace Log {
 
 static const std::string& GetLogFile()
 {
-	static std::string s_logFile = "../logs/log.txt";
+	static std::string s_logFile = "../logs/log.log";
 	return s_logFile;
+}
+
+static const std::string& GetTestsLogFile()
+{
+	static std::string s_testsLogFile = "../logs/tests/tests.log";
+	return s_testsLogFile;
 }
 
 class LoggerManager

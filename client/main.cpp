@@ -8,12 +8,19 @@
 
 int main(int argc, char* argv[])
 {
-	//init directories.
+	// Init directories.
 	if (!is_regular_file(Log::GetLogFile()))
 	{
-		// create log file if it doesn't exist
+		// Create log file if it doesn't exist
 		create_directory("../logs/");
 		std::ofstream(Log::GetLogFile().c_str());
+	}
+
+	if (!is_regular_file(Log::GetTestsLogFile()))
+	{
+		// Create log directory.
+		create_directory("../logs/tests/");
+		std::ofstream(Log::GetTestsLogFile().c_str());
 	}
 
 	Client::Game game;

@@ -29,7 +29,7 @@ void Timer::Pause()
 	m_isPaused = true;
 }
 
-void Timer::Unpause()
+void Timer::Resume()
 {
 	if (!m_isPaused)
 	{
@@ -70,6 +70,7 @@ void Timer::Stop()
 	}
 
 	m_isRunning = false;
+	m_isPaused = false;
 	m_endTimeStamp = SteadyClock::now();
 }
 
@@ -96,19 +97,19 @@ std::chrono::microseconds Timer::GetElapsedUs() const
 	// If we're currently paused we need to consider how long we've been paused for.
 	if (m_isPaused)
 	{
-		return DoGetElapsedTime() - (m_totalPauseDuration + GetElapsedTimePausedUs());
+		return DoGetElapsed() - (m_totalPauseDuration + GetElapsedPausedUs());
 	}
 
-	return DoGetElapsedTime() - m_totalPauseDuration;
+	return DoGetElapsed() - m_totalPauseDuration;
 }
 
-std::chrono::milliseconds Timer::GetElapsedTimePausedMs() const
+std::chrono::milliseconds Timer::GetElapsedPausedMs() const
 {
 	using namespace std::chrono;
-	return duration_cast<milliseconds>(GetElapsedTimePausedUs());
+	return duration_cast<milliseconds>(GetElapsedPausedUs());
 }
 
-std::chrono::microseconds Timer::GetElapsedTimePausedUs() const
+std::chrono::microseconds Timer::GetElapsedPausedUs() const
 {
 	using namespace std::chrono;
 
@@ -122,32 +123,32 @@ std::chrono::microseconds Timer::GetElapsedTimePausedUs() const
 	return microseconds::zero();
 }
 
-std::chrono::milliseconds Timer::GetTotalElapsedTimePausedMs() const
+std::chrono::milliseconds Timer::GetTotalElapsedPausedMs() const
 {
 	using namespace std::chrono;
-	return duration_cast<milliseconds>(GetTotalElapsedTimePausedUs());
+	return duration_cast<milliseconds>(GetTotalElapsedPausedUs());
 }
 
-std::chrono::microseconds Timer::GetTotalElapsedTimePausedUs() const
+std::chrono::microseconds Timer::GetTotalElapsedPausedUs() const
 {
 	// If we're currently paused, the clock is still running for this pause session.
 	if (m_isPaused)
 	{
-		return m_totalPauseDuration + GetElapsedTimePausedUs();
+		return m_totalPauseDuration + GetElapsedPausedUs();
 	}
 
 	return m_totalPauseDuration;
 }
 
-std::chrono::milliseconds Timer::GetTotalElapsedTimeMs() const
+std::chrono::milliseconds Timer::GetTotalElapsedMs() const
 {
 	using namespace std::chrono;
-	return duration_cast<milliseconds>(GetTotalElapsedTimeUs());
+	return duration_cast<milliseconds>(GetTotalElapsedUs());
 }
 
-std::chrono::microseconds Timer::GetTotalElapsedTimeUs() const
+std::chrono::microseconds Timer::GetTotalElapsedUs() const
 {
-	return DoGetElapsedTime();
+	return DoGetElapsed();
 }
 
 bool Timer::IsPaused() const
@@ -160,7 +161,7 @@ bool Timer::IsRunning() const
 	return m_isRunning;
 }
 
-std::chrono::microseconds Timer::DoGetElapsedTime() const
+std::chrono::microseconds Timer::DoGetElapsed() const
 {
 	using namespace std::chrono;
 
