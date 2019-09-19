@@ -47,7 +47,7 @@ SCENARIO("Duplicate calls to Start don't break state.", "[Timer]")
 
 			THEN("State should not be effected.")
 			{
-				REQUIRE(t.GetElapsedMs().count() == 50);
+				REQUIRE(isRoughlyCorrect(t.GetElapsedMs(), 50ms));
 			}
 		}
 	}
