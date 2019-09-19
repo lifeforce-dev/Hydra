@@ -16,52 +16,19 @@ namespace Test {
 
 namespace {
 	using namespace std::chrono_literals;
-
-	// Allow timers that are a few ms off to pass as its likely due to debug mode.
-	std::chrono::milliseconds s_acceptableMarginOfErrorMs = 10000ms;
-
 	auto s_timeToSleepMs = 50ms;
-
-	// Timing is hard in debug mode. If we're within a few ms or so, I think that's okay.
-	auto isRoughlyCorrect = [](std::chrono::milliseconds value, std::chrono::milliseconds target) -> bool
-	{
-		bool isInRange = value <= target + s_acceptableMarginOfErrorMs
-			&& value >= target - s_acceptableMarginOfErrorMs;
-		return value == target || isInRange;
-	};
-}
-
-SCENARIO("Duplicate calls to Start don't break state.", "[Timer]")
-{
-	using namespace std::chrono;
-	GIVEN("A timer.")
-	{
-		Common::Timer t;
-
-		WHEN("Calling Start() on timer continually for s_timeToSleepMs.")
-		{
-			SteadyClock::time_point start = SteadyClock::now();
-			while (duration_cast<milliseconds>(SteadyClock::now() - start).count() != 50)
-			{
-				t.Start();
-			}
-
-			THEN("State should not be effected.")
-			{
-				REQUIRE(isRoughlyCorrect(t.GetElapsedMs(), 50ms));
-			}
-		}
-	}
 }
 
 SCENARIO("Pausing a running timer.", "[Timer]")
 {
 	using namespace std::chrono;
+
 	GIVEN("A timer that has been running for s_timeToSleepMs")
 	{
-		Common::Timer timer;
+		Common::MockTimer timer;
 		timer.Start();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		WHEN("The timer is paused")
 		{
@@ -77,12 +44,12 @@ SCENARIO("Pausing a running timer.", "[Timer]")
 
 			AND_THEN("Timer is paused for s_timeToSleepMs")
 			{
-				std::this_thread::sleep_for(s_timeToSleepMs);
+				Common::MockClock::now_time += s_timeToSleepMs;
 
 				milliseconds elapsed = timer.GetElapsedPausedMs();
 				CAPTURE(elapsed.count());
 
-				REQUIRE(isRoughlyCorrect(timer.GetElapsedPausedMs(), 50ms));
+				REQUIRE(timer.GetElapsedPausedMs() == 50ms);
 			}
 		}
 	}
@@ -91,9 +58,10 @@ SCENARIO("Pausing a running timer.", "[Timer]")
 SCENARIO("Running a timer.", "[Timer]")
 {
 	using namespace std::chrono;
+
 	GIVEN("A newly created timer.")
 	{
-		Common::Timer timer;
+		Common::MockTimer timer;
 		REQUIRE(!timer.IsRunning());
 		REQUIRE(!timer.IsPaused());
 
@@ -110,12 +78,12 @@ SCENARIO("Running a timer.", "[Timer]")
 			}
 			AND_THEN("Timer is left running for s_timeToSleepMs.")
 			{
-				std::this_thread::sleep_for(s_timeToSleepMs);
+				Common::MockClock::now_time += s_timeToSleepMs;
 
 				milliseconds elapsed = timer.GetElapsedMs();
 				CAPTURE(elapsed.count());
 
-				REQUIRE(isRoughlyCorrect(elapsed, 50ms));
+				REQUIRE(elapsed == 50ms);
 			}
 		}
 	}
@@ -127,13 +95,13 @@ SCENARIO("Resuming a timer.")
 
 	GIVEN("A previously running time that has since been paused.")
 	{
-		Common::Timer timer;
+		Common::MockTimer timer;
 
 		timer.Start();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		timer.Pause();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		WHEN("Timer is resumed after being paused.")
 		{
@@ -151,7 +119,7 @@ SCENARIO("Resuming a timer.")
 				milliseconds elapsed = timer.GetElapsedMs();
 				CAPTURE(elapsed.count());
 
-				REQUIRE(isRoughlyCorrect(elapsed, 50ms));
+				REQUIRE(elapsed == 50ms);
 			}
 			AND_THEN("Timer should report 0ms elapsedPauseTime, since we're not paused.")
 			{
@@ -170,22 +138,22 @@ SCENARIO("Timer has accumulated total elapsed time across pauses/resumes.", "[Ti
 
 	GIVEN("A timer that has been paused and resumed a few times")
 	{
-		Common::Timer timer;
+		Common::MockTimer timer;
 
 		timer.Start();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		timer.Pause();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		timer.Resume();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		timer.Pause();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		timer.Resume();
-		std::this_thread::sleep_for(s_timeToSleepMs * 2);
+		Common::MockClock::now_time += s_timeToSleepMs * 2;
 
 		WHEN("Asked about total elapsed time")
 		{
@@ -194,7 +162,7 @@ SCENARIO("Timer has accumulated total elapsed time across pauses/resumes.", "[Ti
 				milliseconds totalElapsed = timer.GetTotalElapsedMs();
 				CAPTURE(totalElapsed.count());
 
-				REQUIRE(isRoughlyCorrect(totalElapsed, 300ms));
+				REQUIRE(totalElapsed == 300ms);
 			}
 		}
 		AND_WHEN("Asked about total elapsed paused time")
@@ -204,7 +172,7 @@ SCENARIO("Timer has accumulated total elapsed time across pauses/resumes.", "[Ti
 				milliseconds totalElapsedPaused = timer.GetTotalElapsedPausedMs();
 				CAPTURE(totalElapsedPaused.count());
 
-				REQUIRE(isRoughlyCorrect(totalElapsedPaused, 100ms));
+				REQUIRE(totalElapsedPaused == 100ms);
 			}
 		}
 	}
@@ -213,17 +181,18 @@ SCENARIO("Timer has accumulated total elapsed time across pauses/resumes.", "[Ti
 SCENARIO("Clearing a timer.", "[Timer]")
 {
 	using namespace std::chrono;
+
 	GIVEN("A used timer with some accumulated state.")
 	{
-		Common::Timer timer;
+		Common::MockTimer timer;
 		timer.Start();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		timer.Pause();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		timer.Resume();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		WHEN("Timer is cleared.")
 		{
@@ -257,16 +226,16 @@ SCENARIO("Stopping a running timer")
 
 	GIVEN("A running timer with some accumulated state.")
 	{
-		Common::Timer timer;
+		Common::MockTimer timer;
 
 		timer.Start();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		timer.Pause();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		timer.Resume();
-		std::this_thread::sleep_for(s_timeToSleepMs);
+		Common::MockClock::now_time += s_timeToSleepMs;
 
 		WHEN("Timer is stopped")
 		{
@@ -282,11 +251,11 @@ SCENARIO("Stopping a running timer")
 			}
 			AND_THEN("Elapsed time includes only up until when timer was stopped.")
 			{
-				std::this_thread::sleep_for(s_timeToSleepMs);
+				Common::MockClock::now_time += s_timeToSleepMs;
 				milliseconds elapsed = timer.GetElapsedMs();
 				CAPTURE(elapsed.count());
 
-				REQUIRE(isRoughlyCorrect(elapsed, 100ms));
+				REQUIRE(elapsed == 100ms);
 			}
 			AND_THEN("Elapsed paused times are not cleared.")
 			{
@@ -305,22 +274,22 @@ SCENARIO("Restarting a timer", "[Timer]")
 
 	GIVEN("A timer that has been running for 100ms")
 	{
-		Common::Timer timer;
+		Common::MockTimer timer;
 
 		timer.Start();
-		std::this_thread::sleep_for(s_timeToSleepMs*4);
+		Common::MockClock::now_time += s_timeToSleepMs*4;
 
 		WHEN("Timer is restarted and run for s_timeToSleepMs")
 		{
 			timer.Restart();
-			std::this_thread::sleep_for(s_timeToSleepMs);
+			Common::MockClock::now_time += s_timeToSleepMs;
 
 			THEN("Elapsed time should be corect")
 			{
 				milliseconds elapsed = timer.GetElapsedMs();
 				CAPTURE(elapsed.count());
 
-				REQUIRE(isRoughlyCorrect(elapsed, 50ms));
+				REQUIRE(elapsed == 50ms);
 			}
 		}
 	}
