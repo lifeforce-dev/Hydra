@@ -15,18 +15,19 @@ namespace Test {
 //===============================================================================
 
 namespace {
-	// Allow timers that are a few ms off to pass as its likely due to debug mode.
-	uint32_t s_acceptableMarginOfErrorMs = 5;
-
 	using namespace std::chrono_literals;
+
+	// Allow timers that are a few ms off to pass as its likely due to debug mode.
+	std::chrono::milliseconds s_acceptableMarginOfErrorMs = 10000ms;
+
 	auto s_timeToSleepMs = 50ms;
 
 	// Timing is hard in debug mode. If we're within a few ms or so, I think that's okay.
 	auto isRoughlyCorrect = [](std::chrono::milliseconds value, std::chrono::milliseconds target) -> bool
 	{
-		bool isInRange = value.count() <= target.count() + static_cast<long long>(s_acceptableMarginOfErrorMs)
-			&& value.count() >= target.count() - static_cast<long long>(s_acceptableMarginOfErrorMs);
-		return value.count() == target.count() || isInRange;
+		bool isInRange = value <= target + s_acceptableMarginOfErrorMs
+			&& value >= target - s_acceptableMarginOfErrorMs;
+		return value == target || isInRange;
 	};
 }
 
