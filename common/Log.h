@@ -17,7 +17,6 @@
 #include <memory>
 #include <vector>
 
-using namespace std::experimental::filesystem::v1;
 namespace Log {
 
 //==============================================================================
