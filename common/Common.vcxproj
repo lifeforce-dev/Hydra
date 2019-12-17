@@ -149,6 +149,7 @@
     <ClInclude Include="AsioEventProcessor.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameTypes.h" />
+    <ClInclude Include="generated\SpellIdEnums.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="NetworkMessageParser.h" />
     <ClInclude Include="NetworkTypes.h" />

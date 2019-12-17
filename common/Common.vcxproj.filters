@@ -37,6 +37,9 @@
     <Filter Include="Header Files\Util">
       <UniqueIdentifier>{2a2d2cda-4313-4882-9f89-08b639d4b545}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Generated">
+      <UniqueIdentifier>{0e2beb4e-ce2b-4d07-b55a-6fb9872aac3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NetworkMessageParser.cpp">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\SpellIdEnums.h">
+      <Filter>Header Files\Generated</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
