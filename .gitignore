@@ -25,3 +25,9 @@ Thumbs.db
 *.pb.cc
 *.pb.h
 *.VC.db
+/logs
+/common/generated/log.txt
+/tests/*.log
+/tools/scripts/.conf
+/tools/scripts/__pycache__/*.pyc
+/tests/*.hint
