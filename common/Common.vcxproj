@@ -143,6 +143,8 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="NetworkMessageParser.cpp" />
+    <ClCompile Include="Scheduler.cpp" />
+    <ClCompile Include="Task.cpp" />
     <ClCompile Include="TcpSession.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +155,8 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="NetworkMessageParser.h" />
     <ClInclude Include="NetworkTypes.h" />
+    <ClInclude Include="Scheduler.h" />
+    <ClInclude Include="Task.h" />
     <ClInclude Include="TcpSession.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
     <ClInclude Include="Timer.h" />

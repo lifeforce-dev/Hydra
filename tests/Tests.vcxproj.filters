@@ -33,6 +33,9 @@
     <ClCompile Include="TimerTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SchedulerTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MessageParserTest.h">
@@ -42,6 +45,9 @@
       <Filter>Proto\Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="TimerTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SchedulerTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
