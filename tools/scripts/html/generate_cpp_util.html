@@ -1,0 +1,1155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>generate_cpp_util API documentation</title>
+<meta name="description" content="generate_cpp_util.py …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>generate_cpp_util</code></h1>
+</header>
+<section id="section-intro">
+<p>generate_cpp_util.py</p>
+<p>This module is intended to contain utility functions for generating C++ code.
+Some utility methods return a string with specific formatting while others are
+meant to be more flexible in their composability. This is simply for
+convenience.</p>
+<h2 id="example">Example</h2>
+<p><code>get_namespace_closer(Foo)</code> will return <code>} // namespace Foo</code>
+In this case, get_namespace_closer() uses get_scope_close() to compose its
+string. The number of new lines each function returns is deliberate and
+intentional.</p>
+<p>Some functions such as get_scope_open() return a base component intended to
+be more flexible in their formatting, i.e they do not include any new lines,
+spaces, or other bits of formatting.</p>
+<p>In cases where there is no situation in which a new line wouldn't be added
+manually, new lines are added appended to the end. This is usually done only in
+convenience functions with special formatting.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: utf-8 -*-
+&#34;&#34;&#34; generate_cpp_util.py
+
+This module is intended to contain utility functions for generating C++ code.
+Some utility methods return a string with specific formatting while others are
+meant to be more flexible in their composability. This is simply for
+convenience.
+
+Example:
+    `get_namespace_closer(Foo)` will return `} // namespace Foo`
+
+In this case, get_namespace_closer() uses get_scope_close() to compose its
+string. The number of new lines each function returns is deliberate and
+intentional.
+
+Some functions such as get_scope_open() return a base component intended to
+be more flexible in their formatting, i.e they do not include any new lines,
+spaces, or other bits of formatting.
+
+In cases where there is no situation in which a new line wouldn&#39;t be added
+manually, new lines are added appended to the end. This is usually done only in
+convenience functions with special formatting.
+
+&#34;&#34;&#34;
+
+import string
+
+SPACES_PER_TAB = 4
+
+
+def get_semicolon() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Example:
+        `;`
+
+    Returns:
+        A semicolon.
+
+    &#34;&#34;&#34;
+    return &#39;;&#39;
+
+
+def get_new_line() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Returns:
+        A new line.
+
+    &#34;&#34;&#34;
+    return &#39;\n&#39;
+
+
+def get_single_line_comment() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Example:
+        `//`
+
+    Returns:
+        A comment opener for a single line comment.
+
+    &#34;&#34;&#34;
+    return &#39;//&#39;
+
+
+def get_line_comment_normal() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Example:
+        `//----------------------------------------------------------------`
+
+    Returns:
+        A single dotted line used as formatters in special cases, such as at
+        the top of a file.
+
+    &#34;&#34;&#34;
+    return (&#39;//----------------------------------------------------------&#39;
+            &#39;---------------------&#39;)
+
+
+def get_line_comment_double() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Example:
+        `//================================================================`
+
+    Returns:
+        A single, double-dotted line used as formatters in special cases,
+        such as at the top of a file.
+
+    &#34;&#34;&#34;
+    return (&#39;//==========================================================&#39;
+            &#39;=====================&#39;)
+
+
+def get_scope_open(indentation_level_count=0) -&gt; string:
+    &#34;&#34;&#34; Convenience function for open scope operator.
+
+    The open scope returned is formatted according to the indentation level
+    specified. No new lines are included at the end.
+
+    Example:
+        ```
+        {
+        or one with 4 spaces before
+            {
+        ```
+    Args:
+        indentation_level_count(int): Indicates how nested the scope is. This
+        argument is simply forwarded along.
+
+    Returns:
+        An open scope operator &#39;{&#39;. No new lines included intentionally.
+        This decision was purely made to be consistent with get_scope_close().
+
+    &#34;&#34;&#34;
+    return get_indentation_spaces(indentation_level_count) + &#39;{&#39;
+
+
+def get_scope_close(indentation_level_count=0) -&gt; string:
+    &#34;&#34;&#34; Convenience function for open scope operator.
+
+    The open scope returned is formatted according to the indentation level
+    specified. No new lines are included at the end.
+
+    Example:
+        ```
+        }
+        or one with 4 spaces before
+            }
+        ```
+
+    Args:
+        indentation_level_count(int): Indicates how nested the scope is. This
+        argument is simply forwarded along.
+
+    Returns:
+        An open scope operator &#39;{&#39;. No new lines included intentionally.
+        This decision was purely made to be consistent with get_scope_close().
+
+    &#34;&#34;&#34;
+    return get_indentation_spaces(indentation_level_count) + &#39;}&#39;
+
+
+def get_indentation_spaces(indentation_level_count=0) -&gt; string:
+    &#34;&#34;&#34; Convenience function for composable indentation.
+
+    This function is intended to be used when composing lines of code
+    that require indentation. No new lines are added to the resulting string.
+
+    Args:
+        indentation_level_count(int): If nothing is passed, and 0 is used, any
+        code string composed with this as its indentation scheme will be
+        written on the far left of the file. Spaces are accumulated by
+        count * tab size.
+
+    Returns:
+        A string of spaces according to the indentation level.
+
+    &#34;&#34;&#34;
+
+    spaces = &#39;&#39;
+    for i in range(indentation_level_count):
+        for space in range(SPACES_PER_TAB):
+            spaces += &#39; &#39;
+    return spaces
+
+
+def get_file_info_comment(file_name) -&gt; string:
+    &#34;&#34;&#34; Convenience function that provides file info comment.
+
+    All cpp and header files must have a file info comment at the top of
+    the file according to the Hydra style guide.
+
+    Example:
+        ```
+        //-----------------------------------------------
+        //
+        // MyFile.h
+        //
+        ```
+
+    Args:
+        file_name(string): Required. Specifies the name of the file that
+        will appear in the file info comment.
+
+    Returns:
+        A string containing the entire file info comment. Two new lines
+        are added at the end as there is no case in which this wouldn&#39;t be
+        added manually to the file_info_comment.
+    &#34;&#34;&#34;
+
+    return (get_line_comment_normal() +
+            get_new_line() +
+            get_single_line_comment() +
+            get_new_line() +
+            get_file_name_comment(file_name) +
+            get_single_line_comment() +
+            get_new_line() + get_new_line())
+
+
+def get_include_system_string(include_name) -&gt; string:
+    &#34;&#34;&#34; Used to generate an include string for a system library.
+
+    This should be used for system level includes such as vector,
+    functional, memory, etc. A new line is appened to the end as there is
+    no scenario where this wouldn&#39;t be added manually.
+
+    Example:
+        `#include &lt;memory&gt;`
+
+    Args:
+        include_name(string): Required. Specifies the name of the include
+        that will be written in the include statement.
+
+    Returns:
+        An include statement with `&lt;&gt;`
+
+    &#34;&#34;&#34;
+    return &#39;#include &lt;&#39; + include_name + &#39;&gt;\n&#39;
+
+
+def get_namespace_opener(namespace_name) -&gt; string:
+    &#34;&#34;&#34; Convenience function used to generate a namespace opening statement.
+
+    The namespace statement has the open scope on the same line. This is
+    intended to use for top-level namespaces that would be declared towards
+    the beginning of the file. These namespace declarations are always
+    followed by a double dotted line.
+
+    Example:
+        ```
+        namespace MyNamespace {
+
+        //=====================================================
+        ```
+
+    Args:
+        namespace_name(string): Required. Specifies the name of the namespace
+        that the namespace opener will be written for.
+
+    Returns:
+        A namespace opener according to the Hydra C++ style guide. New
+        lines are appended to the end since there is no case where they would
+        not be added manually.
+
+    &#34;&#34;&#34;
+    return (&#39;namespace &#39; + namespace_name + &#39; &#39; + get_scope_open() +
+            &#39;\n\n&#39; + get_line_comment_double() +
+            &#39;\n\n&#39;)
+
+
+def get_namespace_closer(namespace_name) -&gt; string:
+    &#34;&#34;&#34; Convenience function used to generate a namespace closing statement.
+
+    Closes a namespace according to the Hydra C++ style guide.This is
+    intended to use for top-level namespaces that would be declared towards
+    the end of the file. These namespace declarations are always preceded
+    by a double dotted line, and have a commend after the closing scope
+    operator.
+
+    Example:
+        ```
+        //=================================================================
+
+        } // namespace MyNamespace
+        ```
+
+    Args:
+        namespace_name(string): Required. Specifies the name of the namespace
+        that the namespace closer will be written for.
+
+    Returns:
+        A namespace closer.
+
+    &#34;&#34;&#34;
+    return (get_line_comment_double() + &#39;\n\n&#39; + get_scope_close() +
+            &#39; // namespace &#39; + namespace_name + &#39;\n&#39;)
+
+
+def get_include_guard() -&gt; string:
+    &#34;&#34;&#34; Convenience function used to generate an include guard.
+
+    Uses &#34;pragma once&#34; as the include guard. New lines are added as there is
+    no case where they would not be added manually.
+
+    Example:
+        `#pragma once`
+
+    Returns:
+        A string containing the pragma once include guard.
+
+    &#34;&#34;&#34;
+    return &#39;#pragma once\n\n&#39;
+
+
+def get_generated_file_warning() -&gt; string:
+    &#34;&#34;&#34; Returns a comment containing a warning string.
+
+    Its important to be clear that the file generated by this script is in fact
+    generated. Therefore, any changes to the file made directly will be erased
+    upon regenerating the script.
+
+    Returns:
+        A string containing a comment with a warning about the file being
+        generated.
+
+    &#34;&#34;&#34;
+    return &#39;// This is a generated file! Any changes here will be lost!!!\n\n&#39;
+
+
+def get_file_name_comment(file_name) -&gt; string:
+    &#34;&#34;&#34; Convenience function for getting a comment starter and file name.
+
+    According to the Hydra C++ style guide, all file info comments must contain
+    a comment with the file name. This function will return that, given the
+    file name.
+
+    A new line is appended as there is no case in which it would not be
+    appended manually.
+
+    Example:
+        `// MyFile.h`
+
+    Args:
+        file_name(string): the name to be included in the comment string.
+
+    Returns:
+        A file comment.
+
+    &#34;&#34;&#34;
+    return get_single_line_comment() + &#39; &#39; + file_name + &#39;\n&#39;
+
+
+def get_adt_scope_close() -&gt; string:
+    &#34;&#34;&#34; Convenience function for closing the scope of an ADT
+
+    User defined types such as those defined with classes, structs, enums, etc
+    must have their scopes closed with a semicolon. This function provides
+    that.
+
+    A new line is appended as there is no case in which it would not be
+    appended manually.
+
+    Example:
+        `};`
+
+    Returns:
+        A scope closure with a `;`.
+
+    &#34;&#34;&#34;
+    return get_scope_close() + get_semicolon() + &#39;\n&#39;
+
+
+def get_enum_signature(underlying_type, enum_name, is_class=False) -&gt; string:
+    &#34;&#34;&#34; Forms the signature of an enum
+
+    In order to define an enum, an enum signature must be provided. Using this
+    function we can provide an enum class or struct, with any specified
+    underlying type.
+
+    Scoping is not provided and should be composed by the user.
+
+    Example:
+        `enum class GameIds : uint32_t`
+
+    Args:
+        underlying_type(string): Specifies the type. ex. uint32_t, int, etc.
+        enum_name(string): The name of the enum.
+        is_class(bool): Setting this flag to true will cause an enum class to
+        be created rather than an enum struct.
+
+    Returns:
+        An enum signature.
+
+    &#34;&#34;&#34;
+    type_string = &#39;struct&#39;
+    if is_class is True:
+        type_string = &#39;class&#39;
+
+    return (&#39;enum &#39; + type_string + &#39; &#39; + enum_name + &#39; : &#39; + underlying_type)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="generate_cpp_util.get_adt_scope_close"><code class="name flex">
+<span>def <span class="ident">get_adt_scope_close</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convenience function for closing the scope of an ADT</p>
+<p>User defined types such as those defined with classes, structs, enums, etc
+must have their scopes closed with a semicolon. This function provides
+that.</p>
+<p>A new line is appended as there is no case in which it would not be
+appended manually.</p>
+<h2 id="example">Example</h2>
+<p><code>};</code></p>
+<h2 id="returns">Returns</h2>
+<p>A scope closure with a <code>;</code>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_adt_scope_close() -&gt; string:
+    &#34;&#34;&#34; Convenience function for closing the scope of an ADT
+
+    User defined types such as those defined with classes, structs, enums, etc
+    must have their scopes closed with a semicolon. This function provides
+    that.
+
+    A new line is appended as there is no case in which it would not be
+    appended manually.
+
+    Example:
+        `};`
+
+    Returns:
+        A scope closure with a `;`.
+
+    &#34;&#34;&#34;
+    return get_scope_close() + get_semicolon() + &#39;\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_enum_signature"><code class="name flex">
+<span>def <span class="ident">get_enum_signature</span></span>(<span>underlying_type, enum_name, is_class=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Forms the signature of an enum</p>
+<p>In order to define an enum, an enum signature must be provided. Using this
+function we can provide an enum class or struct, with any specified
+underlying type.</p>
+<p>Scoping is not provided and should be composed by the user.</p>
+<h2 id="example">Example</h2>
+<p><code>enum class GameIds : uint32_t</code></p>
+<h2 id="args">Args</h2>
+<p>underlying_type(string): Specifies the type. ex. uint32_t, int, etc.
+enum_name(string): The name of the enum.
+is_class(bool): Setting this flag to true will cause an enum class to
+be created rather than an enum struct.</p>
+<h2 id="returns">Returns</h2>
+<p>An enum signature.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_enum_signature(underlying_type, enum_name, is_class=False) -&gt; string:
+    &#34;&#34;&#34; Forms the signature of an enum
+
+    In order to define an enum, an enum signature must be provided. Using this
+    function we can provide an enum class or struct, with any specified
+    underlying type.
+
+    Scoping is not provided and should be composed by the user.
+
+    Example:
+        `enum class GameIds : uint32_t`
+
+    Args:
+        underlying_type(string): Specifies the type. ex. uint32_t, int, etc.
+        enum_name(string): The name of the enum.
+        is_class(bool): Setting this flag to true will cause an enum class to
+        be created rather than an enum struct.
+
+    Returns:
+        An enum signature.
+
+    &#34;&#34;&#34;
+    type_string = &#39;struct&#39;
+    if is_class is True:
+        type_string = &#39;class&#39;
+
+    return (&#39;enum &#39; + type_string + &#39; &#39; + enum_name + &#39; : &#39; + underlying_type)</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_file_info_comment"><code class="name flex">
+<span>def <span class="ident">get_file_info_comment</span></span>(<span>file_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convenience function that provides file info comment.</p>
+<p>All cpp and header files must have a file info comment at the top of
+the file according to the Hydra style guide.</p>
+<h2 id="example">Example</h2>
+<pre><code>//-----------------------------------------------
+//
+// MyFile.h
+//
+</code></pre>
+<h2 id="args">Args</h2>
+<p>file_name(string): Required. Specifies the name of the file that
+will appear in the file info comment.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>A</code> <code>string</code> <code>containing</code> <code>the</code> <code>entire</code> <code>file</code> <code>info</code> <code>comment.</code> <code>Two</code> <code>new</code> <code>lines</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>are</code> <code>added</code> <code>at</code> <code>the</code> <code>end</code> <code>as</code> <code>there</code> <code>is</code> <code>no</code> <code>case</code> <code>in</code> <code>which</code> <code>this</code> <code>wouldn't</code> <code>be</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>added manually to the file_info_comment.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_file_info_comment(file_name) -&gt; string:
+    &#34;&#34;&#34; Convenience function that provides file info comment.
+
+    All cpp and header files must have a file info comment at the top of
+    the file according to the Hydra style guide.
+
+    Example:
+        ```
+        //-----------------------------------------------
+        //
+        // MyFile.h
+        //
+        ```
+
+    Args:
+        file_name(string): Required. Specifies the name of the file that
+        will appear in the file info comment.
+
+    Returns:
+        A string containing the entire file info comment. Two new lines
+        are added at the end as there is no case in which this wouldn&#39;t be
+        added manually to the file_info_comment.
+    &#34;&#34;&#34;
+
+    return (get_line_comment_normal() +
+            get_new_line() +
+            get_single_line_comment() +
+            get_new_line() +
+            get_file_name_comment(file_name) +
+            get_single_line_comment() +
+            get_new_line() + get_new_line())</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_file_name_comment"><code class="name flex">
+<span>def <span class="ident">get_file_name_comment</span></span>(<span>file_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convenience function for getting a comment starter and file name.</p>
+<p>According to the Hydra C++ style guide, all file info comments must contain
+a comment with the file name. This function will return that, given the
+file name.</p>
+<p>A new line is appended as there is no case in which it would not be
+appended manually.</p>
+<h2 id="example">Example</h2>
+<p><code>// MyFile.h</code></p>
+<h2 id="args">Args</h2>
+<p>file_name(string): the name to be included in the comment string.</p>
+<h2 id="returns">Returns</h2>
+<p>A file comment.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_file_name_comment(file_name) -&gt; string:
+    &#34;&#34;&#34; Convenience function for getting a comment starter and file name.
+
+    According to the Hydra C++ style guide, all file info comments must contain
+    a comment with the file name. This function will return that, given the
+    file name.
+
+    A new line is appended as there is no case in which it would not be
+    appended manually.
+
+    Example:
+        `// MyFile.h`
+
+    Args:
+        file_name(string): the name to be included in the comment string.
+
+    Returns:
+        A file comment.
+
+    &#34;&#34;&#34;
+    return get_single_line_comment() + &#39; &#39; + file_name + &#39;\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_generated_file_warning"><code class="name flex">
+<span>def <span class="ident">get_generated_file_warning</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a comment containing a warning string.</p>
+<p>Its important to be clear that the file generated by this script is in fact
+generated. Therefore, any changes to the file made directly will be erased
+upon regenerating the script.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>A</code> <code>string</code> <code>containing</code> <code>a</code> <code>comment</code> <code>with</code> <code>a</code> <code>warning</code> <code>about</code> <code>the</code> <code>file</code> <code>being</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>generated.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_generated_file_warning() -&gt; string:
+    &#34;&#34;&#34; Returns a comment containing a warning string.
+
+    Its important to be clear that the file generated by this script is in fact
+    generated. Therefore, any changes to the file made directly will be erased
+    upon regenerating the script.
+
+    Returns:
+        A string containing a comment with a warning about the file being
+        generated.
+
+    &#34;&#34;&#34;
+    return &#39;// This is a generated file! Any changes here will be lost!!!\n\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_include_guard"><code class="name flex">
+<span>def <span class="ident">get_include_guard</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convenience function used to generate an include guard.</p>
+<p>Uses "pragma once" as the include guard. New lines are added as there is
+no case where they would not be added manually.</p>
+<h2 id="example">Example</h2>
+<p><code>#pragma once</code></p>
+<h2 id="returns">Returns</h2>
+<p>A string containing the pragma once include guard.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_include_guard() -&gt; string:
+    &#34;&#34;&#34; Convenience function used to generate an include guard.
+
+    Uses &#34;pragma once&#34; as the include guard. New lines are added as there is
+    no case where they would not be added manually.
+
+    Example:
+        `#pragma once`
+
+    Returns:
+        A string containing the pragma once include guard.
+
+    &#34;&#34;&#34;
+    return &#39;#pragma once\n\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_include_system_string"><code class="name flex">
+<span>def <span class="ident">get_include_system_string</span></span>(<span>include_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Used to generate an include string for a system library.</p>
+<p>This should be used for system level includes such as vector,
+functional, memory, etc. A new line is appened to the end as there is
+no scenario where this wouldn't be added manually.</p>
+<h2 id="example">Example</h2>
+<p><code>#include &lt;memory&gt;</code></p>
+<h2 id="args">Args</h2>
+<p>include_name(string): Required. Specifies the name of the include
+that will be written in the include statement.</p>
+<h2 id="returns">Returns</h2>
+<p>An include statement with <code>&lt;&gt;</code></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_include_system_string(include_name) -&gt; string:
+    &#34;&#34;&#34; Used to generate an include string for a system library.
+
+    This should be used for system level includes such as vector,
+    functional, memory, etc. A new line is appened to the end as there is
+    no scenario where this wouldn&#39;t be added manually.
+
+    Example:
+        `#include &lt;memory&gt;`
+
+    Args:
+        include_name(string): Required. Specifies the name of the include
+        that will be written in the include statement.
+
+    Returns:
+        An include statement with `&lt;&gt;`
+
+    &#34;&#34;&#34;
+    return &#39;#include &lt;&#39; + include_name + &#39;&gt;\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_indentation_spaces"><code class="name flex">
+<span>def <span class="ident">get_indentation_spaces</span></span>(<span>indentation_level_count=0)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convenience function for composable indentation.</p>
+<p>This function is intended to be used when composing lines of code
+that require indentation. No new lines are added to the resulting string.</p>
+<h2 id="args">Args</h2>
+<p>indentation_level_count(int): If nothing is passed, and 0 is used, any
+code string composed with this as its indentation scheme will be
+written on the far left of the file. Spaces are accumulated by
+count * tab size.</p>
+<h2 id="returns">Returns</h2>
+<p>A string of spaces according to the indentation level.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_indentation_spaces(indentation_level_count=0) -&gt; string:
+    &#34;&#34;&#34; Convenience function for composable indentation.
+
+    This function is intended to be used when composing lines of code
+    that require indentation. No new lines are added to the resulting string.
+
+    Args:
+        indentation_level_count(int): If nothing is passed, and 0 is used, any
+        code string composed with this as its indentation scheme will be
+        written on the far left of the file. Spaces are accumulated by
+        count * tab size.
+
+    Returns:
+        A string of spaces according to the indentation level.
+
+    &#34;&#34;&#34;
+
+    spaces = &#39;&#39;
+    for i in range(indentation_level_count):
+        for space in range(SPACES_PER_TAB):
+            spaces += &#39; &#39;
+    return spaces</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_line_comment_double"><code class="name flex">
+<span>def <span class="ident">get_line_comment_double</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>No special formatting included, intended to be a simple component.</p>
+<h2 id="example">Example</h2>
+<p><code>//================================================================</code></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>A</code> <code>single</code>, <code>double</code>-<code>dotted</code> <code>line</code> <code>used</code> <code>as</code> <code>formatters</code> <code>in</code> <code>special</code> <code>cases</code>,</dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>such as at the top of a file.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_line_comment_double() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Example:
+        `//================================================================`
+
+    Returns:
+        A single, double-dotted line used as formatters in special cases,
+        such as at the top of a file.
+
+    &#34;&#34;&#34;
+    return (&#39;//==========================================================&#39;
+            &#39;=====================&#39;)</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_line_comment_normal"><code class="name flex">
+<span>def <span class="ident">get_line_comment_normal</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>No special formatting included, intended to be a simple component.</p>
+<h2 id="example">Example</h2>
+<p><code>//----------------------------------------------------------------</code></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>A</code> <code>single</code> <code>dotted</code> <code>line</code> <code>used</code> <code>as</code> <code>formatters</code> <code>in</code> <code>special</code> <code>cases</code>, <code>such</code> <code>as</code> <code>at</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>the top of a file.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_line_comment_normal() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Example:
+        `//----------------------------------------------------------------`
+
+    Returns:
+        A single dotted line used as formatters in special cases, such as at
+        the top of a file.
+
+    &#34;&#34;&#34;
+    return (&#39;//----------------------------------------------------------&#39;
+            &#39;---------------------&#39;)</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_namespace_closer"><code class="name flex">
+<span>def <span class="ident">get_namespace_closer</span></span>(<span>namespace_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convenience function used to generate a namespace closing statement.</p>
+<p>Closes a namespace according to the Hydra C++ style guide.This is
+intended to use for top-level namespaces that would be declared towards
+the end of the file. These namespace declarations are always preceded
+by a double dotted line, and have a commend after the closing scope
+operator.</p>
+<h2 id="example">Example</h2>
+<pre><code>//=================================================================
+
+} // namespace MyNamespace
+</code></pre>
+<h2 id="args">Args</h2>
+<p>namespace_name(string): Required. Specifies the name of the namespace
+that the namespace closer will be written for.</p>
+<h2 id="returns">Returns</h2>
+<p>A namespace closer.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_namespace_closer(namespace_name) -&gt; string:
+    &#34;&#34;&#34; Convenience function used to generate a namespace closing statement.
+
+    Closes a namespace according to the Hydra C++ style guide.This is
+    intended to use for top-level namespaces that would be declared towards
+    the end of the file. These namespace declarations are always preceded
+    by a double dotted line, and have a commend after the closing scope
+    operator.
+
+    Example:
+        ```
+        //=================================================================
+
+        } // namespace MyNamespace
+        ```
+
+    Args:
+        namespace_name(string): Required. Specifies the name of the namespace
+        that the namespace closer will be written for.
+
+    Returns:
+        A namespace closer.
+
+    &#34;&#34;&#34;
+    return (get_line_comment_double() + &#39;\n\n&#39; + get_scope_close() +
+            &#39; // namespace &#39; + namespace_name + &#39;\n&#39;)</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_namespace_opener"><code class="name flex">
+<span>def <span class="ident">get_namespace_opener</span></span>(<span>namespace_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convenience function used to generate a namespace opening statement.</p>
+<p>The namespace statement has the open scope on the same line. This is
+intended to use for top-level namespaces that would be declared towards
+the beginning of the file. These namespace declarations are always
+followed by a double dotted line.</p>
+<h2 id="example">Example</h2>
+<pre><code>namespace MyNamespace {
+
+//=====================================================
+</code></pre>
+<h2 id="args">Args</h2>
+<p>namespace_name(string): Required. Specifies the name of the namespace
+that the namespace opener will be written for.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>A</code> <code>namespace</code> <code>opener</code> <code>according</code> <code>to</code> <code>the</code> <code>Hydra</code> <code>C</code>++ <code>style</code> <code>guide.</code> <code>New</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>lines</code> <code>are</code> <code>appended</code> <code>to</code> <code>the</code> <code>end</code> <code>since</code> <code>there</code> <code>is</code> <code>no</code> <code>case</code> <code>where</code> <code>they</code> <code>would</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>not be added manually.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_namespace_opener(namespace_name) -&gt; string:
+    &#34;&#34;&#34; Convenience function used to generate a namespace opening statement.
+
+    The namespace statement has the open scope on the same line. This is
+    intended to use for top-level namespaces that would be declared towards
+    the beginning of the file. These namespace declarations are always
+    followed by a double dotted line.
+
+    Example:
+        ```
+        namespace MyNamespace {
+
+        //=====================================================
+        ```
+
+    Args:
+        namespace_name(string): Required. Specifies the name of the namespace
+        that the namespace opener will be written for.
+
+    Returns:
+        A namespace opener according to the Hydra C++ style guide. New
+        lines are appended to the end since there is no case where they would
+        not be added manually.
+
+    &#34;&#34;&#34;
+    return (&#39;namespace &#39; + namespace_name + &#39; &#39; + get_scope_open() +
+            &#39;\n\n&#39; + get_line_comment_double() +
+            &#39;\n\n&#39;)</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_new_line"><code class="name flex">
+<span>def <span class="ident">get_new_line</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>No special formatting included, intended to be a simple component.</p>
+<h2 id="returns">Returns</h2>
+<p>A new line.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_new_line() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Returns:
+        A new line.
+
+    &#34;&#34;&#34;
+    return &#39;\n&#39;</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_scope_close"><code class="name flex">
+<span>def <span class="ident">get_scope_close</span></span>(<span>indentation_level_count=0)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convenience function for open scope operator.</p>
+<p>The open scope returned is formatted according to the indentation level
+specified. No new lines are included at the end.</p>
+<h2 id="example">Example</h2>
+<pre><code>}
+or one with 4 spaces before
+    }
+</code></pre>
+<h2 id="args">Args</h2>
+<p>indentation_level_count(int): Indicates how nested the scope is. This
+argument is simply forwarded along.</p>
+<h2 id="returns">Returns</h2>
+<p>An open scope operator '{'. No new lines included intentionally.
+This decision was purely made to be consistent with get_scope_close().</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_scope_close(indentation_level_count=0) -&gt; string:
+    &#34;&#34;&#34; Convenience function for open scope operator.
+
+    The open scope returned is formatted according to the indentation level
+    specified. No new lines are included at the end.
+
+    Example:
+        ```
+        }
+        or one with 4 spaces before
+            }
+        ```
+
+    Args:
+        indentation_level_count(int): Indicates how nested the scope is. This
+        argument is simply forwarded along.
+
+    Returns:
+        An open scope operator &#39;{&#39;. No new lines included intentionally.
+        This decision was purely made to be consistent with get_scope_close().
+
+    &#34;&#34;&#34;
+    return get_indentation_spaces(indentation_level_count) + &#39;}&#39;</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_scope_open"><code class="name flex">
+<span>def <span class="ident">get_scope_open</span></span>(<span>indentation_level_count=0)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convenience function for open scope operator.</p>
+<p>The open scope returned is formatted according to the indentation level
+specified. No new lines are included at the end.</p>
+<h2 id="example">Example</h2>
+<pre><code>{
+or one with 4 spaces before
+    {
+</code></pre>
+<h2 id="args">Args</h2>
+<p>indentation_level_count(int): Indicates how nested the scope is. This
+argument is simply forwarded along.</p>
+<h2 id="returns">Returns</h2>
+<p>An open scope operator '{'. No new lines included intentionally.
+This decision was purely made to be consistent with get_scope_close().</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_scope_open(indentation_level_count=0) -&gt; string:
+    &#34;&#34;&#34; Convenience function for open scope operator.
+
+    The open scope returned is formatted according to the indentation level
+    specified. No new lines are included at the end.
+
+    Example:
+        ```
+        {
+        or one with 4 spaces before
+            {
+        ```
+    Args:
+        indentation_level_count(int): Indicates how nested the scope is. This
+        argument is simply forwarded along.
+
+    Returns:
+        An open scope operator &#39;{&#39;. No new lines included intentionally.
+        This decision was purely made to be consistent with get_scope_close().
+
+    &#34;&#34;&#34;
+    return get_indentation_spaces(indentation_level_count) + &#39;{&#39;</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_semicolon"><code class="name flex">
+<span>def <span class="ident">get_semicolon</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>No special formatting included, intended to be a simple component.</p>
+<h2 id="example">Example</h2>
+<p><code>;</code></p>
+<h2 id="returns">Returns</h2>
+<p>A semicolon.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_semicolon() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Example:
+        `;`
+
+    Returns:
+        A semicolon.
+
+    &#34;&#34;&#34;
+    return &#39;;&#39;</code></pre>
+</details>
+</dd>
+<dt id="generate_cpp_util.get_single_line_comment"><code class="name flex">
+<span>def <span class="ident">get_single_line_comment</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>No special formatting included, intended to be a simple component.</p>
+<h2 id="example">Example</h2>
+<p><code>//</code></p>
+<h2 id="returns">Returns</h2>
+<p>A comment opener for a single line comment.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_single_line_comment() -&gt; string:
+    &#34;&#34;&#34;No special formatting included, intended to be a simple component.
+
+    Example:
+        `//`
+
+    Returns:
+        A comment opener for a single line comment.
+
+    &#34;&#34;&#34;
+    return &#39;//&#39;</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="generate_cpp_util.get_adt_scope_close" href="#generate_cpp_util.get_adt_scope_close">get_adt_scope_close</a></code></li>
+<li><code><a title="generate_cpp_util.get_enum_signature" href="#generate_cpp_util.get_enum_signature">get_enum_signature</a></code></li>
+<li><code><a title="generate_cpp_util.get_file_info_comment" href="#generate_cpp_util.get_file_info_comment">get_file_info_comment</a></code></li>
+<li><code><a title="generate_cpp_util.get_file_name_comment" href="#generate_cpp_util.get_file_name_comment">get_file_name_comment</a></code></li>
+<li><code><a title="generate_cpp_util.get_generated_file_warning" href="#generate_cpp_util.get_generated_file_warning">get_generated_file_warning</a></code></li>
+<li><code><a title="generate_cpp_util.get_include_guard" href="#generate_cpp_util.get_include_guard">get_include_guard</a></code></li>
+<li><code><a title="generate_cpp_util.get_include_system_string" href="#generate_cpp_util.get_include_system_string">get_include_system_string</a></code></li>
+<li><code><a title="generate_cpp_util.get_indentation_spaces" href="#generate_cpp_util.get_indentation_spaces">get_indentation_spaces</a></code></li>
+<li><code><a title="generate_cpp_util.get_line_comment_double" href="#generate_cpp_util.get_line_comment_double">get_line_comment_double</a></code></li>
+<li><code><a title="generate_cpp_util.get_line_comment_normal" href="#generate_cpp_util.get_line_comment_normal">get_line_comment_normal</a></code></li>
+<li><code><a title="generate_cpp_util.get_namespace_closer" href="#generate_cpp_util.get_namespace_closer">get_namespace_closer</a></code></li>
+<li><code><a title="generate_cpp_util.get_namespace_opener" href="#generate_cpp_util.get_namespace_opener">get_namespace_opener</a></code></li>
+<li><code><a title="generate_cpp_util.get_new_line" href="#generate_cpp_util.get_new_line">get_new_line</a></code></li>
+<li><code><a title="generate_cpp_util.get_scope_close" href="#generate_cpp_util.get_scope_close">get_scope_close</a></code></li>
+<li><code><a title="generate_cpp_util.get_scope_open" href="#generate_cpp_util.get_scope_open">get_scope_open</a></code></li>
+<li><code><a title="generate_cpp_util.get_semicolon" href="#generate_cpp_util.get_semicolon">get_semicolon</a></code></li>
+<li><code><a title="generate_cpp_util.get_single_line_comment" href="#generate_cpp_util.get_single_line_comment">get_single_line_comment</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
