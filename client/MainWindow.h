@@ -38,7 +38,7 @@ public:
 	bool IsOpen() const;
 
 private:
-	void HandleEvents();
+	void HandleSDLEvents();
 	void HandleKeyEvent(const SDL_Event& e);
 	void HandleMouseEvent(const SDL_Event& e);
 	void HandleWindowEvent(const SDL_Event& e);

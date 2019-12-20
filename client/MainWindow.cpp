@@ -22,8 +22,8 @@ namespace {
 std::shared_ptr<spdlog::logger> s_logger;
 
 // Window dimensions.
-const int32_t s_screenWidth = 2560;
-const int32_t s_screenHeight = 1440;
+const int32_t s_screenWidth = 640;
+const int32_t s_screenHeight = 480;
 } // anon namespace
 
 //-------------------------------------------------------------------------------
@@ -74,10 +74,9 @@ bool MainWindow::Initialize()
 
 void MainWindow::Render()
 {
-	//Draw red square
-	SDL_Rect fillRect = { 0, 0, 150, 150 };
-	SDL_SetRenderDrawColor(RenderEngine::GetRenderer(), 0xFF, 0x00, 0x00, 0xFF);
-	SDL_RenderFillRect(RenderEngine::GetRenderer(), &fillRect);
+	// NYI.
+	// !WARNING!
+	// Anything rendered here will appear on top of the entire application.
 }
 
 void MainWindow::Close()
@@ -95,7 +94,7 @@ bool MainWindow::IsOpen() const
 
 void MainWindow::Process()
 {
-	HandleEvents();
+	HandleSDLEvents();
 }
 
 SDL_Window* MainWindow::GetWindowData() const
@@ -103,7 +102,7 @@ SDL_Window* MainWindow::GetWindowData() const
 	return m_window.get();
 }
 
-void MainWindow::HandleEvents()
+void MainWindow::HandleSDLEvents()
 {
 	// Pump the event queue...
 	SDL_Event e;
