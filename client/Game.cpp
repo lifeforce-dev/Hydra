@@ -120,11 +120,11 @@ void Game::ProcessSDLEvents()
 			DispatchMouseButtonEvent(&e.button);
 			break;
 		case SDL_WINDOWEVENT:
-			m_mainWindow->HandleWindowEvent(&e.window);
+			DispatchWindowEvent(&e.window);
 			break;
 		case SDL_QUIT:
 			// Handle shut down.
-			m_mainWindow->Close();
+			m_windowManager->ShutDown();
 			break;
 		default:
 			break;
@@ -150,6 +150,11 @@ void Game::DispatchMouseButtonEvent(SDL_MouseButtonEvent* event)
 	{
 		m_gameController->HandleMouseButtonEvent(event);
 	}
+}
+
+void Game::DispatchWindowEvent(SDL_WindowEvent* event)
+{
+	m_windowManager->HandleWindowEvent(event);
 }
 
 void Game::Run()

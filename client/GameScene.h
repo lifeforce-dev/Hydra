@@ -51,7 +51,7 @@ private:
 private:
 	GameController* m_controller;
 	std::unique_ptr<Label> m_label;
-	std::unordered_map<SDL_Scancode, std::function<void()>> m_keyboardEventMap;
+	std::unordered_map<SDL_Scancode, std::function<void(SDL_KeyboardEvent* )>> m_keyboardEventMap;
 };
 
 //===============================================================================

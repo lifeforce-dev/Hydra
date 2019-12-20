@@ -56,7 +56,7 @@ bool GameScene::HandleKeyEvent(SDL_KeyboardEvent* event)
 		return false;
 	}
 
-	m_keyboardEventMap.at(sc)();
+	m_keyboardEventMap.at(sc)(event);
 
 	return true;
 }
@@ -69,10 +69,10 @@ bool GameScene::HandleMouseButtonEvent(SDL_MouseButtonEvent* event)
 
 void GameScene::MapKeyboardInput()
 {
-	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_W] = []() {};
-	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_A] = []() {};
-	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_S] = []() {};
-	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_D] = []() {};
+	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_W] = [](SDL_KeyboardEvent* event) {};
+	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_A] = [](SDL_KeyboardEvent* event) {};
+	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_S] = [](SDL_KeyboardEvent* event) {};
+	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_D] = [](SDL_KeyboardEvent* event) {};
 }
 
 //===============================================================================

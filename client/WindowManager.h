@@ -22,6 +22,8 @@ public:
 	bool Initialize();
 
 	MainWindow* GetMainWindow() const;
+	bool HandleWindowEvent(SDL_WindowEvent* event);
+	void ShutDown();
 
 	// InputHandler impl
 	virtual bool HandleKeyEvent(SDL_KeyboardEvent* event) override;

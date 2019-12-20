@@ -52,7 +52,7 @@ private:
 	void ProcessSDLEvents();
 	void DispatchKeyEvent(SDL_KeyboardEvent* event);
 	void DispatchMouseButtonEvent(SDL_MouseButtonEvent* event);
-
+	void DispatchWindowEvent(SDL_WindowEvent* event);
 
 private:
 	MainWindow* m_mainWindow = nullptr;

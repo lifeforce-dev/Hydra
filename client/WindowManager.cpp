@@ -40,6 +40,17 @@ MainWindow* WindowManager::GetMainWindow() const
 	return m_mainWindow.get();
 }
 
+bool WindowManager::HandleWindowEvent(SDL_WindowEvent* event)
+{
+	m_mainWindow->HandleWindowEvent(event);
+	return false;
+}
+
+void WindowManager::ShutDown()
+{
+	m_mainWindow->Close();
+}
+
 bool WindowManager::HandleKeyEvent(SDL_KeyboardEvent* event)
 {
 	// NYI
