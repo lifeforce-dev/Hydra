@@ -72,13 +72,6 @@ bool MainWindow::Initialize()
 	return true;
 }
 
-void MainWindow::Render()
-{
-	// NYI.
-	// !WARNING!
-	// Anything rendered here will appear on top of the entire application.
-}
-
 void MainWindow::Close()
 {
 	m_isOpen = false;
@@ -87,72 +80,30 @@ void MainWindow::Close()
 	m_window.reset();
 }
 
+bool MainWindow::HandleWindowEvent(SDL_WindowEvent* event)
+{
+	switch (event->type)
+	{
+	case SDL_WINDOWEVENT_ENTER:
+		return true;
+	case SDL_WINDOWEVENT_LEAVE:
+		return true;
+	default:
+		SPDLOG_LOGGER_ERROR(s_logger, "Unkown SDL_WindowEvent unhandled. event={}", event->windowID);
+		return false;
+	}
+
+	return false;
+}
+
 bool MainWindow::IsOpen() const
 {
 	return m_isOpen;
 }
 
-void MainWindow::Process()
-{
-	HandleSDLEvents();
-}
-
 SDL_Window* MainWindow::GetWindowData() const
 {
 	return m_window.get();
-}
-
-void MainWindow::HandleSDLEvents()
-{
-	// Pump the event queue...
-	SDL_Event e;
-	while (SDL_PollEvent(&e) != 0)
-	{
-		// Handle single key events here
-		switch (e.type)
-		{
-		case SDL_KEYDOWN:
-		case SDL_KEYUP:
-			HandleKeyEvent(e);
-			break;
-		case SDL_MOUSEMOTION:
-		case SDL_MOUSEBUTTONDOWN:
-		case SDL_MOUSEBUTTONUP:
-			HandleMouseEvent(e);
-			break;
-		case SDL_WINDOWEVENT:
-			HandleWindowEvent(e);
-			break;
-		case SDL_QUIT:
-			m_isOpen = false;
-			break;
-		default:
-			break;
-		}
-	}
-}
-
-void MainWindow::HandleKeyEvent(const SDL_Event& e)
-{
-	// NYI
-}
-
-void MainWindow::HandleMouseEvent(const SDL_Event& e)
-{
-	// NYI
-}
-
-void MainWindow::HandleWindowEvent(const SDL_Event& e)
-{
-	switch (e.window.event)
-	{
-	case SDL_WINDOWEVENT_ENTER:
-		break;
-	case SDL_WINDOWEVENT_LEAVE:
-		break;
-	default:
-		break;
-	}
 }
 
 //===============================================================================

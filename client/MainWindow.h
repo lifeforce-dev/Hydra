@@ -26,22 +26,13 @@ public:
 	void Close();
 
 	// Process window events.
-	void Process();
-
-	// Any special render handling for the main window.
-	void Render();
+	bool HandleWindowEvent(SDL_WindowEvent* event);
 
 	// Returns the raw SDL window data.
 	SDL_Window* GetWindowData() const;
 
 	// Returns whether the window is open or not.
 	bool IsOpen() const;
-
-private:
-	void HandleSDLEvents();
-	void HandleKeyEvent(const SDL_Event& e);
-	void HandleMouseEvent(const SDL_Event& e);
-	void HandleWindowEvent(const SDL_Event& e);
 
 private:
 	// Whether we're initialized or not.

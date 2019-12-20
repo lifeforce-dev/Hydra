@@ -21,6 +21,7 @@ class GameClient;
 class GameController;
 class MainWindow;
 class RenderEngine;
+class WindowManager;
 
 extern Game* g_game;
 
@@ -47,6 +48,12 @@ private:
 	void ConnectToServer();
 	void ProcessCallbackQueue();
 
+	// Pumps the SDL event queue
+	void ProcessSDLEvents();
+	void DispatchKeyEvent(SDL_KeyboardEvent* event);
+	void DispatchMouseButtonEvent(SDL_MouseButtonEvent* event);
+
+
 private:
 	MainWindow* m_mainWindow = nullptr;
 
@@ -62,6 +69,8 @@ private:
 
 	// Must be initialized before any UI may be initialized.
 	std::unique_ptr<RenderEngine> m_renderEngine;
+
+	std::unique_ptr<WindowManager> m_windowManager;
 
 	SDL_FontPtr m_defaultFont = SDL_FontPtr(nullptr, TTF_CloseFont);
 

@@ -6,7 +6,7 @@
 #include "GameController.h"
 
 #include "client/Game.h"
-#include "client/scenes/GameScene.h"
+#include "client/GameScene.h"
 
 namespace Client {
 
@@ -22,10 +22,6 @@ GameController::~GameController()
 {
 }
 
-void GameController::Initialize()
-{
-	// TODO: init game module and pass main window (render window).
-}
 
 void GameController::Run()
 {
@@ -37,6 +33,20 @@ void GameController::Run()
 	m_gameScene->ProcessEvents();
 	m_gameScene->Update();
 	m_gameScene->Render();
+}
+
+bool GameController::HandleKeyEvent(SDL_KeyboardEvent* event)
+{
+	return m_gameScene->HandleKeyEvent(event);
+}
+
+bool GameController::HandleMouseButtonEvent(SDL_MouseButtonEvent* event)
+{
+	return m_gameScene->HandleMouseButtonEvent(event);
+}
+
+void GameController::Initialize()
+{
 
 }
 

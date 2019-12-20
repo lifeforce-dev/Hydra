@@ -48,6 +48,33 @@ void GameScene::Render()
 	// We must have a valid window to draw to.
 }
 
+bool GameScene::HandleKeyEvent(SDL_KeyboardEvent* event)
+{
+	auto sc = event->keysym.scancode;
+	if (m_keyboardEventMap.find(sc) == std::cend(m_keyboardEventMap))
+	{
+		return false;
+	}
+
+	m_keyboardEventMap.at(sc)();
+
+	return true;
+}
+
+bool GameScene::HandleMouseButtonEvent(SDL_MouseButtonEvent* event)
+{
+	// NYI
+	return false;
+}
+
+void GameScene::MapKeyboardInput()
+{
+	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_W] = []() {};
+	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_A] = []() {};
+	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_S] = []() {};
+	m_keyboardEventMap[SDL_Scancode::SDL_SCANCODE_D] = []() {};
+}
+
 //===============================================================================
 
 } // namespace Client

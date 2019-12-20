@@ -12,7 +12,6 @@ namespace Client {
 
 //===============================================================================
 
-class MainWindow;
 class Renderable;
 class RenderEngine
 {
@@ -21,7 +20,7 @@ public:
 	~RenderEngine();
 
 	// Init render systems (SDL initialization).
-	bool Initialize();
+	bool Initialize(SDL_Window* window);
 
 	// Renderables registered will be rendered every frame.
 	void RegisterRenderable(Renderable* renderable);
@@ -32,9 +31,6 @@ public:
 	// Render entry point for every renderable in the game.
 	void Render() const;
 
-	// Getters
-	MainWindow* GetMainWindow() const;
-
 	// Static Getters
 	static SDL_Renderer* GetRenderer();
 
@@ -43,10 +39,9 @@ private:
 	void UpdateDrawOrder();
 
 	// Initializes the render and binds it to the main window.
-	bool CreateRenderer();
+	bool CreateRenderer(SDL_Window* window);
 
 private:
-	std::unique_ptr<MainWindow> m_mainWindow;
 	std::vector<Renderable*> m_renderables;
 };
 

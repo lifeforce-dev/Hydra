@@ -1,11 +1,11 @@
 //---------------------------------------------------------------
 //
-// GameController.h
+// WindowManager.h
 //
 
 #pragma once
 
-#include "InputHandler.h"
+#include "client/InputHandler.h"
 
 #include <memory>
 
@@ -13,29 +13,22 @@ namespace Client {
 
 //===============================================================================
 
-class Game;
-class GameScene;
-class NetworkController;
-
-class GameController : public InputHandler
+class MainWindow;
+class WindowManager : public InputHandler
 {
 public:
-	GameController(Game* game);
-	~GameController();
+	WindowManager();
 
-	void Run();
+	bool Initialize();
+
+	MainWindow* GetMainWindow() const;
 
 	// InputHandler impl
 	virtual bool HandleKeyEvent(SDL_KeyboardEvent* event) override;
 	virtual bool HandleMouseButtonEvent(SDL_MouseButtonEvent* event) override;
 
 private:
-	void Initialize();
-
-	Game* m_game;
-	std::unique_ptr<GameScene> m_gameScene;
-
-	bool m_isInitialized = false;
+	std::unique_ptr<MainWindow> m_mainWindow;
 };
 
 //===============================================================================

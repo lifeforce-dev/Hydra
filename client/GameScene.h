@@ -5,9 +5,11 @@
 
 #pragma once
 
-#include "client/scenes/Scene.h"
+#include "client/InputHandler.h"
 
+#include <functional>
 #include <memory>
+#include <unordered_map>
 
 namespace Common {
 	class Connection;
@@ -22,7 +24,7 @@ class Label;
 class NetworkController;
 class GameController;
 
-class GameScene : public Scene
+class GameScene : public InputHandler
 {
 public:
 	GameScene(GameController* gameController);
@@ -31,17 +33,25 @@ public:
 	// Scene impl.
 
 	// Will pump all event queues here.
-	virtual void ProcessEvents() override;
+	void ProcessEvents();
 
 	// Updates resulting from the event processing will be handled here.
-	virtual void Update() override;
+	void Update();
 
 	// Called in the event loop.
-	virtual void Render() override;
+	void Render();
+
+	// InputHandler impl
+	virtual bool HandleKeyEvent(SDL_KeyboardEvent* event) override;
+	virtual bool HandleMouseButtonEvent(SDL_MouseButtonEvent* event) override;
+
+private:
+	void MapKeyboardInput();
 
 private:
 	GameController* m_controller;
 	std::unique_ptr<Label> m_label;
+	std::unordered_map<SDL_Scancode, std::function<void()>> m_keyboardEventMap;
 };
 
 //===============================================================================

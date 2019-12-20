@@ -1,25 +1,20 @@
 //---------------------------------------------------------------
 //
-// Scene.h
+// InputHandler.h
 //
 
 #pragma once
+
+#include <SDL.h>
 
 namespace Client {
 
 //===============================================================================
 
-class Scene
+class InputHandler
 {
-public:
-	// Handle all events in here (network, user input, etc).
-	virtual void ProcessEvents() = 0;
-
-	// Handle updates that would result from handling events in here.
-	virtual void Update() = 0;
-
-	// Render loop.
-	virtual void Render() = 0;
+	virtual bool HandleKeyEvent(SDL_KeyboardEvent* event) = 0;
+	virtual bool HandleMouseButtonEvent(SDL_MouseButtonEvent* event) = 0;
 };
 
 //===============================================================================

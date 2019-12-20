@@ -132,7 +132,8 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="RenderableImpl.cpp" />
     <ClCompile Include="RenderEngine.cpp" />
-    <ClCompile Include="scenes\GameScene.cpp" />
+    <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\common\Common.vcxproj">
@@ -161,14 +162,15 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClient.h" />
     <ClInclude Include="GameController.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="RenderableImpl.h" />
     <ClInclude Include="RenderEngine.h" />
     <ClInclude Include="RenderEngineTypes.h" />
-    <ClInclude Include="scenes\GameScene.h" />
-    <ClInclude Include="scenes\Scene.h" />
+    <ClInclude Include="GameScene.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

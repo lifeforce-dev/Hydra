@@ -5,7 +5,6 @@
 
 #include "RenderEngine.h"
 
-#include "client/MainWindow.h"
 #include "client/Renderable.h"
 #include "common/log.h"
 
@@ -24,7 +23,7 @@ std::shared_ptr<spdlog::logger> s_logger;
 SDL_RendererPtr s_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
 
 // Incrementing render id ensures UID on all renderable objects.
-uint32_t s_currentRenderId = 0;
+uint64_t s_currentRenderId = 0;
 
 } // anon namespace
 
@@ -37,7 +36,6 @@ SDL_Renderer* RenderEngine::GetRenderer()
 }
 
 RenderEngine::RenderEngine()
-	: m_mainWindow(std::make_unique<MainWindow>())
 {
 	REGISTER_LOGGER("RenderEngine");
 	s_logger = Log::Logger("RenderEngine");
@@ -48,14 +46,8 @@ RenderEngine::~RenderEngine()
 	m_renderables.clear();
 }
 
-bool RenderEngine::Initialize()
+bool RenderEngine::Initialize(SDL_Window* window)
 {
-	// Init SDL.
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize SDL. error={}", SDL_GetError());
-		return false;
-	}
 
 	// Init image engine.
 	int imgFlags = (IMG_INIT_PNG | IMG_INIT_JPG);
@@ -72,13 +64,7 @@ bool RenderEngine::Initialize()
 		return false;
 	}
 
-	if (!m_mainWindow->Initialize())
-	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize main window.");
-		return false;
-	}
-
-	if (!CreateRenderer())
+	if (!CreateRenderer(window))
 	{
 		SPDLOG_LOGGER_ERROR(s_logger, "Failed to create renderer.");
 		return false;
@@ -92,8 +78,6 @@ void RenderEngine::Render() const
 {
 	SDL_SetRenderDrawColor(s_renderer.get(), 0, 0,0, 0xFF);
 	SDL_RenderClear(s_renderer.get());
-
-	m_mainWindow->Render();
 
 	// Render all registered renderables.
 	for (auto r : m_renderables)
@@ -132,10 +116,6 @@ void RenderEngine::UnregisterRenderable(uint32_t id)
 		}));
 }
 
-Client::MainWindow* RenderEngine::GetMainWindow() const
-{
-	return m_mainWindow.get();
-}
 
 // Helpers
 void RenderEngine::UpdateDrawOrder()
@@ -171,7 +151,7 @@ void RenderEngine::UpdateDrawOrder()
 	}
 }
 
-bool RenderEngine::CreateRenderer()
+bool RenderEngine::CreateRenderer(SDL_Window* window)
 {
 	if (s_renderer)
 	{
@@ -179,7 +159,7 @@ bool RenderEngine::CreateRenderer()
 	}
 
 	s_renderer = SDL_RendererPtr(std::move(
-		SDL_CreateRenderer(m_mainWindow->GetWindowData(), -1, SDL_RENDERER_ACCELERATED)),
+		SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)),
 		SDL_DestroyRenderer);
 
 	if (!s_renderer)
