@@ -48,13 +48,16 @@
     <ClCompile Include="Label.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="RenderableImpl.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="WindowManager.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectView.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectData.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,10 +83,7 @@
     <ClInclude Include="Label.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Renderable.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderableImpl.h">
+    <ClInclude Include="View.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="WindowManager.h">
@@ -93,6 +93,15 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderEngineEvents.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectView.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectData.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>

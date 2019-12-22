@@ -23,14 +23,14 @@ public:
 	GameController(Game* game);
 	~GameController();
 
-	void Run();
+	void Initialize();
+	void Update(float deltaTime);
 
 	// InputHandler impl
 	virtual bool HandleKeyEvent(SDL_KeyboardEvent* event) override;
 	virtual bool HandleMouseButtonEvent(SDL_MouseButtonEvent* event) override;
 
 private:
-	void Initialize();
 
 	Game* m_game;
 	std::unique_ptr<GameScene> m_gameScene;

@@ -22,14 +22,12 @@ std::shared_ptr<spdlog::logger> s_logger;
 //-------------------------------------------------------------------------------
 
 Label::Label()
-	: RenderableImpl()
 {
 	Initialize();
 }
 
 Label::Label(const std::string& text, const LabelOptions& options)
-	: RenderableImpl()
-	, m_text(text)
+	: m_text(text)
 	, m_shouldWrapText(options.shouldWrapText)
 	, m_color(options.color)
 	, m_maxWidth(options.maxWidth)
@@ -159,12 +157,12 @@ void Label::SetShouldWrapText(bool shouldWrapText)
 
 void Label::Render() const
 {
-	if (!m_textureData || m_text.empty())
-	{
-		return;
-	}
+	//if (!m_textureData || m_text.empty())
+	//{
+	//	return;
+	//}
 
-	SDL_RenderCopy(m_renderer, m_textureData.get(), &m_sourceGlyphRectCache, &m_geometry);
+//	SDL_RenderCopy(m_renderer, m_textureData.get(), &m_sourceGlyphRectCache, &m_geometry);
 }
 
 void Label::UpdateTextureData()
@@ -189,14 +187,14 @@ void Label::UpdateTextureData()
 		return;
 	}
 
-	m_textureData = SDL_TexturePtr(
-		SDL_CreateTextureFromSurface(m_renderer, textSurface.get()), SDL_DestroyTexture);
+	//m_textureData = SDL_TexturePtr(
+	//	SDL_CreateTextureFromSurface(m_renderer, textSurface.get()), SDL_DestroyTexture);
 
-	if (!m_textureData)
-	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Unable to create texture data for label. error={}", SDL_GetError());
-		return;
-	}
+	//if (!m_textureData)
+	//{
+	//	SPDLOG_LOGGER_ERROR(s_logger, "Unable to create texture data for label. error={}", SDL_GetError());
+	//	return;
+	//}
 
 	UpdateLabelSize(textSurface->w, textSurface->h);
 }

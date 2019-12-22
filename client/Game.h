@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include "client/RenderEngine.h"
 #include "common/ThreadSafeQueue.h"
+#include "client/RenderEngineTypes.h"
+#include "client/RenderEngineEvents.h"
 
 #include <memory>
 #include <functional>
@@ -44,6 +45,9 @@ public:
 	TTF_Font* GetDefaultFont();
 	RenderEngine* GetRenderEngine() const;
 
+	// Event getters.
+	RenderEngineEvents& GetRenderEngineEvents() const { return *m_renderEvents; }
+
 private:
 	void ConnectToServer();
 	void ProcessCallbackQueue();
@@ -75,6 +79,9 @@ private:
 	SDL_FontPtr m_defaultFont = SDL_FontPtr(nullptr, TTF_CloseFont);
 
 	bool m_isInitialized = false;
+
+	// Events
+	std::unique_ptr<RenderEngineEvents> m_renderEvents;
 };
 
 //===============================================================================

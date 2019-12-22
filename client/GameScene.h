@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "client/GameObjectData.h"
 #include "client/InputHandler.h"
 
 #include <functional>
@@ -20,9 +21,11 @@ namespace Client {
 
 //===============================================================================
 
+class GameObject;
 class Label;
 class NetworkController;
 class GameController;
+class GameObjectView;
 
 class GameScene : public InputHandler
 {
@@ -30,16 +33,11 @@ public:
 	GameScene(GameController* gameController);
 	~GameScene();
 
-	// Scene impl.
-
-	// Will pump all event queues here.
-	void ProcessEvents();
+	// Creates player, sets up events, and other setup tasks.
+	void Initialize();
 
 	// Updates resulting from the event processing will be handled here.
-	void Update();
-
-	// Called in the event loop.
-	void Render();
+	void Update(float deltaTime);
 
 	// InputHandler impl
 	virtual bool HandleKeyEvent(SDL_KeyboardEvent* event) override;
@@ -47,10 +45,13 @@ public:
 
 private:
 	void MapKeyboardInput();
+	void CalculateDirection();
 
 private:
+	GameObjectViewData m_viewData = {};
+	GameObjectData m_data = {};
+	std::unique_ptr<GameObjectView> m_gameObjectView;
 	GameController* m_controller;
-	std::unique_ptr<Label> m_label;
 	std::unordered_map<SDL_Scancode, std::function<void(SDL_KeyboardEvent* )>> m_keyboardEventMap;
 };
 

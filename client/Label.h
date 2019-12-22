@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "client/RenderableImpl.h"
+#include "client/View.h"
 
 #include <memory>
 #include <string>
@@ -23,7 +23,7 @@ struct LabelOptions
 	glm::ivec2 position;
 };
 
-class Label : public RenderableImpl {
+class Label : public View{
 public:
 	Label();
 	Label(const std::string& text, const LabelOptions& options);
@@ -53,7 +53,7 @@ public:
 	bool ShouldWrapText() const;
 	void SetShouldWrapText(bool shouldWrapText);
 
-	// RenderableImpl impl
+	// ViewImpl impl
 	virtual void Render() const override;
 
 private:

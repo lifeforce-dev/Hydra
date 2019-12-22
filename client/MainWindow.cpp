@@ -22,8 +22,8 @@ namespace {
 std::shared_ptr<spdlog::logger> s_logger;
 
 // Window dimensions.
-const int32_t s_screenWidth = 640;
-const int32_t s_screenHeight = 480;
+const int32_t s_screenWidth = 1280;
+const int32_t s_screenHeight = 720;
 } // anon namespace
 
 //-------------------------------------------------------------------------------

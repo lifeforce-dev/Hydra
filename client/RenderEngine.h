@@ -12,7 +12,7 @@ namespace Client {
 
 //===============================================================================
 
-class Renderable;
+class View;
 class RenderEngine
 {
 public:
@@ -22,27 +22,30 @@ public:
 	// Init render systems (SDL initialization).
 	bool Initialize(SDL_Window* window);
 
-	// Renderables registered will be rendered every frame.
-	void RegisterRenderable(Renderable* renderable);
-
-	// Once a renderable is unregistered, it will no longer be rendered.
-	void UnregisterRenderable(uint32_t id);
-
-	// Render entry point for every renderable in the game.
+	// Render entry point for every View in the game.
 	void Render() const;
 
 	// Static Getters
 	static SDL_Renderer* GetRenderer();
 
 private:
-	// Ensures that all renderables are sorted by z-order
+	// Ensures that all Views are sorted by z-order
 	void UpdateDrawOrder();
 
 	// Initializes the render and binds it to the main window.
 	bool CreateRenderer(SDL_Window* window);
 
+	// Views registered will be rendered every frame.
+	void RegisterView(View* view);
+
+	// Once a View is unregistered, it will no longer be rendered.
+	void UnregisterView(uint32_t id);
+
+	// Sets up event callbacks for render events.
+	void SubscribeEvents();
+
 private:
-	std::vector<Renderable*> m_renderables;
+	std::vector<View*> m_views;
 };
 
 //===============================================================================

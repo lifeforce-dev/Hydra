@@ -23,16 +23,9 @@ GameController::~GameController()
 }
 
 
-void GameController::Run()
+void GameController::Update(float deltaTime)
 {
-	if (!m_isInitialized)
-	{
-		Initialize();
-	}
-
-	m_gameScene->ProcessEvents();
-	m_gameScene->Update();
-	m_gameScene->Render();
+	m_gameScene->Update(deltaTime);
 }
 
 bool GameController::HandleKeyEvent(SDL_KeyboardEvent* event)
@@ -47,7 +40,7 @@ bool GameController::HandleMouseButtonEvent(SDL_MouseButtonEvent* event)
 
 void GameController::Initialize()
 {
-
+	m_gameScene->Initialize();
 }
 
 //===============================================================================
