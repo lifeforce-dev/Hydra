@@ -75,6 +75,24 @@ bool RenderEngine::Initialize(SDL_Window* window)
 
 void RenderEngine::Render() const
 {
+#ifdef DEBUG_BUILD
+	// Log framerate
+	using namespace std::chrono;
+	static auto currentTime = time_point_cast<seconds>(steady_clock::now());
+	static int frameCount = 0;
+	static int frameRate = 0;
+	auto previousTime = currentTime;
+	currentTime = time_point_cast<seconds>(steady_clock::now());
+	++frameCount;
+	if (currentTime != previousTime)
+	{
+		frameRate = frameCount;
+		frameCount = 0;
+	}
+
+	SPDLOG_LOGGER_DEBUG(s_logger, "Frame rate:{}", frameRate);
+#endif
+
 	SDL_SetRenderDrawColor(s_renderer.get(), 0, 0,0, 0xFF);
 	SDL_RenderClear(s_renderer.get());
 
@@ -94,6 +112,7 @@ void RenderEngine::Render() const
 	}
 
 	SDL_RenderPresent(s_renderer.get());
+
 }
 
 void RenderEngine::RegisterView(View* view)

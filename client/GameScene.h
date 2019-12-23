@@ -37,7 +37,7 @@ public:
 	void Initialize();
 
 	// Updates resulting from the event processing will be handled here.
-	void Update(float deltaTime);
+	void Update();
 
 	// InputHandler impl
 	virtual bool HandleKeyEvent(SDL_KeyboardEvent* event) override;

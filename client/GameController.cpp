@@ -23,9 +23,9 @@ GameController::~GameController()
 }
 
 
-void GameController::Update(float deltaTime)
+void GameController::Update()
 {
-	m_gameScene->Update(deltaTime);
+	m_gameScene->Update();
 }
 
 bool GameController::HandleKeyEvent(SDL_KeyboardEvent* event)

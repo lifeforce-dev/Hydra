@@ -43,10 +43,10 @@ void GameScene::Initialize()
 	g_game->GetRenderEngineEvents().GetViewCreatedEvent().notify(m_gameObjectView.get());
 }
 
-void GameScene::Update(float deltaTime)
+void GameScene::Update()
 {
 	CalculateDirection();
-	auto magnitude = (m_data.speed * m_data.currentDirection) * deltaTime;
+	auto magnitude = (m_data.speed * m_data.currentDirection);
 	m_viewData.position += magnitude;
 }
 

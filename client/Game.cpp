@@ -6,6 +6,7 @@
 #include "Game.h"
 
 #include "common/Log.h"
+#include "common/Timer.h"
 #include "client/GameClient.h"
 #include "client/GameController.h"
 #include "client/MainWindow.h"
@@ -24,12 +25,6 @@ namespace Client {
 
 namespace {
 	std::shared_ptr<spdlog::logger> s_logger;
-	using frame_period = std::chrono::duration<long long, std::ratio<1, 60>>;
-	const float s_desiredFrameRate = 60.0f;
-	const float s_msPerSecond = 1000;
-	const float s_desiredFrameTime = s_msPerSecond / s_desiredFrameRate;
-	const int s_maxUpdateSteps = 6;
-	const float s_maxDeltaTime = 1.0f;
 }
 
 Game* g_game = nullptr;
@@ -173,46 +168,48 @@ void Game::DispatchWindowEvent(SDL_WindowEvent* event)
 void Game::Run()
 {
 	ConnectToServer();
-	auto framePrev = std::chrono::high_resolution_clock::now();
-	auto frameCurrent = framePrev;
 
-	auto frameDiff = frameCurrent - framePrev;
-	float previousTicks = static_cast<float>(SDL_GetTicks());
+	using namespace std::chrono_literals;
+	using Clock = std::chrono::steady_clock;
+	auto constexpr dt = std::chrono::duration<long long, std::ratio<1, 60>>{ 1 };
+
+	using duration = decltype(Clock::duration{} + dt);
+	using time_point = std::chrono::time_point<Clock, duration>;
+
+	time_point currentTime = Clock::now();
+	duration accumulator = 0s;
+
+	Common::Timer timer;
 	while (m_mainWindow->IsOpen())
 	{
+		time_point newTime = Clock::now();
 
-		float newTicks = static_cast<float>(SDL_GetTicks());
-		float frameTime = newTicks - previousTicks;
-		previousTicks = newTicks;
+		auto frameTime = newTime - currentTime;
+		if (frameTime > 250ms)
+			frameTime = 250ms;
 
-		// 32 ms in a frame would cause this to be .5, 32ms would be 1.0
-		float totalDeltaTime = frameTime / s_desiredFrameTime;
+		currentTime = newTime;
+		accumulator += frameTime;
 
-		// Idle loop.
-		while (frameDiff < frame_period{ 1 })
+		// Runs exactly every 16ms. Unless it doesn't, then its logged.
+		while (accumulator >= dt)
 		{
-			frameCurrent = std::chrono::high_resolution_clock::now();
-			frameDiff = frameCurrent - framePrev;
+			timer.Restart();
+			m_gameController->Update();
+			timer.Stop();
+			if (timer.GetElapsedMs() > dt)
+			{
+				SPDLOG_LOGGER_WARN(s_logger, "Call to Update runtime exceeded 16ms. time={}",
+					timer.GetElapsedMs().count());
+			}
 
-			// We want to render and be handling events no matter what the frame rate is.
-			ProcessCallbackQueue();
-			ProcessSDLEvents();
-			m_renderEngine->Render();
+			accumulator -= dt;
 		}
 
-		using hr_duration = std::chrono::high_resolution_clock::duration;
-		framePrev = std::chrono::time_point_cast<hr_duration>(framePrev + frame_period{ 1 });
-		frameDiff = frameCurrent - framePrev;
-
-		// Time step
-		int i = 0;
-		while (totalDeltaTime > 0.0f && i < s_maxUpdateSteps)
-		{
-			float deltaTime = std::min(totalDeltaTime, s_maxDeltaTime);
-			m_gameController->Update(deltaTime);
-			totalDeltaTime -= deltaTime;
-			i++;
-		}
+		// Render and be handling events independent of the update loop.
+		ProcessCallbackQueue();
+		ProcessSDLEvents();
+		m_renderEngine->Render();
 	}
 }
 

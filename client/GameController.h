@@ -24,7 +24,7 @@ public:
 	~GameController();
 
 	void Initialize();
-	void Update(float deltaTime);
+	void Update();
 
 	// InputHandler impl
 	virtual bool HandleKeyEvent(SDL_KeyboardEvent* event) override;
