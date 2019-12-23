@@ -9,6 +9,7 @@
 #include "client/RenderEngine.h"
 #include "common/log.h"
 
+#include <assert.h>
 #include <string>
 #include <sstream>
 
@@ -36,7 +37,8 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-	Close();
+	// Ensure that we closed properly before shutting down.
+	assert(!m_window);
 }
 
 bool MainWindow::Initialize()

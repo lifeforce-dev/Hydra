@@ -132,6 +132,7 @@ void Game::ProcessSDLEvents()
 			break;
 		case SDL_QUIT:
 			// Handle shut down.
+			SDL_Quit();
 			m_windowManager->ShutDown();
 			break;
 		default:

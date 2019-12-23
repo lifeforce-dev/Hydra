@@ -28,6 +28,7 @@ AsioEventProcessor::AsioEventProcessor() : m_ios(std::make_unique<asio::io_servi
 
 AsioEventProcessor::~AsioEventProcessor()
 {
+	m_ios->stop();
 	if (m_thread.joinable())
 	{
 		m_thread.join();
