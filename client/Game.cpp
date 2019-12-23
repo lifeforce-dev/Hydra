@@ -15,9 +15,9 @@
 
 #include <algorithm>
 #include <chrono>
+#include <sstream>
+#include <spdlog/fmt/bundled/chrono.h>
 #include <SDL.h>
-
-#include <thread>
 
 namespace Client {
 
@@ -169,20 +169,35 @@ void Game::Run()
 {
 	ConnectToServer();
 
+	using namespace std::chrono;
 	using namespace std::chrono_literals;
-	using Clock = std::chrono::steady_clock;
-	auto constexpr dt = std::chrono::duration<long long, std::ratio<1, 60>>{ 1 };
+	using Clock = steady_clock;
+	auto constexpr dt = duration<long long, std::ratio<1, 60>>{ 1 };
 
 	using duration = decltype(Clock::duration{} + dt);
-	using time_point = std::chrono::time_point<Clock, duration>;
+	using time_point = time_point<Clock, duration>;
 
-	time_point currentTime = Clock::now();
+	// Time step accumulator
 	duration accumulator = 0s;
 
-	Common::Timer timer;
+	// Actual time between frames
+	duration frameDt = 0us;
+
+	// Used for keeping track of how long it takes to complete a frame.
+	time_point previousTime = Clock::now();
+	time_point currentTime = Clock::now();
 	while (m_mainWindow->IsOpen())
 	{
 		time_point newTime = Clock::now();
+		frameDt = newTime - previousTime;
+		if (frameDt > dt)
+		{
+			
+			SPDLOG_LOGGER_WARN(s_logger, "Call to Update runtime exceeded 16ms. time={:%S}",
+				frameDt);
+		}
+
+		previousTime = newTime;
 
 		auto frameTime = newTime - currentTime;
 		if (frameTime > 250ms)
@@ -194,15 +209,9 @@ void Game::Run()
 		// Runs exactly every 16ms. Unless it doesn't, then its logged.
 		while (accumulator >= dt)
 		{
-			timer.Restart();
 			m_gameController->Update();
-			timer.Stop();
-			if (timer.GetElapsedMs() > dt)
-			{
-				SPDLOG_LOGGER_WARN(s_logger, "Call to Update runtime exceeded 16ms. time={}",
-					timer.GetElapsedMs().count());
-			}
 
+			// Not actually doing anything with the time step for now.
 			accumulator -= dt;
 		}
 
