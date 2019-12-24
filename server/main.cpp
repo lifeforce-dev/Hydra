@@ -6,7 +6,7 @@
 #include "common/Log.h"
 #include "server/Game.h"
 
-#include <filesystem>`
+#include <filesystem>
 #include <memory>
 
 int main()
