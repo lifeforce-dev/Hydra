@@ -155,7 +155,7 @@ void RenderEngine::SubscribeEvents()
 
 	events.GetMainWindowExposedEvent().subscribe([this]()
 	{
-			RepaintWindow();
+		RepaintWindow();
 	});
 }
 
