@@ -25,19 +25,14 @@
     <ClCompile Include="misc\fonts\font_materialicons_ttf.cpp" />
     <ClCompile Include="misc\fonts\font_roboto_medium_ttf.cpp" />
     <ClCompile Include="misc\fonts\font_roboto_regular_ttf.cpp" />
-    <ClCompile Include="custom\imgui_column_headers.cpp" />
-    <ClCompile Include="custom\imgui_user.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="custom\imgui_user.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
-    <ClInclude Include="custom\imgui_utils.h" />
-    <ClInclude Include="custom\imgui_column_headers.h" />
     <ClInclude Include="imgui_custom\imgui_user.h" />
     <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="imgui_user.h" />
