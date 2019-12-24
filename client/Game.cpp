@@ -193,7 +193,7 @@ void Game::Run()
 		frameDt = newTime - previousTime;
 		if (frameDt > dt)
 		{
-			
+			// 00.000 seconds
 			SPDLOG_LOGGER_WARN(s_logger, "Call to Update runtime exceeded 16ms. time={:%S}",
 				frameDt);
 		}
@@ -202,7 +202,9 @@ void Game::Run()
 
 		auto frameTime = newTime - currentTime;
 		if (frameTime > 250ms)
+		{
 			frameTime = 250ms;
+		}
 
 		currentTime = newTime;
 		accumulator += frameTime;
@@ -215,7 +217,6 @@ void Game::Run()
 			// Not actually doing anything with the time step for now.
 			accumulator -= dt;
 		}
-
 		// Render and be handling events independent of the update loop.
 		ProcessCallbackQueue();
 		ProcessSDLEvents();

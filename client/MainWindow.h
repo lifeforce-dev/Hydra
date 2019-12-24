@@ -7,7 +7,6 @@
 
 #include "client/RenderEngineTypes.h"
 
-
 #include <memory>
 
 namespace Client {
