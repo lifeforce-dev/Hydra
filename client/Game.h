@@ -7,7 +7,6 @@
 
 #include "common/ThreadSafeQueue.h"
 #include "client/RenderEngineTypes.h"
-#include "client/RenderEngineEvents.h"
 
 #include <memory>
 #include <functional>
@@ -17,11 +16,14 @@ namespace Client {
 
 //===============================================================================
 
+class DebugController;
+class DebugEvents;
 class Game;
 class GameClient;
 class GameController;
 class MainWindow;
 class RenderEngine;
+class RenderEngineEvents;
 class WindowManager;
 
 extern Game* g_game;
@@ -42,11 +44,13 @@ public:
 	void PostToMainThread(const std::function<void()>& cb);
 
 	// Getters.
-	TTF_Font* GetDefaultFont();
+	TTF_Font* GetDefaultFont() const;
 	RenderEngine* GetRenderEngine() const;
+	DebugController* GetDebugController() const;
 
 	// Event getters.
 	RenderEngineEvents& GetRenderEngineEvents() const { return *m_renderEvents; }
+	DebugEvents& GetDebugEvents() const { return *m_debugEvents; }
 
 private:
 	void ConnectToServer();
@@ -73,8 +77,8 @@ private:
 
 	// Must be initialized before any UI may be initialized.
 	std::unique_ptr<RenderEngine> m_renderEngine;
-
 	std::unique_ptr<WindowManager> m_windowManager;
+	std::unique_ptr<DebugController> m_debugController;
 
 	SDL_FontPtr m_defaultFont = SDL_FontPtr(nullptr, TTF_CloseFont);
 
@@ -82,6 +86,7 @@ private:
 
 	// Events
 	std::unique_ptr<RenderEngineEvents> m_renderEvents;
+	std::unique_ptr<DebugEvents> m_debugEvents;
 };
 
 //===============================================================================

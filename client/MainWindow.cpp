@@ -7,6 +7,7 @@
 
 #include "client/Game.h"
 #include "client/RenderEngine.h"
+#include "client/RenderEngineEvents.h"
 #include "common/log.h"
 
 #include <assert.h>

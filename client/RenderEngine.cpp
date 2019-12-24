@@ -5,6 +5,7 @@
 
 #include "RenderEngine.h"
 #include "client/Game.h"
+#include "client/RenderEngineEvents.h"
 #include "client/View.h"
 #include "common/log.h"
 

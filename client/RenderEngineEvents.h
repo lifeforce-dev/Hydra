@@ -15,6 +15,9 @@ namespace Client {
 
 class RenderEngineEvents {
 public:
+	RenderEngineEvents() = default;
+	~RenderEngineEvents() = default;
+
 	using ViewCreatedEvent = observable::subject<void(View* view)>;
 	ViewCreatedEvent& GetViewCreatedEvent() { return m_viewCreatedEvent; }
 

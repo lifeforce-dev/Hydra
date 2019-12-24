@@ -7,10 +7,13 @@
 
 #include "common/Log.h"
 #include "common/Timer.h"
+#include "client/DebugController.h"
+#include "client/DebugEvents.h"
 #include "client/GameClient.h"
 #include "client/GameController.h"
 #include "client/MainWindow.h"
 #include "client/RenderEngine.h"
+#include "client/RenderEngineEvents.h"
 #include "client/WindowManager.h"
 
 #include <algorithm>
@@ -33,11 +36,14 @@ Game* g_game = nullptr;
 
 Game::Game()
 	: m_renderEvents(std::make_unique<RenderEngineEvents>())
+	, m_debugController(std::make_unique<DebugController>())
+	, m_debugEvents(std::make_unique<DebugEvents>())
 {
 	REGISTER_LOGGER("Game");
 	s_logger = Log::Logger("Game");
 	g_game = this;
 }
+
 
 Game::~Game()
 {
@@ -182,7 +188,7 @@ void Game::Run()
 	duration accumulator = 0s;
 
 	// Actual time between frames
-	duration frameDt = 0us;
+	duration frameDt = 0ms;
 
 	// Used for keeping track of how long it takes to complete a frame.
 	time_point previousTime = Clock::now();
@@ -191,6 +197,8 @@ void Game::Run()
 	{
 		time_point newTime = Clock::now();
 		frameDt = newTime - previousTime;
+
+		m_debugEvents->GetFullFrameCompletedEvent().notify(duration_cast<microseconds>(frameDt));
 		if (frameDt > dt)
 		{
 			// 00.000 seconds
@@ -229,7 +237,7 @@ void Game::PostToMainThread(const std::function<void()>& cb)
 	m_callbackQueue.Push(cb);
 }
 
-TTF_Font* Game::GetDefaultFont()
+TTF_Font* Game::GetDefaultFont() const
 {
 	return m_defaultFont.get();
 }
@@ -237,6 +245,11 @@ TTF_Font* Game::GetDefaultFont()
 Client::RenderEngine* Game::GetRenderEngine() const
 {
 	return m_renderEngine.get();
+}
+
+DebugController* Game::GetDebugController() const
+{
+	return m_debugController.get();
 }
 
 //===============================================================================

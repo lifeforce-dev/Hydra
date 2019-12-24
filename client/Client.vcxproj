@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DebugController.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="GameController.cpp" />
@@ -160,6 +161,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DebugController.h" />
+    <ClInclude Include="DebugEvents.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClient.h" />
     <ClInclude Include="GameController.h" />

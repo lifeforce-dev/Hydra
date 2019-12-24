@@ -60,6 +60,9 @@
     <ClCompile Include="GameObjectData.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="DebugController.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameController.h">
@@ -102,6 +105,12 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectData.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugController.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugEvents.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
