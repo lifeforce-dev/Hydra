@@ -44,6 +44,9 @@ private:
 	// Sets up event callbacks for render events.
 	void SubscribeEvents();
 
+	// Repaints often necessary in response to certain window events.
+	void RepaintWindow();
+
 private:
 	std::vector<View*> m_views;
 };

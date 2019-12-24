@@ -33,6 +33,21 @@ public:
 	// Returns whether the window is open or not.
 	bool IsOpen() const;
 
+	// Returns main window width.
+	int GetWidth() const { return m_currentSize.x; }
+
+	// Returns main window height.
+	int GetHeight() const { return m_currentSize.y; }
+
+	// Returns mouse focus state.
+	bool HasMouseFocus() const { return m_hasMouseFocus; }
+
+	// Returns keyboard focus state.
+	bool HasKeyboardFocus() const { return m_hasKeyboardFocus; }
+
+	// Returns whether minimized or not.
+	bool isMinimized() const { return m_isMinimized; }
+
 private:
 	// Whether we're initialized or not.
 	bool m_isOpen = false;
@@ -46,6 +61,21 @@ private:
 
 	// Current key state. Owned externally.
 	const uint8_t* m_keyState = nullptr;
+
+	// Current window dimensions. width, height.
+	glm::ivec2 m_currentSize = {0, 0};
+
+	// Mouse events dispatched from Game.
+	bool m_hasMouseFocus = false;
+
+	// Keyboard events dispatched from Game.
+	bool m_hasKeyboardFocus = false;
+
+	// True when main window is minimized.
+	bool m_isMinimized = false;
+
+	// Whether the window is hidden or not.
+	bool m_isHidden = false;
 };
 
 //===============================================================================

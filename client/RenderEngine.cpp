@@ -146,6 +146,21 @@ void RenderEngine::SubscribeEvents()
 	{
 		RegisterView(view);
 	});
+
+	events.GetMainWindowSizeChangedEvent().subscribe([this]()
+	{
+		RepaintWindow();
+	});
+
+	events.GetMainWindowExposedEvent().subscribe([this]()
+	{
+			RepaintWindow();
+	});
+}
+
+void RenderEngine::RepaintWindow()
+{
+	SDL_RenderPresent(s_renderer.get());
 }
 
 // Helpers

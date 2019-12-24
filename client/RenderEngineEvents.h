@@ -24,10 +24,18 @@ public:
 	using ViewDestroyedEvent = observable::subject<void(uint32_t id)>;
 	ViewDestroyedEvent& GetViewDestroyedEvent() { return m_viewDestroyedEvent; }
 
+	using MainWindowSizeChangedEvent = observable::subject<void()>;
+	MainWindowSizeChangedEvent& GetMainWindowSizeChangedEvent() { return m_mainWindowSizeChangedEvent; }
+
+	using MainWindowExposedEvent = observable::subject<void()>;
+	MainWindowExposedEvent& GetMainWindowExposedEvent() { return m_mainWindowExposedEvent; }
+
 private:
 	ViewCreatedEvent m_viewCreatedEvent;
 	ViewAboutToBeDestroyedEvent m_viewAboutToBeDestroyedEvent;
 	ViewDestroyedEvent m_viewDestroyedEvent;
+	MainWindowSizeChangedEvent m_mainWindowSizeChangedEvent;
+	MainWindowExposedEvent m_mainWindowExposedEvent;
 };
 
 //===============================================================================

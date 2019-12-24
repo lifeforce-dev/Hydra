@@ -23,8 +23,8 @@ namespace {
 std::shared_ptr<spdlog::logger> s_logger;
 
 // Window dimensions.
-const int32_t s_screenWidth = 1280;
-const int32_t s_screenHeight = 720;
+const int32_t s_defaultWidth = 1280;
+const int32_t s_defaultHeight = 720;
 } // anon namespace
 
 //-------------------------------------------------------------------------------
@@ -53,9 +53,9 @@ bool MainWindow::Initialize()
 	m_window = SDL_WindowPtr(std::move(SDL_CreateWindow("Hydra",
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
-			s_screenWidth,
-			s_screenHeight,
-			SDL_WINDOW_SHOWN)), SDL_DestroyWindow);
+			s_defaultWidth,
+			s_defaultHeight,
+			SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE)), SDL_DestroyWindow);
 
 	if (!m_window)
 	{
@@ -71,6 +71,10 @@ bool MainWindow::Initialize()
 	// Initialize screen with black background.
 	SDL_FillRect(m_screenSurface, nullptr, SDL_MapRGB(m_screenSurface->format, 0x00, 0x00, 0x00));
 
+	m_hasKeyboardFocus = true;
+	m_hasMouseFocus = true;
+	m_currentSize = { s_defaultWidth, s_defaultHeight };
+
 	return true;
 }
 
@@ -84,14 +88,80 @@ void MainWindow::Close()
 
 bool MainWindow::HandleWindowEvent(SDL_WindowEvent* event)
 {
-	switch (event->type)
+	auto& renderEvents = g_game->GetRenderEngineEvents();
+	switch (event->event)
 	{
 	case SDL_WINDOWEVENT_ENTER:
+	{
+		m_hasMouseFocus = true;
 		return true;
+	}
 	case SDL_WINDOWEVENT_LEAVE:
+	{
+		m_hasMouseFocus = false;
 		return true;
+	}
+	case SDL_WINDOWEVENT_SIZE_CHANGED:
+	{
+		m_currentSize.x = event->data1;
+		m_currentSize.y = event->data2;
+		renderEvents.GetMainWindowSizeChangedEvent().notify();
+		return true;
+	}
+	case SDL_WINDOWEVENT_EXPOSED:
+	{
+		renderEvents.GetMainWindowExposedEvent().notify();
+		return true;
+	}
+	case SDL_WINDOWEVENT_FOCUS_GAINED:
+	{
+		m_hasKeyboardFocus = true;
+		return true;
+	}
+	case SDL_WINDOWEVENT_FOCUS_LOST:
+	{
+		m_hasKeyboardFocus = false;
+		return true;
+	}
+	case SDL_WINDOWEVENT_MINIMIZED:
+	{
+		m_isMinimized = true;
+		return true;
+	}
+	case SDL_WINDOWEVENT_MAXIMIZED:
+	{
+		m_isMinimized = false;
+		return true;
+	}
+	case SDL_WINDOWEVENT_RESTORED:
+	{
+		m_isMinimized = false;
+		return true;
+	}
+	case SDL_WINDOWEVENT_RESIZED:
+	{
+		m_currentSize.x = event->data1;
+		m_currentSize.y = event->data2;
+		renderEvents.GetMainWindowSizeChangedEvent().notify();
+		return true;
+	}
+	case SDL_WINDOWEVENT_SHOWN:
+	{
+		m_isHidden = false;
+		return true;
+	}
+	case SDL_WINDOWEVENT_HIDDEN:
+	{
+		m_isHidden = true;
+		return true;
+	}
+	case SDL_WINDOWEVENT_MOVED:
+	{
+		// Nothing to do here.
+		return true;
+	}
 	default:
-		SPDLOG_LOGGER_ERROR(s_logger, "Unkown SDL_WindowEvent unhandled. event={}", event->windowID);
+		SPDLOG_LOGGER_ERROR(s_logger, "SDL_WindowEvent unhandled. event={}", event->event);
 		return false;
 	}
 
