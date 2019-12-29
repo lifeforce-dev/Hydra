@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "client/RenderEngineTypes.h"
+#include "client/SDLTypes.h"
+#include <glm/vec2.hpp>
 
 #include <memory>
 

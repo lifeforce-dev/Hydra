@@ -171,10 +171,10 @@
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="SDLTypes.h" />
     <ClInclude Include="View.h" />
     <ClInclude Include="RenderEngine.h" />
     <ClInclude Include="RenderEngineEvents.h" />
-    <ClInclude Include="RenderEngineTypes.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>

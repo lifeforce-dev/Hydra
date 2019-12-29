@@ -8,7 +8,7 @@
 #include "client/View.h"
 
 #include "client/GameObjectData.h"
-#include "client/RenderEngineTypes.h"
+#include "client/SDLTypes.h"
 
 #include <cstdint>
 namespace Client {

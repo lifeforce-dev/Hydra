@@ -6,11 +6,11 @@
 #pragma once
 
 #include "common/ThreadSafeQueue.h"
-#include "client/RenderEngineTypes.h"
+#include "client/SDLTypes.h"
 
-#include <memory>
-#include <functional>
 #include <deque>
+#include <functional>
+#include <memory>
 
 namespace Client {
 

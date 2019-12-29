@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "RenderEngineTypes.h"
+#include "client/SDLTypes.h"
 #include <vector>
 
 namespace Client {

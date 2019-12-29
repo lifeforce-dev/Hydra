@@ -113,5 +113,8 @@
     <ClInclude Include="DebugEvents.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
+    <ClInclude Include="SDLTypes.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

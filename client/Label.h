@@ -7,6 +7,7 @@
 
 #include "client/View.h"
 
+#include <glm/vec2.hpp>
 #include <memory>
 #include <string>
 
@@ -44,8 +45,8 @@ public:
 	glm::ivec2 GetPosition() const;
 	void SetPosition(const glm::ivec2& position);
 
-	GeometricSize GetSize() const;
-	void SetSize(const GeometricSize& size);
+	glm::ivec2 GetSize() const;
+	void SetSize(const glm::ivec2 & size);
 
 	uint32_t GetMaxWidth() const;
 	void SetMaxWidth(uint32_t width);

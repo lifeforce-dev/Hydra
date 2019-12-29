@@ -4,7 +4,7 @@
 //
 
 #pragma once
-#include "client/RenderEngineTypes.h"
+#include "client/SDLTypes.h"
 
 namespace Client {
 

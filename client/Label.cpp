@@ -111,12 +111,12 @@ void Label::SetPosition(const glm::ivec2& position)
 	}
 }
 
-GeometricSize Label::GetSize() const
+glm::ivec2 Label::GetSize() const
 {
 	return glm::vec2(m_geometry.w, m_geometry.h);
 }
 
-void Label::SetSize(const GeometricSize& size)
+void Label::SetSize(const glm::ivec2& size)
 {
 
 	if (m_geometry.w != size.x
