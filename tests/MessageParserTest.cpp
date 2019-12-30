@@ -75,11 +75,8 @@ SCENARIO_METHOD(HelperFixture, "Parsing many fully formed messages.", "[Message 
 			messages.reserve(1500);
 			using clock = std::chrono::high_resolution_clock;
 
-			auto t1 = clock::now();
 			ExtractMessages(data, messages);
-			auto t2 = clock::now();
 
-			auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
 			THEN("We will have a list of the correct number of parsed messages")
 			{
 				REQUIRE(messages.size() == numMessagesToParse);
