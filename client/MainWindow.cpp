@@ -11,6 +11,7 @@
 #include "common/log.h"
 
 #include <assert.h>
+#include <GL/glew.h>
 #include <string>
 #include <sstream>
 
@@ -38,8 +39,6 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-	// Ensure that we closed properly before shutting down.
-	assert(!m_window);
 }
 
 bool MainWindow::Initialize()
@@ -50,17 +49,41 @@ bool MainWindow::Initialize()
 		return true;
 	}
 
+	const std::string glsl_version = "#version 130";
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+
+	SDL_WindowFlags windowFlags = static_cast<SDL_WindowFlags>(
+		(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI));
+
 	// Init window.
 	m_window = SDL_WindowPtr(std::move(SDL_CreateWindow("Hydra",
-			SDL_WINDOWPOS_UNDEFINED,
-			SDL_WINDOWPOS_UNDEFINED,
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
 			s_defaultWidth,
 			s_defaultHeight,
-			SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE)), SDL_DestroyWindow);
+			windowFlags)), SDL_DestroyWindow);
 
 	if (!m_window)
 	{
 		SPDLOG_LOGGER_ERROR(s_logger, "Failed to create SDL window. error={}", SDL_GetError());
+		return false;
+	}
+
+	SDL_GLContext glContext = SDL_GL_CreateContext(m_window.get());
+	SDL_GL_MakeCurrent(m_window.get(), glContext);
+	SDL_GL_SetSwapInterval(0);
+
+	// Initialize glew. Since we're creating the window and the context anyway.
+	if (glewInit() != GLEW_OK)
+	{
+		SPDLOG_LOGGER_ERROR(s_logger, "Failed to initialize glew. error={}", SDL_GetError());
 		return false;
 	}
 

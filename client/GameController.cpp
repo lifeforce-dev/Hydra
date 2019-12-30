@@ -38,6 +38,24 @@ bool GameController::HandleMouseButtonEvent(SDL_MouseButtonEvent* event)
 	return m_gameScene->HandleMouseButtonEvent(event);
 }
 
+bool GameController::HandleMouseWheelEvent(SDL_MouseWheelEvent* event)
+{
+	// NYI
+	return false;
+}
+
+bool GameController::HandleMouseMotionEvent(SDL_MouseMotionEvent* event)
+{
+	// NYI
+	return false;
+}
+
+bool GameController::HandleTextInputEvent(SDL_TextInputEvent* event)
+{
+	// NYI
+	return false;
+}
+
 void GameController::Initialize()
 {
 	m_gameScene->Initialize();

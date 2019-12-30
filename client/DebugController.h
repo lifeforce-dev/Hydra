@@ -5,6 +5,11 @@
 
 #pragma once
 
+#include "client/InputHandler.h"
+
+#include <imgui.h>
+#include <SDL.h>
+
 namespace Client {
 
 //===============================================================================
@@ -24,15 +29,25 @@ struct PerformanceData
 	int fullFrameTime = 0;
 };
 
-class DebugController
+class DebugController : public InputHandler
 {
 public:
-	DebugController() = default;
-	~DebugController() = default;
+	DebugController();
+	~DebugController();
 	void SubscribeEvents();
+	void Initialize(SDL_Window* window);
+	void Render();
+
+	// InputHandler impl
+	virtual bool HandleKeyEvent(SDL_KeyboardEvent* event) override;
+	virtual bool HandleMouseButtonEvent(SDL_MouseButtonEvent* event) override;
+	virtual bool HandleMouseWheelEvent(SDL_MouseWheelEvent* event) override;
+	virtual bool HandleMouseMotionEvent(SDL_MouseMotionEvent* event) override;
+	virtual bool HandleTextInputEvent(SDL_TextInputEvent* event) override;
 
 private:
 	PerformanceData m_windowData;
+	SDL_Window* m_window;
 };
 
 //===============================================================================

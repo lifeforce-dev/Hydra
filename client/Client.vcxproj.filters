@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{27c2041c-5134-4b91-ac54-fe6f1fdb5a05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\imgui">
+      <UniqueIdentifier>{53f39938-c325-45c7-b77d-4ece91c152ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\imgui">
+      <UniqueIdentifier>{c46ae84b-0f9e-492f-bdd8-a60de9c450fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,6 +69,12 @@
     <ClCompile Include="DebugController.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_sdl.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameController.h">
@@ -78,9 +90,6 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="RenderEngine.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderEngineTypes.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Label.h">
@@ -113,8 +122,14 @@
     <ClInclude Include="DebugEvents.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_sdl.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
     <ClInclude Include="SDLTypes.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_opengl3.h">
+      <Filter>Header Files\imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

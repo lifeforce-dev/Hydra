@@ -81,9 +81,11 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;version.lib;setupapi.lib;imm32.lib;glu32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;version.lib;setupapi.lib;imm32.lib;glu32.lib;opengl32.lib;glew-2.1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -102,6 +104,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependencies\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -130,6 +133,8 @@
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameObjectData.cpp" />
     <ClCompile Include="GameObjectView.cpp" />
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imgui\imgui_impl_sdl.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
@@ -143,6 +148,12 @@
     </ProjectReference>
     <ProjectReference Include="..\dependencies\freetype-2.9.1\builds\windows\vc2010\freetype.vcxproj">
       <Project>{78b079bd-9fc7-4b9e-b4a6-96da0f00248b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\dependencies\glew-2.1.0\glew-2.1.0.vcxproj">
+      <Project>{af9198bd-1bf0-4292-8038-2c8c6fb0003a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\dependencies\imgui\imgui.vcxproj">
+      <Project>{81ea8021-75bf-4d3f-8f60-12755690f6f6}</Project>
     </ProjectReference>
     <ProjectReference Include="..\dependencies\libpng\libpng.vcxproj">
       <Project>{d6973076-9317-4ef2-a0b8-b7a18ac0713e}</Project>
@@ -168,6 +179,8 @@
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GameObjectData.h" />
     <ClInclude Include="GameObjectView.h" />
+    <ClInclude Include="imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="imgui\imgui_impl_sdl.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="MainWindow.h" />

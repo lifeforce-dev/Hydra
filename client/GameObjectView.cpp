@@ -23,13 +23,11 @@ namespace {
 
 GameObjectView::GameObjectView()
 	: m_id(s_currentId++)
-	, m_renderer(g_game->GetRenderEngine()->GetRenderer())
 {
 }
 
 GameObjectView::~GameObjectView()
 {
-	m_renderer = nullptr;
 }
 
 void GameObjectView::Initialize(GameObjectViewData* data)
@@ -60,8 +58,7 @@ void GameObjectView::Render() const
 	rect.x = static_cast<size_t>(m_data->position.x);
 	rect.y = static_cast<size_t>(m_data->position.y);
 
-	SDL_SetRenderDrawColor(RenderEngine::GetRenderer(), 0xFF, 0x00, 0x00, 0xFF);
-	SDL_RenderFillRect(RenderEngine::GetRenderer(), &rect);
+	// TODO: Render this
 }
 
 ViewType GameObjectView::GetViewType() const

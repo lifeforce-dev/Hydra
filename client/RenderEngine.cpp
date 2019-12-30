@@ -4,33 +4,40 @@
 //
 
 #include "RenderEngine.h"
+
 #include "client/Game.h"
+#include "client/DebugController.h"
 #include "client/RenderEngineEvents.h"
 #include "client/View.h"
 #include "common/log.h"
 
+// Must be included first, otherwise would be alphabetical.
+#include <GL/glew.h>
+
 #include <algorithm>
+#include <glm/vec4.hpp>
+#include <imgui/imgui.h>
 
 namespace Client {
 
 //===============================================================================
 
 namespace {
-
 // Logger for the render engine.
 std::shared_ptr<spdlog::logger> s_logger;
 
-// Render state and API for rendering.
-SDL_RendererPtr s_renderer = SDL_RendererPtr(nullptr, SDL_DestroyRenderer);
+glm::vec4 s_clearColor = { 0.45f, 0.55f, 0.60f, 1.00f };
+
+// TODO:
+// Figure this out glDebugMessageCallback
 
 } // anon namespace
 
 //-------------------------------------------------------------------------------
 
-// Static API
-SDL_Renderer* RenderEngine::GetRenderer()
+SDL_GLContext RenderEngine::GetGLContext()
 {
-	return s_renderer.get();
+	return m_glContext;
 }
 
 RenderEngine::RenderEngine()
@@ -44,7 +51,7 @@ RenderEngine::~RenderEngine()
 	m_views.clear();
 }
 
-bool RenderEngine::Initialize(SDL_Window* window)
+bool RenderEngine::Initialize()
 {
 	// Init image engine.
 	int imgFlags = (IMG_INIT_PNG | IMG_INIT_JPG);
@@ -61,12 +68,6 @@ bool RenderEngine::Initialize(SDL_Window* window)
 		return false;
 	}
 
-	if (!CreateRenderer(window))
-	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to create renderer.");
-		return false;
-	}
-
 	SPDLOG_LOGGER_INFO(s_logger, "SDL systems initialized successfully");
 
 	SubscribeEvents();
@@ -76,28 +77,44 @@ bool RenderEngine::Initialize(SDL_Window* window)
 
 void RenderEngine::Render() const
 {
-#ifdef DEBUG_BUILD
-	// Log framerate
-	using namespace std::chrono;
-	static auto currentTime = time_point_cast<seconds>(steady_clock::now());
-	static int frameCount = 0;
-	static int frameRate = 0;
-	auto previousTime = currentTime;
-	currentTime = time_point_cast<seconds>(steady_clock::now());
-	++frameCount;
-	if (currentTime != previousTime)
+	if (!m_glContext)
 	{
-		frameRate = frameCount;
-		frameCount = 0;
+		return;
 	}
 
-	SPDLOG_LOGGER_DEBUG(s_logger, "Frame rate:{}", frameRate);
+#ifdef DEBUG_BUILD
+	// Log framerate
+	//using namespace std::chrono;
+	//static auto currentTime = time_point_cast<seconds>(steady_clock::now());
+	//static int frameCount = 0;
+	//static int frameRate = 0;
+	//auto previousTime = currentTime;
+	//currentTime = time_point_cast<seconds>(steady_clock::now());
+	//++frameCount;
+	//if (currentTime != previousTime)
+	//{
+	//	frameRate = frameCount;
+	//	frameCount = 0;
+	//}
+
+	//SPDLOG_LOGGER_DEBUG(s_logger, "Frame rate:{}", frameRate);
 #endif
 
-	SDL_SetRenderDrawColor(s_renderer.get(), 0, 0,0, 0xFF);
-	SDL_RenderClear(s_renderer.get());
 
-	// Render all registered Views.
+	glViewport(0, 0, 1280, 720);
+	glClearColor(s_clearColor.x, s_clearColor.y, s_clearColor.z, s_clearColor.w);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	// TODO: 
+
+	// Render Debug UI
+	// - Right now, this is a hack.
+	g_game->GetDebugController()->Render();
+
+	// Render UI
+	// - Figure out what this means.
+
+	// Render game objects
 	for (auto r : m_views)
 	{
 		if (!r)
@@ -112,8 +129,7 @@ void RenderEngine::Render() const
 		}
 	}
 
-	SDL_RenderPresent(s_renderer.get());
-
+	SDL_GL_SwapWindow(m_window);
 }
 
 void RenderEngine::RegisterView(View* view)
@@ -157,11 +173,24 @@ void RenderEngine::SubscribeEvents()
 	{
 		RepaintWindow();
 	});
+
+	events.GetMainWindowCreatedEvent().subscribe([this](SDL_Window* window)
+	{
+		m_window = window;
+		m_glContext = SDL_GL_CreateContext(window);
+	});
+
+	events.GetMainWindowAboutToBeDestroyedEvent().subscribe([this](SDL_Window* window)
+	{
+		SDL_GL_DeleteContext(m_glContext);
+		m_glContext = nullptr;
+		m_window = nullptr;
+	});
 }
 
 void RenderEngine::RepaintWindow()
 {
-	SDL_RenderPresent(s_renderer.get());
+	// TODO: Figure out what repaint means with OpenGL
 }
 
 // Helpers
@@ -196,26 +225,6 @@ void RenderEngine::UpdateDrawOrder()
 
 		std::rotate(insertIndex, it, it + 1);
 	}
-}
-
-bool RenderEngine::CreateRenderer(SDL_Window* window)
-{
-	if (s_renderer)
-	{
-		return true;
-	}
-
-	s_renderer = SDL_RendererPtr(std::move(
-		SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)),
-		SDL_DestroyRenderer);
-
-	if (!s_renderer)
-	{
-		SPDLOG_LOGGER_ERROR(s_logger, "Failed to create renderer. error={}", SDL_GetError());
-		return false;
-	}
-
-	return true;
 }
 
 //===============================================================================

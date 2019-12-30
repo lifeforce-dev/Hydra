@@ -33,8 +33,7 @@ public:
 private:
 	bool m_isVisible = true;
 	SDL_TexturePtr m_textureData = SDL_TexturePtr(nullptr, SDL_DestroyTexture);
-	SDL_Renderer* m_renderer;
-	const GameObjectViewData* m_data;
+	GameObjectViewData* m_data = nullptr;
 	uint64_t m_id = -1;
 };
 

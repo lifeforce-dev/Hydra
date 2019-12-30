@@ -74,6 +74,24 @@ bool GameScene::HandleMouseButtonEvent(SDL_MouseButtonEvent* event)
 	return false;
 }
 
+bool GameScene::HandleMouseWheelEvent(SDL_MouseWheelEvent* event)
+{
+	// NYI
+	return false;
+}
+
+bool GameScene::HandleMouseMotionEvent(SDL_MouseMotionEvent* event)
+{
+	// NYI
+	return false;
+}
+
+bool GameScene::HandleTextInputEvent(SDL_TextInputEvent* event)
+{
+	// NYI
+	return false;
+}
+
 void GameScene::MapKeyboardInput()
 {
 	// NYI

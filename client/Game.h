@@ -21,6 +21,7 @@ class DebugEvents;
 class Game;
 class GameClient;
 class GameController;
+class InputHandler;
 class MainWindow;
 class RenderEngine;
 class RenderEngineEvents;
@@ -35,7 +36,7 @@ public:
 	~Game();
 
 	// Initialized game systems. Returns true if successful.
-	bool Init();
+	bool Initialize();
 
 	// Run the game.
 	void Run();
@@ -44,9 +45,11 @@ public:
 	void PostToMainThread(const std::function<void()>& cb);
 
 	// Getters.
-	TTF_Font* GetDefaultFont() const;
-	RenderEngine* GetRenderEngine() const;
-	DebugController* GetDebugController() const;
+
+	TTF_Font* GetDefaultFont() const { return m_defaultFont.get(); }
+	RenderEngine* GetRenderEngine() const { return m_renderEngine.get(); }
+	DebugController* GetDebugController() const { return m_debugController.get(); }
+	MainWindow* GetMainWindow() const { return m_mainWindow; }
 
 	// Event getters.
 	RenderEngineEvents& GetRenderEngineEvents() const { return *m_renderEvents; }
@@ -60,6 +63,9 @@ private:
 	void ProcessSDLEvents();
 	void DispatchKeyEvent(SDL_KeyboardEvent* event);
 	void DispatchMouseButtonEvent(SDL_MouseButtonEvent* event);
+	void DispatchMouseWheelEvent(SDL_MouseWheelEvent* event);
+	void DispatchMouseMotionEvent(SDL_MouseMotionEvent* event);
+	void DispatchTextInputEvent(SDL_TextInputEvent* event);
 	void DispatchWindowEvent(SDL_WindowEvent* event);
 
 private:
@@ -82,11 +88,11 @@ private:
 
 	SDL_FontPtr m_defaultFont = SDL_FontPtr(nullptr, TTF_CloseFont);
 
-	bool m_isInitialized = false;
-
 	// Events
 	std::unique_ptr<RenderEngineEvents> m_renderEvents;
 	std::unique_ptr<DebugEvents> m_debugEvents;
+
+	std::vector<InputHandler*> m_inputHandlers;
 };
 
 //===============================================================================

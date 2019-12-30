@@ -88,7 +88,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories);$(DXSDK_DIR)\Include;$(ProjectDir)..\..\..\libpng;$(ProjectDir)..\..\..\freetype-2.9.1\include\freetype;$(ProjectDir)..\..\..\freetype-2.9.1\include\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_WINDOWS;LOAD_PNG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_DEBUG;_WINDOWS;LOAD_PNG;HAVE_LIBC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeader>

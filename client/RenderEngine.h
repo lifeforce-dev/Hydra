@@ -6,6 +6,8 @@
 #pragma once
 
 #include "client/SDLTypes.h"
+
+#include <imgui/imgui.h>
 #include <vector>
 
 namespace Client {
@@ -20,20 +22,16 @@ public:
 	~RenderEngine();
 
 	// Init render systems (SDL initialization).
-	bool Initialize(SDL_Window* window);
+	bool Initialize();
 
 	// Render entry point for every View in the game.
 	void Render() const;
 
-	// Static Getters
-	static SDL_Renderer* GetRenderer();
+	SDL_GLContext GetGLContext();
 
 private:
 	// Ensures that all Views are sorted by z-order
 	void UpdateDrawOrder();
-
-	// Initializes the render and binds it to the main window.
-	bool CreateRenderer(SDL_Window* window);
 
 	// Views registered will be rendered every frame.
 	void RegisterView(View* view);
@@ -49,6 +47,8 @@ private:
 
 private:
 	std::vector<View*> m_views;
+	SDL_GLContext m_glContext = nullptr;
+	SDL_Window* m_window = nullptr;
 };
 
 //===============================================================================

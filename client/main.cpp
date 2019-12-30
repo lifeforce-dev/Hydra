@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 	}
 
 	Client::Game game;
-	if (game.Init())
+	if (game.Initialize())
 	{
 		game.Run();
 	}
