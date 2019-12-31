@@ -244,7 +244,7 @@ void Game::Run()
 		if (frameDt > dt)
 		{
 			// 00.000 seconds
-			SPDLOG_LOGGER_WARN(s_logger, "Call to Update runtime exceeded 16ms. time={:%S}",
+			SPDLOG_LOGGER_WARN(s_logger, "Single frame runtime exceeded 16ms. time={:%S}",
 				frameDt);
 		}
 
