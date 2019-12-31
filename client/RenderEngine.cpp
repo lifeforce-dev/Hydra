@@ -18,6 +18,10 @@
 #include <glm/vec4.hpp>
 #include <imgui/imgui.h>
 
+#include <fstream>
+#include <sstream>
+#include <filesystem>
+
 namespace Client {
 
 //===============================================================================
@@ -26,7 +30,37 @@ namespace {
 // Logger for the render engine.
 std::shared_ptr<spdlog::logger> s_logger;
 
-glm::vec4 s_clearColor = { 0.45f, 0.55f, 0.60f, 1.00f };
+//glm::vec4 s_clearColor = { 0.45f, 0.55f, 0.60f, 1.00f };
+glm::vec4 s_clearColor = { 0.0f, 0.0f, 0.0f, 1.00f };
+
+namespace fs = std::filesystem;
+
+std::string LoadShader(const std::string& name)
+{
+	// Places to look for shaders...
+	fs::path shaderDir = "shaders";
+
+	// Check if its here.
+	fs::path filePath = fs::absolute(shaderDir / fs::path(name));
+
+	if (!fs::exists(filePath))
+	{
+		return std::string();
+	}
+
+	auto fileSize = fs::file_size(filePath);
+	std::ifstream in(filePath, std::ios::in | std::ifstream::binary);
+	if (!in.is_open())
+	{
+		return std::string();
+	}
+
+	std::string shaderStr;
+	shaderStr.resize(fileSize);
+	in.read(shaderStr.data(), fileSize);
+	in.close();
+	return shaderStr;
+}
 
 // TODO:
 // Figure this out glDebugMessageCallback
@@ -101,33 +135,34 @@ void RenderEngine::Render() const
 #endif
 
 
-	glViewport(0, 0, 1280, 720);
+	//glViewport(0, 0, 1280, 720);
 	glClearColor(s_clearColor.x, s_clearColor.y, s_clearColor.z, s_clearColor.w);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// TODO: 
-
+	RenderTest();
+	// TODO:
 	// Render Debug UI
 	// - Right now, this is a hack.
 	g_game->GetDebugController()->Render();
+
 
 	// Render UI
 	// - Figure out what this means.
 
 	// Render game objects
-	for (auto r : m_views)
-	{
-		if (!r)
-		{
-			SPDLOG_LOGGER_WARN(s_logger, "Warning: Attempting to render non-existant element.");
-			continue;
-		}
+	//for (auto r : m_views)
+	//{
+	//	if (!r)
+	//	{
+	//		SPDLOG_LOGGER_WARN(s_logger, "Warning: Attempting to render non-existent element.");
+	//		continue;
+	//	}
 
-		if (r->IsVisible())
-		{
-			r->Render();
-		}
-	}
+	//	if (r->IsVisible())
+	//	{
+	//		r->Render();
+	//	}
+	//}
 
 	SDL_GL_SwapWindow(m_window);
 }
@@ -137,18 +172,18 @@ void RenderEngine::RegisterView(View* view)
 	m_views.insert(std::upper_bound(std::cbegin(m_views),
 		std::cend(m_views), view,
 		[](const View* lhs, const View* rhs)
-		{
-			return lhs->GetZOrder() > rhs->GetZOrder();
-		}), view);
+	{
+		return lhs->GetZOrder() > rhs->GetZOrder();
+	}), view);
 }
 
 void RenderEngine::UnregisterView(uint32_t id)
 {
 	m_views.erase(std::remove_if(std::begin(m_views), std::end(m_views),
 		[id](View* View)
-		{
-			return id == View->GetId();
-		}));
+	{
+		return id == View->GetId();
+	}));
 }
 
 void RenderEngine::SubscribeEvents()
@@ -178,6 +213,7 @@ void RenderEngine::SubscribeEvents()
 	{
 		m_window = window;
 		m_glContext = SDL_GL_CreateContext(window);
+		InitRenderTest();
 	});
 
 	events.GetMainWindowAboutToBeDestroyedEvent().subscribe([this](SDL_Window* window)
@@ -190,7 +226,116 @@ void RenderEngine::SubscribeEvents()
 
 void RenderEngine::RepaintWindow()
 {
-	// TODO: Figure out what repaint means with OpenGL
+	SDL_GL_SwapWindow(m_window);
+}
+
+void RenderEngine::RenderTest() const
+{
+	// type of primitive
+	// how many vertices to skip at the beginning
+	// how many vertices
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void RenderEngine::InitRenderTest()
+{
+	// You can bind all of these settings to a vertex array object (VAO). Anytime you call glVertexAttribPointer,
+	// those settings will be stored in that VAO. Switching between different vertex data then is as easy
+	// as binding a different VAO.
+	GLuint vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	// Vertex array
+	m_vertices = {
+		 0.0f,  0.5f, // Vertex 1 (X, Y)
+		 0.5f, -0.5f, // Vertex 2 (X, Y)
+		-0.5f, -0.5f  // Vertex 3 (X, Y)
+	};
+
+	// Vertex buffer object. (VBO)
+	GLuint vbo = 0;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices.data()) * m_vertices.size(), m_vertices.data(), GL_STATIC_DRAW);
+
+	// Init basic vertex shader.
+	m_basicVertexShader = LoadShader("test-shader.vert");
+
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	const char* vShaderCStr[] = { m_basicVertexShader.c_str() };
+	glShaderSource(vertexShader, 1, vShaderCStr, nullptr);
+	glCompileShader(vertexShader);
+
+	ValidateShader(vertexShader);
+
+	// Init basic fragment shader.
+	m_basicFragmentShader = LoadShader("test-shader.frag");
+
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	const char* fShaderCStr[] = { m_basicFragmentShader.c_str() };
+	glShaderSource(fragmentShader, 1, fShaderCStr, nullptr);
+	glCompileShader(fragmentShader);
+	ValidateShader(fragmentShader);
+
+	// Need to bind the shaders to a single program so they work together.
+	// Pipeline:
+	// vertex shader -> rasterizer -> fragment shader
+	GLuint shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+
+	// fragment shader is allowed to write to multiple buffers. Specify which one.
+	// use glDrawBuffers when rendering to multiple buffers, otherwise only first
+	// output will be enabled by default.
+	glBindFragDataLocation(shaderProgram, 0, "outColor");
+
+	// link the program
+	glLinkProgram(shaderProgram);
+
+	// Only one program can be active at a time, just like vertex buffers VBO).
+	glUseProgram(shaderProgram);
+
+	//------------------------------------------------------------------------------
+	// Need to link the attributes from the vertex shader source, because OpenGL has
+	// no idea what that actually is.
+
+	// pos is a number depending on the order of input definitions. So this should be 0.
+	GLint posAttribute = glGetAttribLocation(shaderProgram, "position");
+
+	// Specify how the input should be retrieved.
+	// input reference
+	// number of values for the input - its a vec2 so there's 2
+	// type of each component
+	// whether to normalize the values (-1.0 - 1.0)
+	// stride: how many bytes are between each position attribute in the array. This is currently 0
+	// offset: How many bytes before the start of the array, also currently 0.
+	glVertexAttribPointer(posAttribute, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	// IMPORTAT
+	// The above function stores the stride, offset, and the VBO that is currently bound to GL_ARRAY_BUFFER
+	// This means that
+	// - You don't ahve to explicitly bind the correct VBO for drawing
+	// - You can use a different VBO for each attribute.
+
+	// Enable the vertex array.
+	glEnableVertexAttribArray(posAttribute);
+	int err = glGetError();
+}
+
+void RenderEngine::ValidateShader(unsigned int shader)
+{
+	GLint status = 0;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+	if (status != GL_TRUE)
+	{
+		const int size = 512;
+		std::string errMessage;
+		errMessage.resize(size);
+		glGetShaderInfoLog(shader, size, nullptr, errMessage.data());
+
+		SPDLOG_LOGGER_ERROR(s_logger, "Error compiling shader error={} message={}", status, errMessage);
+	}
 }
 
 // Helpers
@@ -204,13 +349,13 @@ void RenderEngine::UpdateDrawOrder()
 		auto insertIndex = std::upper_bound(std::begin(m_views), it,
 			*it,
 			[](const View* lhs, const View* rhs)
+		{
+			if (lhs->GetZOrder() == rhs->GetZOrder())
 			{
-				if (lhs->GetZOrder() == rhs->GetZOrder())
-				{
-					return false;
-				}
-				return lhs->GetZOrder() > rhs->GetZOrder();
-			});
+				return false;
+			}
+			return lhs->GetZOrder() > rhs->GetZOrder();
+		});
 
 #ifdef DEBUG_BUILD
 		auto reorderDistance = std::distance(insertIndex, it);

@@ -49,7 +49,6 @@ bool MainWindow::Initialize()
 		return true;
 	}
 
-	const std::string glsl_version = "#version 130";
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -79,6 +78,8 @@ bool MainWindow::Initialize()
 	SDL_GLContext glContext = SDL_GL_CreateContext(m_window.get());
 	SDL_GL_MakeCurrent(m_window.get(), glContext);
 	SDL_GL_SetSwapInterval(0);
+
+	glewExperimental = GL_TRUE;
 
 	// Initialize glew. Since we're creating the window and the context anyway.
 	if (glewInit() != GLEW_OK)

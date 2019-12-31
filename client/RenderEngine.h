@@ -8,8 +8,8 @@
 #include "client/SDLTypes.h"
 
 #include <imgui/imgui.h>
+#include <string>
 #include <vector>
-
 namespace Client {
 
 //===============================================================================
@@ -45,10 +45,24 @@ private:
 	// Repaints often necessary in response to certain window events.
 	void RepaintWindow();
 
+	// --------------------------------------
+	// Test render functions
+	void RenderTest() const;
+	void InitRenderTest();
+	void ValidateShader(unsigned int shader);
+
 private:
 	std::vector<View*> m_views;
 	SDL_GLContext m_glContext = nullptr;
 	SDL_Window* m_window = nullptr;
+
+	//------------------------------------
+	// Render test members
+	std::string m_basicVertexShader;
+	std::string m_basicFragmentShader;
+
+	std::vector<float> m_vertices;
+
 };
 
 //===============================================================================
