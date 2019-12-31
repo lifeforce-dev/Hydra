@@ -56,6 +56,10 @@ private:
 	SDL_GLContext m_glContext = nullptr;
 	SDL_Window* m_window = nullptr;
 
+	// Used to reference the shader program.
+	// From there, I can access all the attributes I created in the shader.
+	uint32_t m_shaderProgramId = 0;
+
 	//------------------------------------
 	// Render test members
 	std::string m_basicVertexShader;

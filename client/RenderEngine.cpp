@@ -30,8 +30,10 @@ namespace {
 // Logger for the render engine.
 std::shared_ptr<spdlog::logger> s_logger;
 
-//glm::vec4 s_clearColor = { 0.45f, 0.55f, 0.60f, 1.00f };
-glm::vec4 s_clearColor = { 0.0f, 0.0f, 0.0f, 1.00f };
+auto s_startTime = std::chrono::steady_clock::now();
+
+glm::vec4 s_clearColor = { 0.45f, 0.55f, 0.60f, 1.00f };
+//glm::vec4 s_clearColor = { 0.0f, 0.0f, 0.0f, 1.00f };
 
 namespace fs = std::filesystem;
 
@@ -231,6 +233,22 @@ void RenderEngine::RepaintWindow()
 
 void RenderEngine::RenderTest() const
 {
+	//---------------------------------------------------------------------------
+	// The below code demonstrates how to change a uniform from a shader
+
+	// snags the id of a uniform called triangleColor;
+	//GLint unicolor = glGetUniformLocation(m_shaderProgramId, "triangleColor");
+
+	//// Tells OpenGL to set the uniform at that id to the specified value.
+	//glUniform3f(unicolor, 1.0f, 0.0f, 0.0f);
+
+	//auto nowTime = std::chrono::steady_clock::now();
+	//float time = std::chrono::duration_cast<std::chrono::duration<float>>(nowTime - s_startTime).count();
+	//glUniform3f(unicolor, (sin(time * 4.0f) + 1.0f) / 2.0f, 0.0f, 0.0f);
+
+	//---------------------------------------------------------------------------
+
+
 	// type of primitive
 	// how many vertices to skip at the beginning
 	// how many vertices
@@ -247,10 +265,15 @@ void RenderEngine::InitRenderTest()
 	glBindVertexArray(vao);
 
 	// Vertex array
+	// output and input must have same name or they won't link.
+	// ex. in Color out Color.
+	// position: x, y
+	// color: r, g, b
 	m_vertices = {
-		 0.0f,  0.5f, // Vertex 1 (X, Y)
-		 0.5f, -0.5f, // Vertex 2 (X, Y)
-		-0.5f, -0.5f  // Vertex 3 (X, Y)
+	//   position     color
+		 0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // 1 vertex
+		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // 2 vertex
+		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // 3 vertex
 	};
 
 	// Vertex buffer object. (VBO)
@@ -259,6 +282,7 @@ void RenderEngine::InitRenderTest()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices.data()) * m_vertices.size(), m_vertices.data(), GL_STATIC_DRAW);
 
+	//-----------------------------------------------------------------------
 	// Init basic vertex shader.
 	m_basicVertexShader = LoadShader("test-shader.vert");
 
@@ -269,6 +293,7 @@ void RenderEngine::InitRenderTest()
 
 	ValidateShader(vertexShader);
 
+	//-----------------------------------------------------------------------
 	// Init basic fragment shader.
 	m_basicFragmentShader = LoadShader("test-shader.frag");
 
@@ -276,32 +301,33 @@ void RenderEngine::InitRenderTest()
 	const char* fShaderCStr[] = { m_basicFragmentShader.c_str() };
 	glShaderSource(fragmentShader, 1, fShaderCStr, nullptr);
 	glCompileShader(fragmentShader);
+
 	ValidateShader(fragmentShader);
 
 	// Need to bind the shaders to a single program so they work together.
 	// Pipeline:
 	// vertex shader -> rasterizer -> fragment shader
-	GLuint shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
+	m_shaderProgramId = glCreateProgram();
+	glAttachShader(m_shaderProgramId, vertexShader);
+	glAttachShader(m_shaderProgramId, fragmentShader);
 
 	// fragment shader is allowed to write to multiple buffers. Specify which one.
 	// use glDrawBuffers when rendering to multiple buffers, otherwise only first
 	// output will be enabled by default.
-	glBindFragDataLocation(shaderProgram, 0, "outColor");
+	glBindFragDataLocation(m_shaderProgramId, 0, "outColor");
 
 	// link the program
-	glLinkProgram(shaderProgram);
+	glLinkProgram(m_shaderProgramId);
 
 	// Only one program can be active at a time, just like vertex buffers VBO).
-	glUseProgram(shaderProgram);
+	glUseProgram(m_shaderProgramId);
 
 	//------------------------------------------------------------------------------
 	// Need to link the attributes from the vertex shader source, because OpenGL has
 	// no idea what that actually is.
 
 	// pos is a number depending on the order of input definitions. So this should be 0.
-	GLint posAttribute = glGetAttribLocation(shaderProgram, "position");
+	//GLint posAttribute = glGetAttribLocation(m_shaderProgramId, "position");
 
 	// Specify how the input should be retrieved.
 	// input reference
@@ -310,7 +336,30 @@ void RenderEngine::InitRenderTest()
 	// whether to normalize the values (-1.0 - 1.0)
 	// stride: how many bytes are between each position attribute in the array. This is currently 0
 	// offset: How many bytes before the start of the array, also currently 0.
-	glVertexAttribPointer(posAttribute, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	// glVertexAttribPointer(posAttribute, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	// Now we have another attribute to accommodate for.
+	// We need to specify how each attribute should be retrieved.
+	GLint posAttribId = glGetAttribLocation(m_shaderProgramId, "position");
+	glEnableVertexAttribArray(posAttribId);
+	glVertexAttribPointer(posAttribId, 2, GL_FLOAT, GL_FALSE,
+		5 * sizeof(float), 0);
+
+	GLint colorAttribId = glGetAttribLocation(m_shaderProgramId, "color");
+	glEnableVertexAttribArray(colorAttribId);
+	glVertexAttribPointer(
+		// The attribute ID of the attribute in the vertex.
+		colorAttribId,
+		// Number of values the attribute contains (ex. vec3 has 3 values).
+		3,
+		// Type of each value.
+		GL_FLOAT,
+		// Whether to normalize or not.
+		GL_FALSE,
+		// Offset of each vertex.
+		5 * sizeof(float),
+		// Offset of the attribute within the vertex.
+		(void*)(2 * sizeof(float)));
 
 	// IMPORTAT
 	// The above function stores the stride, offset, and the VBO that is currently bound to GL_ARRAY_BUFFER
@@ -318,9 +367,20 @@ void RenderEngine::InitRenderTest()
 	// - You don't ahve to explicitly bind the correct VBO for drawing
 	// - You can use a different VBO for each attribute.
 
-	// Enable the vertex array.
-	glEnableVertexAttribArray(posAttribute);
+
 	int err = glGetError();
+
+
+	//------------------------------------------------------------------------------------
+	// Change the color of the triangle by modifying the shader attribute.
+
+	//// snags the id of a uniform called triangleColor;
+	//GLint unicolor = glGetUniformLocation(m_shaderProgramId, "triangleColor");
+
+	//// Tells OpenGL to set the uniform at that id to the specified value.
+	//glUniform3f(unicolor, 1.0f, 0.0f, 0.0f);
+
+	//-------------------------------------------------------------------------------------
 }
 
 void RenderEngine::ValidateShader(unsigned int shader)
