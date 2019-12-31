@@ -252,7 +252,10 @@ void RenderEngine::RenderTest() const
 	// type of primitive
 	// how many vertices to skip at the beginning
 	// how many vertices
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	// draw elements from the element buffer object.
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void RenderEngine::InitRenderTest()
@@ -264,23 +267,60 @@ void RenderEngine::InitRenderTest()
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
+	// instead of this
 	// Vertex array
 	// output and input must have same name or they won't link.
 	// ex. in Color out Color.
 	// position: x, y
 	// color: r, g, b
+	//m_vertices = {
+	//		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
+	//		0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
+	//		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+
+	//		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+	//		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f, // Bottom-left
+	//		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f  // Top-left
+	//};
+	//// Vertex buffer object. (VBO)
+	//GLuint vbo = 0;
+	//glGenBuffers(1, &vbo);
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices.data()) * m_vertices.size(), m_vertices.data(), GL_STATIC_DRAW);
+
+	//----------------------------------------------------------------------
+	// element buffer
+
+	// glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	// use element buffer.
+
 	m_vertices = {
-	//   position     color
-		 0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // 1 vertex
-		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // 2 vertex
-		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // 3 vertex
+	//  position     color
+		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top Left
+		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top Right
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom Right
+		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f, // Bottom Left
 	};
 
-	// Vertex buffer object. (VBO)
 	GLuint vbo = 0;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices.data()) * m_vertices.size(), m_vertices.data(), GL_STATIC_DRAW);
+
+	// We know we're rendering triangles, so specify which vertices connect to triangles.
+	GLuint elements[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	// Create a vertex buffer and store its ID for use with our ebo (element buffer object).
+	GLuint ebo;
+	glGenBuffers(1, &ebo);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+		sizeof(elements), elements, GL_STATIC_DRAW);
 
 	//-----------------------------------------------------------------------
 	// Init basic vertex shader.
@@ -367,8 +407,6 @@ void RenderEngine::InitRenderTest()
 	// - You don't ahve to explicitly bind the correct VBO for drawing
 	// - You can use a different VBO for each attribute.
 
-
-	int err = glGetError();
 
 
 	//------------------------------------------------------------------------------------
