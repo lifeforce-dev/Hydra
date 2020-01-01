@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <glm/vec4.hpp>
 #include <imgui/imgui.h>
+#include <SOIL.h>
 
 #include <fstream>
 #include <sstream>
@@ -215,6 +216,7 @@ void RenderEngine::SubscribeEvents()
 	{
 		m_window = window;
 		m_glContext = SDL_GL_CreateContext(window);
+		InitTextureTest();
 		InitRenderTest();
 	});
 
@@ -256,6 +258,7 @@ void RenderEngine::RenderTest() const
 
 	// draw elements from the element buffer object.
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 }
 
 void RenderEngine::InitRenderTest()
@@ -296,11 +299,11 @@ void RenderEngine::InitRenderTest()
 	// use element buffer.
 
 	m_vertices = {
-	//  position     color
-		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top Left
-		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top Right
-		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom Right
-		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f, // Bottom Left
+	//  position     color              Texture coords
+		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,// Top Left
+		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,// Top Right
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,// Bottom Right
+		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f// Bottom Left
 	};
 
 	GLuint vbo = 0;
@@ -383,7 +386,7 @@ void RenderEngine::InitRenderTest()
 	GLint posAttribId = glGetAttribLocation(m_shaderProgramId, "position");
 	glEnableVertexAttribArray(posAttribId);
 	glVertexAttribPointer(posAttribId, 2, GL_FLOAT, GL_FALSE,
-		5 * sizeof(float), 0);
+		7 * sizeof(float), 0);
 
 	GLint colorAttribId = glGetAttribLocation(m_shaderProgramId, "color");
 	glEnableVertexAttribArray(colorAttribId);
@@ -397,14 +400,14 @@ void RenderEngine::InitRenderTest()
 		// Whether to normalize or not.
 		GL_FALSE,
 		// Offset of each vertex.
-		5 * sizeof(float),
+		7 * sizeof(float),
 		// Offset of the attribute within the vertex.
 		(void*)(2 * sizeof(float)));
 
 	// IMPORTAT
 	// The above function stores the stride, offset, and the VBO that is currently bound to GL_ARRAY_BUFFER
 	// This means that
-	// - You don't ahve to explicitly bind the correct VBO for drawing
+	// - You don't have to explicitly bind the correct VBO for drawing
 	// - You can use a different VBO for each attribute.
 
 
@@ -419,6 +422,11 @@ void RenderEngine::InitRenderTest()
 	//glUniform3f(unicolor, 1.0f, 0.0f, 0.0f);
 
 	//-------------------------------------------------------------------------------------
+
+	GLint texAttribId = glGetAttribLocation(m_shaderProgramId, "texcoord");
+	glEnableVertexAttribArray(texAttribId);
+	glVertexAttribPointer(texAttribId, 2, GL_FLOAT, GL_FALSE,
+		7 * sizeof(float), (void*)(5 * sizeof(float)));
 }
 
 void RenderEngine::ValidateShader(unsigned int shader)
@@ -434,6 +442,66 @@ void RenderEngine::ValidateShader(unsigned int shader)
 
 		SPDLOG_LOGGER_ERROR(s_logger, "Error compiling shader error={} message={}", status, errMessage);
 	}
+}
+
+void RenderEngine::InitTextureTest()
+{
+	GLuint textureId;
+
+	// Hey OpenGL create a 2D array of pixels and give me the ID for it.
+	glGenTextures(1, &textureId);
+
+	// Bind the 2D aray of pixels.
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	int width = 0;
+	int height = 0;
+	unsigned char* image = SOIL_load_image("resources/test-textures/pika.png",
+		&width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	// (0.0, 0.0), is bottom left corner (1.0, 1.0) is upper right corner.
+	// "Sampling" is the operation that uses texture coordinates to retrieve color info from pixels.
+	// How will we handle when a coord outside of 0 to 1 is given?
+
+	// OpenGL gives us 4 ways
+	// GL_REPEAT, GL_MIRRORED_REPEAT, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER
+
+	// Pos coords are x, y, z texture coords are s, t, r.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// set the border color to red.
+	//float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	//glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
+
+	// Black and white checkers
+	//float pixels[] = {
+	//	0.0f, 0.0f, 0.0f,	1.0f, 1.0f, 1.0f,
+	//	1.0f, 1.0f, 1.0f,	0.0f, 0.0f, 0.0f
+	//};
+
+	//glTexImage2D(
+	//	// Target type
+	//	GL_TEXTURE_2D,
+	//	// Level of detail where 0 is base image. You can use this to load mipmaps.
+	//	0,
+	//	// Internal pixel format that indicates how they're stored on the GPU
+	//	GL_RGB,
+	//	// Width
+	//	2,
+	//	// Height
+	//	2,
+	//	// Border, must always be 0.
+	//	0,
+	//	// Format of the pixel data.
+	//	GL_RGB,
+	//	// Pixel data's data type.
+	//	GL_FLOAT,
+	//	// Actual pixel data.
+	//	pixels);
 }
 
 // Helpers

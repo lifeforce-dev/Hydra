@@ -50,6 +50,7 @@ private:
 	void RenderTest() const;
 	void InitRenderTest();
 	void ValidateShader(unsigned int shader);
+	void InitTextureTest();
 
 private:
 	std::vector<View*> m_views;
@@ -59,6 +60,9 @@ private:
 	// Used to reference the shader program.
 	// From there, I can access all the attributes I created in the shader.
 	uint32_t m_shaderProgramId = 0;
+
+	// Used to reference the texture we create.
+	uint32_t m_textureId = 0;
 
 	//------------------------------------
 	// Render test members
