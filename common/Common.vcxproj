@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AsioEventProcessor.cpp" />
+    <ClCompile Include="FileWatcher.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="NetworkMessageParser.cpp" />
@@ -147,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsioEventProcessor.h" />
+    <ClInclude Include="FileWatcher.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameTypes.h" />
     <ClInclude Include="generated\SpellIdEnums.h" />
